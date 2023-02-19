@@ -7,13 +7,14 @@ import (
 	"strconv"
 	"time"
 
-	//"paquetes_modulo/Estructuras"
-	estructuras "paquetes_modulo/Estructuras"
+	//"paquetes_modulo/stack"
+	//"paquetes_modulo/doublelist"
+	"paquetes_modulo/queue"
 )
 
 //SECCION DEL ADMINISTRADOR
 
-func Ver_pendiente(cola_student *estructuras.Cola) {
+func Ver_pendiente(cola_student *queue.Cola) {
 
 	//Declaracion de variables
 	var opcion int
@@ -82,7 +83,7 @@ func Ver_sistema() {
 
 }
 
-func Agregar_estudiante(cola_student *estructuras.Cola) {
+func Agregar_estudiante(cola_student *queue.Cola) {
 	//Declaracion de variables
 	var nombre string
 	var apellido string
@@ -108,7 +109,7 @@ func Agregar_estudiante(cola_student *estructuras.Cola) {
 
 }
 
-func Carga_masiva(cola_student *estructuras.Cola) {
+func Carga_masiva(cola_student *queue.Cola) {
 	//Declaracion de variables
 	var direccion string
 	var contador int = 0
@@ -154,7 +155,7 @@ func Tablero_Admin() {
 	//Declaracion de variables
 	var opcion int
 	var retorno int = 0
-	var cola_student = estructuras.Cola{}
+	var cola_student = queue.Cola{}
 
 	// Area de codigo
 	for retorno == 0 {
@@ -196,6 +197,7 @@ func Tablero_Admin() {
 //INICIO SESION
 
 func Incio_sesion() {
+
 	//Declaracion de variables
 	var users string
 	var password string
@@ -217,7 +219,6 @@ func Incio_sesion() {
 //SECCION DE USUARIOS --- Principal
 
 func main() {
-
 	// Declaracion de variables
 	var opcion int
 	var retorno int = 0
