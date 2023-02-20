@@ -1,3 +1,8 @@
+/*
+Autor: DM
+Año: 2023
+*/
+
 package stack
 
 import "fmt"
@@ -19,7 +24,7 @@ type Pila struct {
 	Size   int
 }
 
-//FUNCIONES DE LA PILA
+// FUNCIONES DE LA PILA
 // Agregar nuevo elemento en la pila
 func (p *Pila) Apilar(accion_r string, tiempo string) {
 
@@ -35,23 +40,48 @@ func (p *Pila) Apilar(accion_r string, tiempo string) {
 
 }
 
-// Eliminar el elemento de la pila
+// Eliminar el utimo elemento agregado a la pila
 func (p *Pila) Desapilar() {
 	p.Cabeza = p.Cabeza.Siguiente
 	p.Size -= 1
 }
 
-//Verificar si la pila esta vacia
-func (c *Pila) Esta_vacia() bool {
-	return c.Size == 0
+// Verificar si la pila esta vacia
+func (p *Pila) Esta_vacia() bool {
+	return p.Size == 0
 }
 
+// Primer elemento en la pila (es el ultimo elemento agregado)
+func (p *Pila) Get_last_element() (Dato_obtenido *Actions_admin) {
+	Dato_obtenido = p.Cabeza.Dato
+	return
+}
 
-//primer elemento
-//graficar
-//buscar
+// Buscar elemento y devolver posicion ----> No se utiliza en este proyecto
+func (p *Pila) Position_item(item_value string) (index int, e bool) {
+	var actual *NodoP = p.Cabeza
 
-//Imprimir datos en la pila
+	e = false
+
+	for i := 0; i < p.Size; i++ {
+		if actual.Dato.FechaHora == item_value { //condicional de ejemplo
+			index = i
+			e = true
+		}
+		actual = actual.Siguiente
+	}
+	return
+}
+
+// Modificar datos del ultimo elemento agregado----> No se utiliza en este proyecto
+func (p *Pila) Modify_last_element(accion string, tiempo string) {
+	p.Cabeza.Dato.Accion = accion
+	p.Cabeza.Dato.FechaHora = tiempo
+}
+
+// Graficar en graphviz
+
+// Imprimir datos en la pila
 func (p *Pila) Print_stack() {
 	var actual *NodoP = p.Cabeza
 

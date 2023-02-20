@@ -1,3 +1,8 @@
+/*
+Autor: DM
+Año: 2023
+*/
+
 package queue
 
 import (
@@ -26,7 +31,7 @@ type Cola struct {
 // FUNCIONES DE LA COLA
 
 // Insertar nuevo dato en la cola
-func (c *Cola) InsertS(nombre string, carnet int, contraseña string) {
+func (c *Cola) Encolar(nombre string, carnet int, contraseña string) {
 
 	var DatosS *Student = &Student{nombre, carnet, contraseña}
 	Node := &NodoC{
@@ -46,13 +51,13 @@ func (c *Cola) InsertS(nombre string, carnet int, contraseña string) {
 }
 
 // Obtener el primer elemento de la cola
-func (c *Cola) GetFirtS() (nombre string) {
-	nombre = c.Principio.Dato.Nombre
+func (c *Cola) Get_first_element() (value *Student) {
+	value = c.Principio.Dato
 	return
 }
 
-// Eliminar el elemento
-func (c *Cola) DeleteS() {
+// Eliminar el primer elemento
+func (c *Cola) Desencolar() {
 
 	if c.Size == 1 {
 		c.Principio = nil
@@ -65,8 +70,8 @@ func (c *Cola) DeleteS() {
 	c.Size -= 1
 }
 
-//buscar elemento
-//graficar
+// Se puede buscar elemento retornando la posicion y modificar, codigo similar a pila
+// Graficar en Graphviz
 
 // Verificar si la cola esta vacia
 func (c *Cola) Esta_vacia() bool {
@@ -74,7 +79,7 @@ func (c *Cola) Esta_vacia() bool {
 }
 
 // Imprimir datos en la cola
-func (c *Cola) Imprint() {
+func (c *Cola) Print_Queue() {
 	var actual *NodoC = c.Principio
 
 	for actual != nil {
