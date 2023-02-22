@@ -6,12 +6,13 @@ package admin_funcion
 
 import (
 	"fmt"
-	"paquetes_modulo/doublelist"
-	"paquetes_modulo/queue"
-	"paquetes_modulo/stack"
+	"paquetes_modulo/estructuras/doublelist"
+	"paquetes_modulo/estructuras/queue"
+	"paquetes_modulo/estructuras/simple_list"
+	"paquetes_modulo/estructuras/stack"
 )
 
-func Tablero_Admin(lista_student_record *doublelist.Lista_doble, cola_student *queue.Cola, pila_record_admin *stack.Pila) {
+func Tablero_Admin(path string, bitacora_student *simple_list.Lista_simple, lista_student_record *doublelist.Lista_doble, cola_student *queue.Cola, pila_record_admin *stack.Pila) {
 	//Declaracion de variables
 	var opcion int
 	var retorno int = 0
@@ -26,7 +27,8 @@ func Tablero_Admin(lista_student_record *doublelist.Lista_doble, cola_student *q
 =    2. Ver Estudiantes del Sistema         =
 =    3. Registrar Nuevo Estudiante          =
 =    4. Carga Masiva de Estudiantes         =
-=    5. Cerrar Sesion                       =
+=    5. Reporte Json                        =
+=    6. Cerrar Sesion                       =
 =============================================
 `
 		fmt.Print(menu_admin)
@@ -35,16 +37,20 @@ func Tablero_Admin(lista_student_record *doublelist.Lista_doble, cola_student *q
 
 		switch opcion {
 		case 1:
-			Ver_pendiente(cola_student, lista_student_record, pila_record_admin)
+			Ver_pendiente(path, bitacora_student, cola_student, lista_student_record, pila_record_admin)
 			retorno = 0
 		case 2:
 			Ver_sistema(lista_student_record)
 			retorno = 0
 		case 3:
-			Agregar_estudiante(cola_student)
+			Agregar_estudiante(path, cola_student)
 			retorno = 0
 		case 4:
-			Carga_masiva(cola_student)
+			Carga_masiva(path, cola_student)
+			retorno = 0
+		case 5:
+			Report_json(path,lista_student_record)
+			
 			retorno = 0
 		default:
 			fmt.Println("Cerrando sesion....")

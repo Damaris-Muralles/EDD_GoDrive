@@ -6,17 +6,18 @@ package admin_funcion
 
 import (
 	"fmt"
-	"paquetes_modulo/queue"
+	"paquetes_modulo/estructuras/queue"
 	"time"
 )
 
-func Agregar_estudiante(cola_student *queue.Cola) {
+func Agregar_estudiante(path string, cola_student *queue.Cola) {
 	//Declaracion de variables
 	var nombre string
 	var apellido string
 	var nombrecompleto string
 	var carnet int
 	var contraseña string
+	var opcionr string
 
 	//Area de codigo
 	fmt.Println("")
@@ -33,5 +34,15 @@ func Agregar_estudiante(cola_student *queue.Cola) {
 	nombrecompleto = nombre + " " + apellido
 
 	cola_student.Encolar(nombrecompleto, carnet, contraseña)
+	cola_student.Graph(path)
+
+	fmt.Println("Desea registrar otro estudiante s/n: ")
+	fmt.Scan(&opcionr)
+	switch opcionr {
+	case "s":
+		Agregar_estudiante(path, cola_student)
+	default:
+		fmt.Println("")
+	}
 	time.Sleep(1 * time.Second)
 }

@@ -1,0 +1,22 @@
+{
+	"alumnos":[
+		{
+			"nombre": "jelen carrera",
+			"carnet": 202034032,
+			"password": "jelen343",
+			"carpeta_raiz": "/"
+		},
+		{
+			"nombre": "samanta caliz",
+			"carnet": 202100023,
+			"password": "sam23",
+			"carpeta_raiz": "/"
+		},
+		{
+			"nombre": "carlos santos",
+			"carnet": 202100678,
+			"password": "carlos678",
+			"carpeta_raiz": "/"
+		}
+	]
+}

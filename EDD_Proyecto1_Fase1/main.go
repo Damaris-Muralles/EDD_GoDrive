@@ -7,17 +7,19 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"paquetes_modulo/admin_funcion"
-	"paquetes_modulo/doublelist"
-	"paquetes_modulo/queue"
-	"paquetes_modulo/simple_list"
-	"paquetes_modulo/stack"
+	"paquetes_modulo/estructuras/doublelist"
+	"paquetes_modulo/estructuras/queue"
+	"paquetes_modulo/estructuras/simple_list"
+	"paquetes_modulo/estructuras/stack"
 	"strconv"
 	"time"
 )
 
 // INICIO DE SESION
-func Incio_sesion(bitacora_student *simple_list.Lista_simple, lista_student_record *doublelist.Lista_doble, cola_student *queue.Cola, pila_record_admin *stack.Pila) {
+func Incio_sesion(path string, bitacora_student *simple_list.Lista_simple, lista_student_record *doublelist.Lista_doble, cola_student *queue.Cola, pila_record_admin *stack.Pila) {
 
 	//Declaracion de variables
 	var users string
@@ -33,7 +35,7 @@ func Incio_sesion(bitacora_student *simple_list.Lista_simple, lista_student_reco
 	//---> Validar datos para admin
 	if users == "admin" {
 		if password == "admin" {
-			admin_funcion.Tablero_Admin(lista_student_record, cola_student, pila_record_admin)
+			admin_funcion.Tablero_Admin(path, bitacora_student, lista_student_record, cola_student, pila_record_admin)
 		} else {
 			fmt.Println("La contraseña es incorrecta")
 			time.Sleep(1 * time.Second)
@@ -70,8 +72,8 @@ func Incio_sesion(bitacora_student *simple_list.Lista_simple, lista_student_reco
 					fmt.Println("Se inició sesión correctamente")
 					time.Sleep(1 * time.Second)
 
-					//SE DEBE DE GRAFICAR
-
+					//Se modifica la grafica creada
+					lista_student_record.Graph(1, path, bitacora_student)
 				} else {
 					fmt.Println("La contraseña es incorrecta")
 					time.Sleep(1 * time.Second)
@@ -113,6 +115,11 @@ func main() {
 	var pila_record_admin = stack.Pila{}
 
 	// Area de odigo
+
+	path, er := os.Getwd()
+	if er != nil {
+		log.Println(er)
+	}
 	for retorno == 0 {
 
 		menu_principal :=
@@ -129,7 +136,7 @@ func main() {
 
 		switch opcion {
 		case 1:
-			Incio_sesion(&bitacora_student, &lista_student_record, &cola_student, &pila_record_admin)
+			Incio_sesion(path, &bitacora_student, &lista_student_record, &cola_student, &pila_record_admin)
 			retorno = 0
 		default:
 			retorno = 1

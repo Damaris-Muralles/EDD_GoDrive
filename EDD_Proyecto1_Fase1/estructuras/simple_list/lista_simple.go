@@ -7,7 +7,7 @@ package simple_list
 
 import (
 	"fmt"
-	"paquetes_modulo/stack"
+	"paquetes_modulo/estructuras/stack"
 )
 
 type Actions_users struct {
@@ -16,7 +16,7 @@ type Actions_users struct {
 	Pila_inicios *stack.Pila
 }
 
-// Estructura para la creacion de la cola
+// Estructura para la creacion de la lista simple
 type NodoS struct {
 	Datos     *Actions_users
 	Siguiente *NodoS

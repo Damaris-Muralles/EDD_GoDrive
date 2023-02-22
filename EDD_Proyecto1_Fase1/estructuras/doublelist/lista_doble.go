@@ -7,10 +7,10 @@ package doublelist
 
 import (
 	"fmt"
-	"paquetes_modulo/queue"
+	"paquetes_modulo/estructuras/queue"
 )
 
-// Estructura para la creacion de la cola
+// Estructura para la creacion de la lista doble
 type NodoD struct {
 	Dato      *queue.Student
 	Siguiente *NodoD
@@ -188,8 +188,6 @@ func (d *Lista_doble) Modify_element_index(id int, newname string, newpass strin
 func (d *Lista_doble) Esta_vacia() bool {
 	return d.Size == 0
 }
-
-// Graficar en graphviz
 
 // Imprimir datos en la lista doble
 func (d *Lista_doble) Print_ListDouble() {

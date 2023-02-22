@@ -6,13 +6,14 @@ package admin_funcion
 
 import (
 	"fmt"
-	"paquetes_modulo/doublelist"
-	"paquetes_modulo/queue"
-	"paquetes_modulo/stack"
+	"paquetes_modulo/estructuras/doublelist"
+	"paquetes_modulo/estructuras/queue"
+	"paquetes_modulo/estructuras/simple_list"
+	"paquetes_modulo/estructuras/stack"
 	"time"
 )
 
-func Ver_pendiente(cola_student *queue.Cola, lista_student_record *doublelist.Lista_doble, pila_record_admin *stack.Pila) {
+func Ver_pendiente(path string, bitacora_student *simple_list.Lista_simple, cola_student *queue.Cola, lista_student_record *doublelist.Lista_doble, pila_record_admin *stack.Pila) {
 
 	//Declaracion de variables
 	var opcion int
@@ -56,13 +57,18 @@ func Ver_pendiente(cola_student *queue.Cola, lista_student_record *doublelist.Li
 		case 1:
 			fmt.Println("Se ha aceptado al estudiante")
 			lista_student_record.Insert(datos_student)
+			lista_student_record.Graph(0, path, bitacora_student)
 			cola_student.Desencolar()
 			pila_record_admin.Apilar("Se aceptó a estudiante", fechayhora)
+			pila_record_admin.Graph(path)
+			cola_student.Graph(path)
 			retorno = 0
 		case 2:
 			fmt.Println("Se ha rechazado al estudiante")
 			cola_student.Desencolar()
 			pila_record_admin.Apilar("Se rechazó a estudiante", fechayhora)
+			pila_record_admin.Graph(path)
+			cola_student.Graph(path)
 			retorno = 0
 		default:
 			fmt.Println("Volver menu....")

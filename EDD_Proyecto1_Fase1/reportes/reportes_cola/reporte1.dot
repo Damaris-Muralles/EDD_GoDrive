@@ -1,0 +1,23 @@
+
+digraph G {
+	rankdir=LR
+	node [shape=record, colorscheme=ylgnbu9,style=filled, color=white];
+	bgcolor="midnightblue";
+	fontcolor=white;
+	fontname="Comic Sans MS";
+	subgraph cluster_0 {
+		color="midnightblue";
+		label = "Cola de estudiantes";
+		f0[shape=cds,fillcolor=4, label="Primer estudiante en cola"];
+		f1[shape=rarrow,fillcolor=4, label="Null"];
+	
+		n0[fillcolor=5,label="Carnet: 202100023&#92;n Nombre: samanta caliz"];
+		    }
+    f0->n0[color="white"]
+	n0->f1[ color="white"]
+}"];
+		    }
+    f0->n0[dir ="none" color="midnightblue"];
+	n0->n1[color="white"]
+	n1->f1[ color="white"]
+}

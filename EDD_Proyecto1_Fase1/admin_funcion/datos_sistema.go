@@ -6,7 +6,7 @@ package admin_funcion
 
 import (
 	"fmt"
-	"paquetes_modulo/doublelist"
+	"paquetes_modulo/estructuras/doublelist"
 )
 
 func Ver_sistema(lista_student_record *doublelist.Lista_doble) {
