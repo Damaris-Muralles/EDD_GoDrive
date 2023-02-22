@@ -8,13 +8,15 @@ package doublelist
 import (
 	"fmt"
 	"paquetes_modulo/estructuras/queue"
+	"paquetes_modulo/estructuras/stack"
 )
 
 // Estructura para la creacion de la lista doble
 type NodoD struct {
-	Dato      *queue.Student
-	Siguiente *NodoD
-	Anterior  *NodoD
+	Dato         *queue.Student
+	Pila_inicios *stack.Pila
+	Siguiente    *NodoD
+	Anterior     *NodoD
 }
 
 type Lista_doble struct {
@@ -35,11 +37,12 @@ func (d *Lista_doble) Insert(DatosS *queue.Student) {
 	*/
 
 	//var DatosS *queue.Student = &queue.Student{Nombre: nombre, Carnet: carnet, Contraseña: contraseña}
-
+	var stack_student = stack.Pila{}
 	Node := &NodoD{
-		Dato:      DatosS,
-		Siguiente: nil,
-		Anterior:  nil,
+		Dato:         DatosS,
+		Pila_inicios: &stack_student,
+		Siguiente:    nil,
+		Anterior:     nil,
 	}
 
 	if d.Size == 0 {
@@ -60,16 +63,21 @@ func (d *Lista_doble) Insert(DatosS *queue.Student) {
 			for actual.Siguiente != nil && actual.Siguiente.Dato.Carnet < DatosS.Carnet {
 				actual = actual.Siguiente
 			}
-			if actual.Siguiente != nil {
-				Node.Siguiente = actual.Siguiente
-				Node.Anterior = actual.Siguiente.Anterior
-				actual.Siguiente.Anterior = Node
-				actual.Siguiente = Node
+			if DatosS.Carnet != actual.Dato.Carnet {
+				if actual.Siguiente != nil {
+					Node.Siguiente = actual.Siguiente
+					Node.Anterior = actual.Siguiente.Anterior
+					actual.Siguiente.Anterior = Node
+					actual.Siguiente = Node
+				} else {
+					d.Final.Siguiente = Node
+					Node.Anterior = d.Final
+					d.Final = Node
+				}
 			} else {
-				d.Final.Siguiente = Node
-				Node.Anterior = d.Final
-				d.Final = Node
+				fmt.Println("No se completo la acción, porque ya esta registrado")
 			}
+
 		}
 	}
 
@@ -164,6 +172,18 @@ func (d *Lista_doble) Delete_value(element_value int) (e string) {
 	}
 
 	return
+}
+
+// Modificar los elementos de la pila
+func (d *Lista_doble) Modify_pila(carnet int, newaccion string, newtime string) {
+	var actual *NodoD = d.Cabeza
+	for i := 0; i < d.Size; i++ {
+		if actual.Dato.Carnet == carnet {
+			actual.Pila_inicios.Apilar(newaccion, newtime)
+		}
+		actual = actual.Siguiente
+	}
+
 }
 
 // Modificar elemento segun un valor unico (puede hacerse tambien en la lista simple)

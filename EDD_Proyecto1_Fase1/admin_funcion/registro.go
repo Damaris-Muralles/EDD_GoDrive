@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func Agregar_estudiante(path string, cola_student *queue.Cola) {
+func Agregar_estudiante(cola_student *queue.Cola) {
 	//Declaracion de variables
 	var nombre string
 	var apellido string
@@ -34,13 +34,12 @@ func Agregar_estudiante(path string, cola_student *queue.Cola) {
 	nombrecompleto = nombre + " " + apellido
 
 	cola_student.Encolar(nombrecompleto, carnet, contraseña)
-	cola_student.Graph(path)
 
-	fmt.Println("Desea registrar otro estudiante s/n: ")
+	fmt.Print("Desea registrar otro estudiante s/n: ")
 	fmt.Scan(&opcionr)
 	switch opcionr {
 	case "s":
-		Agregar_estudiante(path, cola_student)
+		Agregar_estudiante(cola_student)
 	default:
 		fmt.Println("")
 	}

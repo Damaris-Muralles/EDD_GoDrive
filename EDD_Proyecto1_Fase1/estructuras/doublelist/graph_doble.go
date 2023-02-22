@@ -8,10 +8,9 @@ package doublelist
 import (
 	"fmt"
 	"paquetes_modulo/crear_archivos"
-	"paquetes_modulo/estructuras/simple_list"
 )
 
-func (d *Lista_doble) Graph(op int, direccion string, pilas *simple_list.Lista_simple) {
+func (d *Lista_doble) Graph(op int, direccion string) {
 
 	actual := d.Cabeza
 	dot := `
@@ -32,24 +31,15 @@ func (d *Lista_doble) Graph(op int, direccion string, pilas *simple_list.Lista_s
 
 	for j := 0; j < d.Size; j++ {
 		bitacora := ""
-		if pilas.Size > 0 {
-			aux := pilas.Cabeza
-			for i := 0; i < pilas.Size; i++ {
-				if aux.Datos.Carnet == actual.Dato.Carnet {
-					if aux.Datos.Pila_inicios.Size > 0 {
-						bitacora += fmt.Sprintf("struct%d [fillcolor=3, label=\"", j)
-						temp := aux.Datos.Pila_inicios.Cabeza
-						for temp.Siguiente != nil {
-							bitacora += fmt.Sprintf("%s&#92;n %s|", temp.Dato.Accion, temp.Dato.FechaHora)
-							temp = temp.Siguiente
-
-						}
-						bitacora += fmt.Sprintf("%s&#92;n %s\"];", temp.Dato.Accion, temp.Dato.FechaHora)
-
-					}
-				}
+		if actual.Pila_inicios.Size > 0 && op != 0 {
+			aux := actual.Pila_inicios.Cabeza
+			bitacora += fmt.Sprintf("struct%d [fillcolor=3, label=\"", j)
+			for aux.Siguiente != nil {
+				bitacora += fmt.Sprintf("%s&#92;n %s|", aux.Dato.Accion, aux.Dato.FechaHora)
 				aux = aux.Siguiente
+
 			}
+			bitacora += fmt.Sprintf("%s&#92;n %s\"];", aux.Dato.Accion, aux.Dato.FechaHora)
 		}
 
 		nodos += fmt.Sprintf(`

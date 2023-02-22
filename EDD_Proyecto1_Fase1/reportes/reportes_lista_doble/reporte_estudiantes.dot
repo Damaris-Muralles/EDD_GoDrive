@@ -14,27 +14,108 @@
         style=filled;
 		color="lightsteelblue";
 		label = "Estudiante #0";
-        n0 [label="Carnet: 202034032&#92;n Nombre: jelen carrera", fillcolor=5];
+        n0 [label="Carnet: 201403877&#92;n Nombre: Ebany Larios", fillcolor=5];
 	    	
 	}
 	subgraph cluster_1 {
         style=filled;
 		color="lightsteelblue";
 		label = "Estudiante #1";
-        n1 [label="Carnet: 202100023&#92;n Nombre: samanta caliz", fillcolor=5];
+        n1 [label="Carnet: 201700653&#92;n Nombre: Kevyn Girón", fillcolor=5];
 	    	
 	}
 	subgraph cluster_2 {
         style=filled;
 		color="lightsteelblue";
 		label = "Estudiante #2";
-        n2 [label="Carnet: 202100678&#92;n Nombre: carlos santos", fillcolor=5];
+        n2 [label="Carnet: 201700918&#92;n Nombre: Cristian Suy", fillcolor=5];
+	    	
+	}
+	subgraph cluster_3 {
+        style=filled;
+		color="lightsteelblue";
+		label = "Estudiante #3";
+        n3 [label="Carnet: 201780044&#92;n Nombre: Leonardo Martinez", fillcolor=5];
+	    	
+	}
+	subgraph cluster_4 {
+        style=filled;
+		color="lightsteelblue";
+		label = "Estudiante #4";
+        n4 [label="Carnet: 201800673&#92;n Nombre: Sergio Bucaro", fillcolor=5];
+	    	
+	}
+	subgraph cluster_5 {
+        style=filled;
+		color="lightsteelblue";
+		label = "Estudiante #5";
+        n5 [label="Carnet: 201801683&#92;n Nombre: Juan Augusto", fillcolor=5];
+	    	
+	}
+	subgraph cluster_6 {
+        style=filled;
+		color="lightsteelblue";
+		label = "Estudiante #6";
+        n6 [label="Carnet: 201900570&#92;n Nombre: Jonatan Gonzalez", fillcolor=5];
+	    	
+	}
+	subgraph cluster_7 {
+        style=filled;
+		color="lightsteelblue";
+		label = "Estudiante #7";
+        n7 [label="Carnet: 201902259&#92;n Nombre: Lourdes Reyes", fillcolor=5];
+	    	
+	}
+	subgraph cluster_8 {
+        style=filled;
+		color="lightsteelblue";
+		label = "Estudiante #8";
+        n8 [label="Carnet: 201903549&#92;n Nombre: Alejandro Caballeros", fillcolor=5];
+	    	
+	}
+	subgraph cluster_9 {
+        style=filled;
+		color="lightsteelblue";
+		label = "Estudiante #9";
+        n9 [label="Carnet: 202000544&#92;n Nombre: Roberto Gómez", fillcolor=5];
+	    	
+	}
+	subgraph cluster_10 {
+        style=filled;
+		color="lightsteelblue";
+		label = "Estudiante #10";
+        n10 [label="Carnet: 202002940&#92;n Nombre: Sebastián Godoy", fillcolor=5];
+	    	
+	}
+	subgraph cluster_11 {
+        style=filled;
+		color="lightsteelblue";
+		label = "Estudiante #11";
+        n11 [label="Carnet: 202004703&#92;n Nombre: Eduardo Cuevas", fillcolor=5];
 	    	
 	}
     f0->n0[dir="none", color="white"]
 	n0->n1[color="white"]
 	n1->n2[color="white"]
-	n2->f1[ color="white"]
+	n2->n3[color="white"]
+	n3->n4[color="white"]
+	n4->n5[color="white"]
+	n5->n6[color="white"]
+	n6->n7[color="white"]
+	n7->n8[color="white"]
+	n8->n9[color="white"]
+	n9->n10[color="white"]
+	n10->n11[color="white"]
+	n11->f1[ color="white"]
+	n11->
+	n10->
+	n9->
+	n8->
+	n7->
+	n6->
+	n5->
+	n4->
+	n3->
 	n2->n1[color="white"]
 	n1->n0[ color="white"]
 }

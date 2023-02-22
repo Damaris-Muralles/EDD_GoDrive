@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"paquetes_modulo/crear_archivos"
 	"paquetes_modulo/estructuras/doublelist"
-	"time"
 )
 
 func Report_json(direccion string, lista_student_record *doublelist.Lista_doble) {
@@ -45,7 +44,6 @@ func Report_json(direccion string, lista_student_record *doublelist.Lista_doble)
 	path := fmt.Sprintf(`%s\reportes\reporte_json\alumnos.json`, direccion)
 	crear_archivos.Create_newfile(path, contenido)
 	fmt.Println("Se genero archivo JSON")
-	time.Sleep(1 * time.Second)
 
 	/*
 		alumn, err := json.MarshalIndent(alumnos, "", "  ")

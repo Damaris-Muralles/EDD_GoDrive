@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func Carga_masiva(path string, cola_student *queue.Cola) {
+func Carga_masiva(cola_student *queue.Cola) {
 	//Declaracion de variables
 	var direccion string
 	var contador int = 0
@@ -48,10 +48,7 @@ func Carga_masiva(path string, cola_student *queue.Cola) {
 			contador++
 		}
 
-		fmt.Println(cola_student.Size)
 		fmt.Println("Se han cargado correctamente los datos")
-
-		cola_student.Graph(path)
 
 	}
 	time.Sleep(1 * time.Second)

@@ -57,7 +57,7 @@ digraph G {
 
 	if c.Size != 0 {
 
-		path := fmt.Sprintf(`%s\reportes\reportes_cola\reporte1.dot`, direccion)
+		path := fmt.Sprintf(`%s\reportes\reportes_cola\reporte_cola_espera.dot`, direccion)
 
 		crear_archivos.Create_newfile(path, dot)
 		crear_archivos.Png_generate(path)
