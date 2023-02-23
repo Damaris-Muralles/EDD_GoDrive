@@ -79,8 +79,6 @@ func (p *Pila) Modify_last_element(accion string, tiempo string) {
 	p.Cabeza.Dato.FechaHora = tiempo
 }
 
-// Graficar en graphviz
-
 // Imprimir datos en la pila
 func (p *Pila) Print_stack() {
 	var actual *NodoP = p.Cabeza

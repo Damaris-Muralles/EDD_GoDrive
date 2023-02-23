@@ -37,33 +37,35 @@ func (d *Lista_doble) Insert(DatosS *queue.Student) {
 	*/
 
 	//var DatosS *queue.Student = &queue.Student{Nombre: nombre, Carnet: carnet, Contraseña: contraseña}
-	var stack_student = stack.Pila{}
-	Node := &NodoD{
-		Dato:         DatosS,
-		Pila_inicios: &stack_student,
-		Siguiente:    nil,
-		Anterior:     nil,
-	}
+	resultado, _ := d.Search_item(DatosS.Carnet)
 
-	if d.Size == 0 {
-		d.Cabeza = Node
-		d.Final = Node
-	}
+	if !resultado {
+		var stack_student = stack.Pila{}
+		Node := &NodoD{
+			Dato:         DatosS,
+			Pila_inicios: &stack_student,
+			Siguiente:    nil,
+			Anterior:     nil,
+		}
 
-	if d.Size > 0 {
-
-		if DatosS.Carnet < d.Cabeza.Dato.Carnet {
-
-			d.Cabeza.Anterior = Node
-			Node.Siguiente = d.Cabeza
+		if d.Size == 0 {
 			d.Cabeza = Node
+			d.Final = Node
+		}
 
-		} else {
-			var actual *NodoD = d.Cabeza
-			for actual.Siguiente != nil && actual.Siguiente.Dato.Carnet < DatosS.Carnet {
-				actual = actual.Siguiente
-			}
-			if DatosS.Carnet != actual.Dato.Carnet {
+		if d.Size > 0 {
+
+			if DatosS.Carnet < d.Cabeza.Dato.Carnet {
+
+				d.Cabeza.Anterior = Node
+				Node.Siguiente = d.Cabeza
+				d.Cabeza = Node
+
+			} else {
+				var actual *NodoD = d.Cabeza
+				for actual.Siguiente != nil && actual.Siguiente.Dato.Carnet < DatosS.Carnet {
+					actual = actual.Siguiente
+				}
 				if actual.Siguiente != nil {
 					Node.Siguiente = actual.Siguiente
 					Node.Anterior = actual.Siguiente.Anterior
@@ -74,14 +76,14 @@ func (d *Lista_doble) Insert(DatosS *queue.Student) {
 					Node.Anterior = d.Final
 					d.Final = Node
 				}
-			} else {
-				fmt.Println("No se completo la acción, porque ya esta registrado")
 			}
-
 		}
+
+		d.Size += 1
+	} else {
+		fmt.Println("La acción no se ha completado, este carnet ya se encuentra registrado")
 	}
 
-	d.Size += 1
 }
 
 // Obtener elemento de una posicion indicada
@@ -124,7 +126,7 @@ func (d *Lista_doble) Search_item(element_value int) (result bool, index int) {
 	return
 }
 
-// Borrar en cualquier posicion
+// -Borrar en cualquier posicion
 // ---->Por posicion
 func (d *Lista_doble) Delete_item_index(index int) (e string) {
 	var actual *NodoD = d.Cabeza
@@ -186,7 +188,7 @@ func (d *Lista_doble) Modify_pila(carnet int, newaccion string, newtime string) 
 
 }
 
-// Modificar elemento segun un valor unico (puede hacerse tambien en la lista simple)
+// -Modificar elemento segun un valor unico (puede hacerse tambien en la lista simple)
 func (d *Lista_doble) Modify_element_index(id int, newname string, newpass string) (e string) {
 	var actual *NodoD = d.Cabeza
 

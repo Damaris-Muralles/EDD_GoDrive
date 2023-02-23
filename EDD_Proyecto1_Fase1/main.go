@@ -96,7 +96,6 @@ func main() {
 	var opcion int
 	var retorno int = 0
 	var lista_student_record doublelist.Lista_doble = doublelist.Lista_doble{}
-
 	var cola_student = queue.Cola{}
 	var pila_record_admin = stack.Pila{}
 

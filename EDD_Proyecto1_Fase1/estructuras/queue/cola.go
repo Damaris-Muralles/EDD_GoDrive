@@ -71,7 +71,6 @@ func (c *Cola) Desencolar() {
 }
 
 // Se puede buscar elemento retornando la posicion y modificar, codigo similar a pila
-// Graficar en Graphviz
 
 // Verificar si la cola esta vacia
 func (c *Cola) Esta_vacia() bool {
