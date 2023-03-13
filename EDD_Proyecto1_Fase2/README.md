@@ -1,6 +1,6 @@
-                     |    CARNET    |        NOMBRE       | AUXILIAR DEL CURSO| 
-                     |----------------|----------------------|---------------|
-                     |  202100953 | Damaris Muralles | Leonardo Martínez |
+|    CARNET    |        NOMBRE       | AUXILIAR DEL CURSO| 
+|----------------|----------------------|---------------|
+|  202100953 | Damaris Muralles | Leonardo Martínez |
 
 # FASE 2 
 

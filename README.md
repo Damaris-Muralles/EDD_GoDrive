@@ -1,7 +1,6 @@
 |    CARNET    |        NOMBRE       | AUXILIAR DEL CURSO|
 |----------------|----------------------|---------------|
 |  202100953 | Damaris Muralles | Leonardo Martínez |
-# MANUAL TÉCNICO 
 
 # EDD GoDrive: 
 
