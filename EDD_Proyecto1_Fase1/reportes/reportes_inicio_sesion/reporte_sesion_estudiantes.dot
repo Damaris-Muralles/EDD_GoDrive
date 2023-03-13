@@ -21,71 +21,36 @@
         style=filled;
 		color="lightsteelblue";
 		label = "Estudiante #1";
-        n1 [label="Carnet: 201700653&#92;n Nombre: Kevyn Gir髇", fillcolor=5];
-	    struct1 [fillcolor=3, label="Se inici贸 sesi贸n&#92;n 22/02/2023 11:16:59"];	
+        n1 [label="Carnet: 201700918&#92;n Nombre: Cristian Suy", fillcolor=5];
+	    	
 	}
 	subgraph cluster_2 {
         style=filled;
 		color="lightsteelblue";
 		label = "Estudiante #2";
-        n2 [label="Carnet: 201700918&#92;n Nombre: Cristian Suy", fillcolor=5];
-	    struct2 [fillcolor=3, label="Se inici贸 sesi贸n&#92;n 22/02/2023 11:16:37|Se inici贸 sesi贸n&#92;n 22/02/2023 11:16:30|Se inici贸 sesi贸n&#92;n 22/02/2023 11:16:23"];	
+        n2 [label="Carnet: 201780044&#92;n Nombre: Leonardo Martinez", fillcolor=5];
+	    struct2 [fillcolor=3, label="Se inici贸 sesi贸n&#92;n 28/02/2023 13:30:27"];	
 	}
 	subgraph cluster_3 {
         style=filled;
 		color="lightsteelblue";
 		label = "Estudiante #3";
-        n3 [label="Carnet: 201780044&#92;n Nombre: Leonardo Martinez", fillcolor=5];
+        n3 [label="Carnet: 202000277&#92;n Nombre: Diana Berducido", fillcolor=5];
 	    	
 	}
 	subgraph cluster_4 {
         style=filled;
 		color="lightsteelblue";
 		label = "Estudiante #4";
-        n4 [label="Carnet: 201801683&#92;n Nombre: Juan Augusto", fillcolor=5];
+        n4 [label="Carnet: 202001053&#92;n Nombre: Kevin Hernandez", fillcolor=5];
 	    	
 	}
 	subgraph cluster_5 {
         style=filled;
 		color="lightsteelblue";
 		label = "Estudiante #5";
-        n5 [label="Carnet: 201900570&#92;n Nombre: Jonatan Gonzalez", fillcolor=5];
-	    	
-	}
-	subgraph cluster_6 {
-        style=filled;
-		color="lightsteelblue";
-		label = "Estudiante #6";
-        n6 [label="Carnet: 201902259&#92;n Nombre: Lourdes Reyes", fillcolor=5];
-	    struct6 [fillcolor=3, label="Se inici贸 sesi贸n&#92;n 22/02/2023 11:17:34|Se inici贸 sesi贸n&#92;n 22/02/2023 11:17:26|Se inici贸 sesi贸n&#92;n 22/02/2023 11:17:18"];	
-	}
-	subgraph cluster_7 {
-        style=filled;
-		color="lightsteelblue";
-		label = "Estudiante #7";
-        n7 [label="Carnet: 201903549&#92;n Nombre: Alejandro Caballeros", fillcolor=5];
-	    	
-	}
-	subgraph cluster_8 {
-        style=filled;
-		color="lightsteelblue";
-		label = "Estudiante #8";
-        n8 [label="Carnet: 202000544&#92;n Nombre: Roberto G髆ez", fillcolor=5];
-	    	
-	}
-	subgraph cluster_9 {
-        style=filled;
-		color="lightsteelblue";
-		label = "Estudiante #9";
-        n9 [label="Carnet: 202002940&#92;n Nombre: Sebasti醤 Godoy", fillcolor=5];
-	    	
-	}
-	subgraph cluster_10 {
-        style=filled;
-		color="lightsteelblue";
-		label = "Estudiante #10";
-        n10 [label="Carnet: 202004703&#92;n Nombre: Eduardo Cuevas", fillcolor=5];
-	    	
+        n5 [label="Carnet: 202100953&#92;n Nombre: Damaris Muralles", fillcolor=5];
+	    struct5 [fillcolor=3, label="Se inici贸 sesi贸n&#92;n 28/02/2023 13:29:47"];	
 	}
     f0->n0[dir="none", color="white"]
 	n0->n1[color="white"]
@@ -93,17 +58,7 @@
 	n2->n3[color="white"]
 	n3->n4[color="white"]
 	n4->n5[color="white"]
-	n5->n6[color="white"]
-	n6->n7[color="white"]
-	n7->n8[color="white"]
-	n8->n9[color="white"]
-	n9->n10[color="white"]
-	n10->f1[ color="white"]
-	n10->
-	n9->
-	n8->
-	n7->
-	n6->
+	n5->f1[ color="white"]
 	n5->
 	n4->
 	n3->
