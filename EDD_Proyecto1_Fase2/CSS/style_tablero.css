@@ -4,19 +4,16 @@
     z-index: 1040;
 }
 body {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-image: url("/Img/fondo_claro_p.png");
-    background-position: center;
-    padding-left: 5%;
-    padding-right: 5%;
+   background-color: #cbd7e5;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+.logo_user {
+    margin-top: 15px;
+    float: right;
 }
 
 .logo {
-    float: left;
-}
-
-.logo_user {
     float: right;
 }
 .offcanvas-title, .modal-title {
@@ -49,6 +46,16 @@ body {
     border-radius: 30px;
     box-shadow: 15px 15px 20px 10px rgb(0, 0, 0,0.1);
 }
+.buttoncanvas {
+    display: block;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+.tablero .tcarpeta{
+    padding-left: 10%;
+    padding-right: 10%;
+}
 
 .tablero table {
     margin: 0 auto;
@@ -56,7 +63,7 @@ body {
 }
 .tablero .input-group {
     margin: 0 auto;
-    width: 60%;
+    width: 50%;
 }
 .input-group .form-select{
     width: 80%;
@@ -67,4 +74,13 @@ body {
 .input-group .form-select,
 .input-group .input-group-append,.input-group .input-group-append .botonmostrar{
     flex: 1;
+}
+.archivos:hover{
+    background-color: rgba(96, 199, 237, 0.563);
+    color: rgb(255, 255, 255);
+    transform: .3s;
+    cursor: pointer;
+}
+.tablero .busqueda{
+    width: 50%;
 }
