@@ -1,6 +1,6 @@
 // REDIRECCIONAMIENTOS
 function Rprincipal(){
-    location.href="../Pag_inicio/principal.html";
+    location.href="../principal.html";
 }
 function Rlogin(){
     location.href="../Pag_inicio/Login.html";
