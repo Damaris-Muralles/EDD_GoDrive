@@ -45,8 +45,8 @@
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item active"  data-bs-toggle="modal" href="#staticBackdrop" role="button" aria-controls="staticBackdrop">Crear carpeta</a></li>
-                <li><a class="dropdown-item" data-bs-toggle="modal" href="#staticBackdrop1" role="button" aria-controls="staticBackdrop1">Modificar Carpeta</a></li>
-                <li><a class="dropdown-item"  data-bs-toggle="modal" href="#staticBackdrop2" role="button" aria-controls="staticBackdrop2">Eliminar Carpeta</a></li>
+                <li><a class="dropdown-item" data-bs-toggle="modal" href="#staticBackdrop1" role="button" aria-controls="staticBackdrop1">Modificar carpeta</a></li>
+                <li><a class="dropdown-item"  data-bs-toggle="modal" href="#staticBackdrop2" role="button" aria-controls="staticBackdrop2">Eliminar carpeta</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item"  data-bs-toggle="modal" href="#staticBackdrop3" role="button" aria-controls="staticBackdrop3">Subir archivo</a></li>
             </ul>
@@ -60,19 +60,22 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <div class="mb-3">
-                    <label for="formFile" class="form-label">Seleccione un archivo Json para cargar al sistema</label>
-                    <input class="form-control" type="file" id="formFile">
+                  <div class=" mb-3">
+                    <label for="namecarpeta" class="form-label">Nombre de la carpeta</label>
+                    <input type="text" class="form-control" id="namecarpeta" placeholder="">
+                    <br>
+                    <p>Nota: La carpeta se creara en el directorio actual.</p>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="button" class="btn btn-primary">Crear</button>
                 </div>
               </div>
             </div>
           </div>
           <br>
-           <!-- Modal -->
+           <!-- Modal  modificar carpeta-->
            <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -81,18 +84,26 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <div class="mb-3">
-                    <label for="formFile" class="form-label">Seleccione un archivo Json para cargar al sistema</label>
-                    <input class="form-control" type="file" id="formFile">
+                  <div class=" mb-3">
+                    <label for="modificarcarpeta" class="form-label">Nombre de la carpeta</label>
+                    <input type="text" class="form-control" id="modificarcarpeta" placeholder="">
+                    
+                    <br>
+                    <label for="nuevoname" class="form-label">Nuevo nombre</label>
+                    <input type="text" class="form-control" id="nuevoname" placeholder="">
+                    
+                    <br>
+                    <p>Nota: La carpeta se buscara en el directorio actual.</p>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="button" class="btn btn-primary">Guardar cambios</button>
                 </div>
               </div>
             </div>
           </div>
-           <!-- Modal -->
+           <!-- Modal eliminar carpeta-->
            <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -101,43 +112,47 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <div class="mb-3">
-                    <label for="formFile" class="form-label">Seleccione un archivo Json para cargar al sistema</label>
-                    <input class="form-control" type="file" id="formFile">
+                  <div class=" mb-3">
+                    <label for="eliminarcarpeta" class="form-label">Nombre de la carpeta</label>
+                    <input type="text" class="form-control" id="eliminarcarpeta" placeholder="">
+                    <br>
+                    <p>Nota: Se eliminara la carpeta que conicida con el nombre en el directorio actual.</p>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="button" class="btn btn-primary">Eliminar</button>
                 </div>
               </div>
             </div>
           </div>
-           <!-- Modal -->
+           <!-- Modal para subir archivo -->
            <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Subir Nuevo archivo</h1>
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Subir nuevo archivo</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                   <div class="mb-3">
-                    <label for="formFile" class="form-label">Seleccione un archivo Json para cargar al sistema</label>
-                    <input class="form-control" type="file" id="formFile">
+                    <label for="formFileMultiple" class="form-label">Seleccione uno o más archivos.</label>
+                    <input class="form-control" type="file" id="formFileMultiple" multiple>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <button type="button" class="btn btn-primary">Subir</button>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Button trigger modal -->
+          <!-- Button de permisos -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop4">
           Permisos
         </button>
 
-        <!-- Modal -->
+        <!-- Modal para dar permisos-->
         <div class="modal fade" id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -146,16 +161,35 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                ...
+                <label for="permisouser" class="form-label">Dar a:</label>
+                    <input type="text" class="form-control" id="permisouser" placeholder="nombre de usuario">
+                    
+                    <br>
+                    <label for="namearchivo" class="form-label">Acceso a:</label>
+                    <input type="text" class="form-control" id="namearchivo" placeholder="Nombre de archivo">
+                    
+                    <br>
+                    <div >
+                      <label for="permisosdados" class="form-label">Con permiso de:</label>
+                      <select class="form-select" id="permisosdados">
+                        <option selected>Seleccionar...</option>
+                        <option value="1">r (lectura)</option>
+                        <option value="2">w (escritura)</option>
+                        <option value="3">r - w (lectura y escritura)</option>
+                      </select>
+                    </div>
+                    <br>
+                    <p>Nota: El archivo se buscara en el directorio actual.</p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Descargar</button>
+                <button type="button" class="btn btn-primary">Dar permisos</button>
               </div>
             </div>
           </div>
         </div>
           <br>
+        <!-- Boton de reportes -->
           <div class="dropdown-center">
             <button type="button" class="btn btn-primary dropdown-toggle buttoncanvas" data-bs-toggle="dropdown" aria-expanded="false">
               Reportes
@@ -166,7 +200,7 @@
                 <li><a class="dropdown-item" data-bs-toggle="modal" href="#staticBackdrop7" role="button" aria-controls="staticBackdrop7">Bitacora</a></li>
             </ul>
           </div>
-          <!-- Modal -->
+          <!-- Modal arbol n-ario-->
           <div class="modal fade" id="staticBackdrop5" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -184,7 +218,7 @@
               </div>
             </div>
           </div>
-           <!-- Modal -->
+           <!-- Modal matriz dispersa-->
            <div class="modal fade" id="staticBackdrop6" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -202,7 +236,7 @@
               </div>
             </div>
           </div>
-           <!-- Modal -->
+           <!-- Modal  lista circular-->
            <div class="modal fade" id="staticBackdrop7" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -213,7 +247,7 @@
                 <div class="modal-body">
                   ...
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer ">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                   <button type="button" class="btn btn-primary">Descargar</button>
                 </div>
@@ -222,17 +256,19 @@
           </div>
           <br>
           <br>
-          <button type="button" class="btn btn-light">Cerrar sesion</button>
+          <button type="button" class="btn btn-light" onclick="cerrarsesion()">Cerrar sesion</button>
         </div>
       </div>
       <br>
       <br>
       <br>
       <br>
+      <!-- tablero -->
       <div class="tablero">
         <br>
         <h2 class="tablero-title">Mi Unidad</h2>
         <br>
+        <!-- contenedor de busqueda -->
         <div class="container-fluid busqueda">
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -240,7 +276,8 @@
             </form>
         </div>
         <br>
-        <div class="row mt-2  tcarpeta" id="carpetas" style="height: 300px; overflow: auto;">
+        <!-- contenedor de carpetas -->
+        <div class="row mt-2  tcarpeta" id="carpetas" style="height: auto; max-height: 300px; overflow: auto;">
           
           <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="">
             <img src="../Img/Carpeta4.png" width="150"/>
@@ -257,13 +294,16 @@
           <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="">
             <img src="../Img/imag3.png" width="100"/>
             <p class="h6">Imagen1</p>
-          </div> 
+          </div>  
         </div>
       </div>
 
-    
+    <!-- Scripts de boostrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../JS/funciones.js"></script>
+  
   </body>
 </html>
 

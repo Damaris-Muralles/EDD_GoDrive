@@ -76,7 +76,7 @@ body {
     flex: 1;
 }
 .archivos:hover{
-    background-color: rgba(96, 199, 237, 0.563);
+    background-color: rgba(92, 183, 216, 0.563);
     color: rgb(255, 255, 255);
     transform: .3s;
     cursor: pointer;
