@@ -3,10 +3,10 @@ let avlTree = new AvlTree();
 
 // REDIRECCIONAMIENTOS
 function Rprincipal(){
-    location.href='../../principal.html';
+    location.href='../../docs/index.html';
 }
 function Rlogin(){
-    location.href="/EDD_Proyecto1_Fase2/Pag_inicio/Login.html";
+    location.href="../EDD_Proyecto1_Fase2/Pag_inicio/Login.html";
 }
 function Radmin(){
     location.href = '../Pag_admin/tablero_admin.html';
