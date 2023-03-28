@@ -18,6 +18,10 @@ Año: 2023
     position: relative;
     height: 700px;
     width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url("fondo_claro_p.png");
+    background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
