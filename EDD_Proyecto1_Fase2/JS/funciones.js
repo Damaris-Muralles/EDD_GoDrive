@@ -3,10 +3,10 @@ let avlTree = new AvlTree();
 
 // REDIRECCIONAMIENTOS
 function Rprincipal(){
-    location.href='../../docs/index.html';
+    location.href='https://damaris-muralles.github.io/EDD_1S2023_PY_202100953/';
 }
 function Rlogin(){
-    location.href="../EDD_Proyecto1_Fase2/Pag_inicio/Login.html";
+    location.href="https://damaris-muralles.github.io/EDD_1S2023_PY_202100953/EDD_Proyecto1_Fase2/Pag_inicio/Login.html";
 }
 function Radmin(){
     location.href = '../Pag_admin/tablero_admin.html';
