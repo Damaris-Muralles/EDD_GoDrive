@@ -8,10 +8,10 @@ window.addEventListener("scroll",function(){
    
     var logo =document.querySelector(".logo img");
     if (window.scrollY>0){
-        logo.setAttribute('src','logo.png');
+        logo.setAttribute('src','./Img/logo.png');
         logo.setAttribute('width','250');
     }else{
-        logo.setAttribute('src','vacio.png');
+        logo.setAttribute('src','./Img/vacio.png');
         logo.setAttribute('width','10');
     }
 });

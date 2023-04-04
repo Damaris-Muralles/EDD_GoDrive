@@ -1,20 +1,22 @@
 //--------------------------------------------------------------------------
 //                      CLASE NODO
 //--------------------------------------------------------------------------
-class AvlNode{
-    constructor(item){
+class AvlNodo{
+    constructor(item, treenari,actividad){
         this.item = item;
-        this.left = null;
-        this.right = null;
-        this.height = 0;
+        this.izquierda = null;
+        this.derecha = null;
+        this.treenari = treenari;
+        this.actividad =actividad;
+        this.altura = 0;
     }
 }
 
 //--------------------------------------------------------------------------
 //                   VARIABLES GLOBALES
 //--------------------------------------------------------------------------
-let = nodes = "";
-let = connections = "";
+let = Nodos = "";
+let = enlaces = "";
 
 //--------------------------------------------------------------------------
 //                   CLASE ARBOL AVL
@@ -24,119 +26,180 @@ class AvlTree{
         this.root = null;
     }
 
-    insert(item){
+    insertar(item){
         this.root = this.#insertRecursive(item, this.root);
+       
     }
 
-    getHeight(node){
-        return node === null ? -1 : node.height;
+    getaltura(Nodo){
+        if (Nodo === null) {
+            return -1;
+          } else {
+            return Nodo.altura;
+          }
     }
-    getMaxHeight(leftNode, rightNode){
-        return leftNode.height > rightNode.height ? leftNode.height : rightNode.height;
+    getMaxaltura(alturaizquierda, alturaderecha){
+        if (alturaizquierda > alturaderecha) {
+            return alturaizquierda;
+          } else {
+            return alturaderecha;
+          }
     }
+
 
     //--------------------------------------------------------------------------
     //                  METODO DE INSERCIÓN
     //--------------------------------------------------------------------------
+    
     #insertRecursive(item, node){
         if(node == null){
-            node = new AvlNode(item);
+            
+            let arbolarchivo = new Tree(item.carpeta_raiz);
+            let listaactividad =new CircularList();
+            node = new AvlNodo(item,arbolarchivo,JSON.stringify(JSON.decycle(listaactividad)));
         }else if(item.carnet < node.item.carnet){
-            node.left = this.#insertRecursive(item, node.left);
-            if(this.getHeight(node.left) - this.getHeight(node.right) == 2){
-                if(item.carnet < node.left.item.carnet){
-                    node = this.#rotateLeft(node);
+            node.izquierda = this.#insertRecursive(item, node.izquierda);
+            if(this.getaltura(node.izquierda) - this.getaltura(node.derecha) == 2){
+                if(item.carnet < node.izquierda.item.carnet){
+                    node = this.#rotateizquierda(node);
                 }else{
-                    node = this.#doubleLeft(node);
+                    node = this.#doubleizquierda(node);
                 }
             }
         }else if(item.carnet > node.item.carnet){
-            node.right = this.#insertRecursive(item, node.right);
-            if(this.getHeight(node.right) - this.getHeight(node.left) == 2){
-                if(item.carnet < node.right.item.carnet){
-                    node = this.#rotateRight(node);
+            node.derecha = this.#insertRecursive(item, node.derecha);
+            if(this.getaltura(node.derecha) - this.getaltura(node.izquierda) == 2){
+                if(item.carnet > node.derecha.item.carnet){
+                    node = this.#rotatederecha(node);
                 }else{
-                    node = this.#doubleRight(node);
+                    node = this.#doublederecha(node);
                 }
             }
         }else{
             alert("Elemento ya existe en el árbol");
         }
-        node.height = this.getMaxHeight(this.getHeight(node.left), this.getHeight(node.right)) + 1;
+        node.altura = this.getMaxaltura(this.getaltura(node.izquierda), this.getaltura(node.derecha)) + 1;
         return node;
     }
+    #rotatederecha(node1) {
+        let node2 = node1.izquierda;
+        if (node2 && node2.derecha) {
+          // Actualizar enlace derecho de node1
+          node1.izquierda = node2.derecha;
+          // Actualizar enlace izquierdo de node2
+          node2.derecha = node1;
+          // Actualizar altura de node1
+          node1.altura = this.getMaxaltura(this.getaltura(node1.izquierda), this.getaltura(node1.derecha)) + 1;
+          // Actualizar altura de node2
+          node2.altura = this.getMaxaltura(this.getaltura(node2.izquierda), node1.altura) + 1;
+          // Retornar el nuevo nodo raíz de la subárbol rotado
+          return node2;
+        } else {
+          return node1;
+        }
+      }
+        #rotateizquierda(node2){
+            let node1 = node2.izquierda;
+            if (node1 && node1.derecha) { // comprobar si node1 tiene un hijo derecho
+                node2.izquierda = node1.derecha;
+                node1.derecha = node2;
+                node2.altura = this.getMaxaltura(this.getaltura(node2.izquierda), this.getaltura(node2.derecha)) + 1;
+                node1.altura = this.getMaxaltura(this.getaltura(node1.izquierda), node2.altura) + 1;
+                return node1;
+            } else {
+                // si node1 no tiene un hijo derecho, no se puede hacer la rotación
+                return node2;
+            }
+        }
+        #doubleizquierda(node){
+            node.izquierda = this.#rotatederecha(node.izquierda);
+            return this.#rotateizquierda(node);
+        }
+        #doublederecha(node){
+            node.derecha = this.#rotateizquierda(node.derecha);
+            return this.#rotatederecha(node);
+        }
 
-    //--------------------------------------------------------------------------
-    //                   ROTACIONES
-    //--------------------------------------------------------------------------
-    #rotateRight(node1){
-        node2 = node1.right;
-        node1.right = node2.left;
-        node2.left = node1;
-        node1.height = this.getMaxHeight(this.getHeight(node1.left), this.getHeight(node1.right)) + 1;
-        node2.height = this.getMaxHeight(this.getHeight(node2.right), node1.height) + 1;
-        return node2;
-    }
-    #rotateLeft(node2){
-        node1 = node2.left;
-        node2.left = node1.right;
-        node1.right = node2;
-        node2.height = this.getMaxHeight(this.getHeight(node2.left), this.getHeight(node2.right)) + 1;
-        node1.height = this.getMaxHeight(this.getHeight(node1.left), node2.height) + 1;
-        return node1;
-    }
-    #doubleLeft(node){
-        node.left = this.#rotateRight(node.left);
-        return this.#rotateLeft(node);
-    }
-    #doubleRight(node){
-        node.right = this.#rotateLeft(node.right);
-        return this.#rotateRight(node);
-    }
 
     //--------------------------------------------------------------------------
     //                  REPORTE DEL ARBOL
     //--------------------------------------------------------------------------
     treeGraph(){       
-        nodes = "";
-        connections = "";
+        Nodos = "";
+        enlaces = "";
         this.#treeGraphRecursive(this.root);
-        // console.log(nodes,connections);
-        return nodes + connections;
+        // console.log(Nodos,enlaces);
+        return Nodos + enlaces;
     }
-    #treeGraphRecursive(current){
-        if(current.left != null){
-            this.#treeGraphRecursive(current.left);
-            connections += `S_${current.item.carnet} -> S_${current.left.item.carnet};\n`;
+    #treeGraphRecursive(nodo_actual){
+        if(nodo_actual.izquierda != null){
+            this.#treeGraphRecursive(nodo_actual.izquierda);
+            enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.izquierda.item.carnet};\n`;
         }
-        nodes += `S_${current.item.carnet}[label="${current.item.nombre}"];`
-        if(current.right != null){
-            this.#treeGraphRecursive(current.right);
-            connections += `S_${current.item.carnet} -> S_${current.right.item.carnet};\n`;
+        Nodos += `S_${nodo_actual.item.carnet}[shape=box label="${nodo_actual.item.carnet}\\n${nodo_actual.item.nombre}\\nAltura: ${nodo_actual.altura}" style="filled" fillcolor="skyblue3"];`
+        if(nodo_actual.derecha != null){
+            this.#treeGraphRecursive(nodo_actual.derecha);
+            enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.derecha.item.carnet};\n`;
         }
     }
     
+
+    busqueda(valor ) {
+        return this.#busquedarecursiva(valor, this.root);
+    }
+    #busquedarecursiva(valor, nodo){
+        if (nodo==null){
+            return null;
+        }else if (valor == nodo.item.carnet){
+            //console.log(nodo.item.carnet, valor)
+            return nodo;
+        }else if (valor < nodo.item.carnet){
+            return this.#busquedarecursiva(valor,nodo.izquierda);
+        }else {
+            return this.#busquedarecursiva(valor,nodo.derecha);
+        }
+    }
+
+    modificacion(valor1,valor2,userc ) {
+        return this.#modifirecursiva(valor1,valor2,userc, this.root);
+    }
+    #modifirecursiva(valor1,valor2,userc, nodo){
+        if (nodo==null){
+            return null;
+        }else if (userc == nodo.item.carnet){
+            nodo.treenari=valor1;
+            nodo.actividad =valor2;
+        }else if (userc < nodo.item.carnet){
+            return this.#modifirecursiva(valor1,valor2,userc,nodo.izquierda);
+        }else {
+            return this.#modifirecursiva(valor1,valor2,userc,nodo.derecha);
+        }
+    }
+
     //--------------------------------------------------------------------------
     //                  RECORRIDO IN ORDER
     //--------------------------------------------------------------------------
-    inOrder(){
-        let html = this.#inOrderRecursive(this.root);
+    enOrder(){
+        let index = {valor: 0};
+        let html = this.#enOrderRecursive(this.root, index);
         return html;
     }
-    #inOrderRecursive(current){
+    #enOrderRecursive(nodo_actual, index){
         let row = "";
-        if(current.left != null){
-            row += this.#inOrderRecursive(current.left);
+        if(nodo_actual.izquierda != null){
+            row += this.#enOrderRecursive(nodo_actual.izquierda, index);
         }
         row +=`
             <tr>
-                <th>${current.item.carnet}</th>
-                <td>${current.item.nombre}</td>
-                <td>${current.item.password}</td>
+                <th scope="row">${index.valor+1}</th>
+                <th>${nodo_actual.item.carnet}</th>
+                <td>${nodo_actual.item.nombre}</td>
+                <td>${nodo_actual.item.password}</td>
             </tr>
         `;
-        if(current.right != null){
-            row += this.#inOrderRecursive(current.right);
+        index.valor++;
+        if(nodo_actual.derecha != null){
+            row += this.#enOrderRecursive(nodo_actual.derecha, index);
         }
         return row;
     }
@@ -144,23 +207,26 @@ class AvlTree{
     //                  RECORRIDO PRE ORDER
     //--------------------------------------------------------------------------
     preOrder(){
-        let html = this.#preOrderRecursive(this.root);
+        let index = {valor: 0};
+        let html = this.#preOrderRecursive(this.root, index);
         return html;
     }
-    #preOrderRecursive(current){
+    #preOrderRecursive(nodo_actual, index){
         let row = "";
         row +=`
             <tr>
-                <th>${current.item.carnet}</th>
-                <td>${current.item.nombre}</td>
-                <td>${current.item.password}</td>
+                <th scope="row">${index.valor+1}</th>
+                <th>${nodo_actual.item.carnet}</th>
+                <td>${nodo_actual.item.nombre}</td>
+                <td>${nodo_actual.item.password}</td>
             </tr>
         `;
-        if(current.left != null){
-            row += this.#inOrderRecursive(current.left);
+        index.valor++;
+        if(nodo_actual.izquierda != null){
+            row += this.#preOrderRecursive(nodo_actual.izquierda, index);
         }
-        if(current.right != null){
-            row += this.#inOrderRecursive(current.right);
+        if(nodo_actual.derecha != null){
+            row += this.#preOrderRecursive(nodo_actual.derecha, index);
         }
         return row;
     }
@@ -169,24 +235,27 @@ class AvlTree{
     //                  RECORRIDO POST ORDER
     //--------------------------------------------------------------------------
     postOrder(){
-        let html = this.#postOrderRecursive(this.root);
+        let index = {valor: 0};
+        let html = this.#postOrderRecursive(this.root, index);
         return html;
     }
-    #postOrderRecursive(current){
+    #postOrderRecursive(nodo_actual, index){
         let row = "";
-        if(current.left != null){
-            row += this.#inOrderRecursive(current.left);
+        if(nodo_actual.izquierda != null){
+            row += this.#postOrderRecursive(nodo_actual.izquierda, index);
         }
-        if(current.right != null){
-            row += this.#inOrderRecursive(current.right);
+        if(nodo_actual.derecha != null){
+            row += this.#postOrderRecursive(nodo_actual.derecha, index);
         }
         row +=`
             <tr>
-                <th>${current.item.carnet}</th>
-                <td>${current.item.nombre}</td>
-                <td>${current.item.password}</td>
+                <th scope="row">${index.valor+1}</th>
+                <th>${nodo_actual.item.carnet}</th>
+                <td>${nodo_actual.item.nombre}</td>
+                <td>${nodo_actual.item.password}</td>
             </tr>
         `;
+        index.valor++;
         return row;
     }
 

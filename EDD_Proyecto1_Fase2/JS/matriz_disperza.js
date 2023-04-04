@@ -1,163 +1,187 @@
-// CLASE NODO
-class Mnode{
-    constructor(x, y, value){
-        this.x = x;
-        this.y = y;
-        this.value = value;
 
-        // APUNTADORES
-        this.up = null;
-        this.down = null;
-        this.right = null;
-        this.left = null;
+class MNodo{
+    constructor(x, y, valor, format_b64,tipo ){
+        this.x = x;
+        this.y = y.toString();
+        this.valor = valor;
+        this.format_b64 =format_b64;
+        this.tipo=tipo;
+        this.arriba = null;
+        this.abajo = null;
+        this.derecha = null;
+        this.izquierda = null;
     }
 }
 
-// CLASE  MATRIZ DISPERSA
 class SparseMatrix{
 
-    constructor(){
-        this.head =  new Mnode(-1, -1, "Inicio");
+    constructor(carpeta){
+        this.cabeza =  new MNodo("-1", -1, carpeta,null,"raiz");
+        this.cantidad=0;
     }
     
-    insert(x, y, value){
+    insertard(x,y,valor,contenido,tipoarchivo){
+
+      
+        let cont=0;
+        let existente=true;
+        let nameaux=x;
+        while(existente) {
+            let fileExtension="";
+           
+            let resultb=this.buscarPorX(nameaux);
+            if  (resultb==null){
+                existente=false;
+            }else{
+                console.log("YA EXISTE UN ARCHIVO CON EL NOMBRE, SE CREO COPIA");
+                cont++;
+                console.log(x.split(".").pop())
+                fileExtension = "."+x.split(".").pop();
+                nameaux=x.split(".")[0];
+                nameaux = nameaux + "_Copia" + cont +fileExtension;
+                console.log("nombre: ",nameaux);
+            }
+        }
+        x=nameaux;
         // CREAR CABECERAS DE LAS FILAS O EJE X
-        this.#xHeaders(x);
+        this.#xcabezaers(x,tipoarchivo);
         // CREAR CABECERAS DE LAS COLUMNAS O EJE Y
-        this.#yHeaders(y);
+        
+        this.#ycabezaers(y);
         // CREAR EL NUEVO NODO
-        const node = new Mnode(x,y,value);
+        const Nodo = new MNodo(x,y,valor,contenido,tipoarchivo);
+     
         // AGREGAR AL EJE X
-        this.#addX(node, x);
+        this.#addX(Nodo, x);
         // AGREGAR AL EJE Y
-        this.#addY(node, y);
+        this.#addY(Nodo,y);
+        this.cantidad++;
     }
 
-    // REALIZAR LAS CABECERAS EN LAS FILAS O EJE X
-    #xHeaders(x){
-        const curr = new Mnode(-1,-1, x);
-        if(this.head.down == null){
-            this.head.down = curr;
-            curr.up = this.head;
+    #xcabezaers(x,tipoarchivo){
+        const n_actual = new MNodo("-1",-1, x,null,tipoarchivo);
+        if(this.cabeza.abajo == null){
+            this.cabeza.abajo = n_actual;
+            n_actual.arriba = this.cabeza;
         }else{
-            let temp = this.head;
+            let aux = this.cabeza;
 
             // ENCONTRAR EL ESPACIO PARA LA CABECERA
-            while(temp.down != null && temp.down.value < x){
-                temp = temp.down;
+            while(aux.abajo != null && aux.abajo.valor < x){
+                aux = aux.abajo;
             }
             //INSERTAR AL FINAL SI ES ULTIMO
-            if(temp.down == null){
-                temp.down = curr;
-                curr.up = temp;
-            }else if(temp.down != null && temp.down.value != x){
+            if(aux.abajo == null){
+                aux.abajo = n_actual;
+                n_actual.arriba = aux;
+            }else if(aux.abajo != null && aux.abajo.valor != x){
                 // INSERCIÓN ENTRE NODOS
-                let r = temp.down;
-                temp.down = curr;
-                curr.up = temp;
-                curr.down = r;
-                r.up = curr;
+                let r = aux.abajo;
+                aux.abajo = n_actual;
+                n_actual.arriba = aux;
+                n_actual.abajo = r;
+                r.arriba = n_actual;
             }
         }
     }
 
-    #yHeaders(y){
-        const curr = new Mnode(-1,-1, y);
-        if(this.head.right == null){
-            this.head.right = curr;
-            curr.left = this.head;
+    #ycabezaers(y){
+        const n_actual = new MNodo("-1",-1, y,null,null);
+        if(this.cabeza.derecha == null){
+            this.cabeza.derecha = n_actual;
+            n_actual.izquierda = this.cabeza;
         }else{
-            let temp = this.head;
+            let aux = this.cabeza;
     
             // ENCONTRAR EL ESPACIO PARA LA CABECERA
-            while(temp.right != null && temp.right.value < y){
-                temp = temp.right;
+            while(aux.derecha != null && aux.derecha.valor < y){
+                aux = aux.derecha;
             }
             //INSERTAR AL FINAL SI ES ULTIMO
-            if(temp.right == null){
-                temp.right = curr;
-                curr.left = temp;
-            }else if(temp.right != null && temp.right.value != y){
+            if(aux.derecha == null){
+                aux.derecha = n_actual;
+                n_actual.izquierda = aux;
+            }else if(aux.derecha != null && aux.derecha.valor != y){
                 // INSERCIÓN ENTRE NODOS
-                let r = temp.right;
-                temp.right = curr;
-                curr.left = temp;
-                curr.right = r;
-                r.left = curr;
+                let r = aux.derecha;
+                aux.derecha = n_actual;
+                n_actual.izquierda = aux;
+                n_actual.derecha = r;
+                r.izquierda = n_actual;
             }
         }
     }
 
-    #addX(newNode, x){
-        let temp = this.head;
+    #addX(newNodo, x){
+        let aux = this.cabeza;
         // BUSCAR LA CABECERA
-        while(temp.value != x){
-            temp = temp.down;
+        while(aux.valor != x){
+            aux = aux.abajo;
         }
         // INSERCION SI LA FILA ESTA VACIA
-        if(temp.right == null){
-            temp.right = newNode;
-            newNode.left = temp;
+        if(aux.derecha == null){
+            aux.derecha = newNodo;
+            newNodo.izquierda = aux;
         }else{
-            let curr = temp.right;
+            let n_actual = aux.derecha;
             // INSERTAR ORDENADAMENTE
-            if(curr.y >= newNode.y){
+            if(n_actual.y >= newNodo.y){
                 // CAMBIAR DE LUGAR CON EL PRIMERO DE LA LISTA
-                newNode.right = curr;
-                newNode.right.left = newNode;
+                newNodo.derecha = n_actual;
+                newNodo.derecha.izquierda = newNodo;
                 //ENLAZARLO A LA CABECERA
-                newNode.left = temp
-                temp.right = newNode
+                newNodo.izquierda = aux
+                aux.derecha = newNodo
                 //ASIGNARLO AL PRIMERO DE LA LISTA
-                curr = newNode;
+                n_actual = newNodo;
             }else{
-                while(curr.right != null && curr.right.y < newNode.y){
-                    curr = curr.right;
+                while(n_actual.derecha != null && n_actual.derecha.y < newNodo.y){
+                    n_actual = n_actual.derecha;
                 }
-                newNode.right = curr.right;
-                if(curr.right != null){
-                    newNode.right.left = newNode;
+                newNodo.derecha = n_actual.derecha;
+                if(n_actual.derecha != null){
+                    newNodo.derecha.izquierda = newNodo;
                 }
-                curr.right = newNode;
-                newNode.left = curr;
+                n_actual.derecha = newNodo;
+                newNodo.izquierda = n_actual;
             }
             
         }
 
     }
     
-    #addY(newNode, y){
-        let temp = this.head;
+    #addY(newNodo, y){
+        let aux = this.cabeza;
         // BUSCAR LA CABECERA
-        while(temp.value != y){
-            temp = temp.right;
+        while(aux.abajo != null && aux.valor != y){
+            aux = aux.derecha;
         }
         // INSERCION SI LA FILA ESTA VACIA
-        if(temp.down == null){
-            temp.down = newNode;
-            newNode.up = temp;
+        if(aux.abajo == null){
+            aux.abajo = newNodo;
+            newNodo.arriba = aux;
         }else{
-            let curr = temp.down;
+            let n_actual = aux.abajo;
             // INSERTAR ORDENADAMENTE
-            if(curr.x >= newNode.x){
+            if(n_actual.x >= newNodo.x){
                 // CAMBIAR DE LUGAR CON EL PRIMERO DE LA LISTA
-                newNode.down = curr;
-                newNode.down.up = newNode;
+                newNodo.abajo = n_actual;
+                newNodo.abajo.arriba = newNodo;
                 //ENLAZARLO A LA CABECERA
-                newNode.up = temp
-                temp.down = newNode
+                newNodo.arriba = aux
+                aux.abajo = newNodo
                 //ASIGNARLO AL PRIMERO DE LA LISTA
-                curr = newNode;
+                n_actual = newNodo;
             }else{
-                while(curr.down != null && curr.down.y < newNode.y){
-                    curr = curr.down;
+                while(n_actual.abajo != null && n_actual.abajo.y < newNodo.y){
+                    n_actual = n_actual.abajo;
                 }
-                newNode.down = curr.down;
-                if(curr.down != null){
-                    newNode.down.up = newNode;
+                newNodo.abajo = n_actual.abajo;
+                if(n_actual.abajo != null){
+                    newNodo.abajo.arriba = newNodo;
                 }
-                curr.down = newNode;
-                newNode.up = curr;
+                n_actual.abajo = newNodo;
+                newNodo.arriba = n_actual;
             }
             
         }
@@ -165,116 +189,264 @@ class SparseMatrix{
 
     printX(){
         let tx = null;
-        try { tx = this.head.down } catch (error) { tx = null; console.log("errorX1"); }
+        try { tx = this.cabeza.abajo } catch (error) { tx = null; console.log("errorX1"); }
         let ty = null;
         while(tx != null){
-            try { ty = tx.right } catch (error) { ty = null; console.log("errorX2"); }
+            try { ty = tx.derecha } catch (error) { ty = null; console.log("errorX2"); }
             let str = ""
             while(ty != null){
-                str += ty.value + ",";
-                ty = ty.right;
+                str += ty.valor + ",";
+                ty = ty.derecha;
             }
-            console.log(tx.value,": ", str)
-            tx = tx.down;
+            console.log(tx.valor,": ", str)
+            tx = tx.abajo;
         }
     }
-
+    
     printY(){
         let ty = null;
-        try { ty = this.head.right } catch (error) { ty = null; console.log("errorY1"); }
+        try { ty = this.cabeza.derecha } catch (error) { ty = null; console.log("errorY1"); }
         let tx = null;
         while(ty != null){
-            // console.log(ty.value)
-            try { tx = ty.down } catch (error) { tx = null; console.log("errorY2"); }
+            // console.log(ty.valor)
+            try { tx = ty.abajo } catch (error) { tx = null; console.log("errorY2"); }
             let str = ""
             while(tx != null){
-                str += tx.value + ",";
-                tx = tx.down;
+                str += tx.valor + ",";
+                tx = tx.abajo;
             }
-            console.log(ty.value,": ", str)
-            ty = ty.right;
+            console.log(ty.valor,": ", str)
+            ty = ty.derecha;
         }
     }
 
-    graph(){
-        let code = "graph [nodesep=\"0.8\", ranksep=\"0.6\"]; \n";
-		code +="M0[ label = \"Inicio\" width = 1.5 shape = \"square\" style = \"filled\" fillcolor =\"slateblue\" group=\"0\"]; \n";
-        code += this.#headersGraph()
-        code += this.#nodesGraph()
-        return(code)
-    }
-    #headersGraph(){
-        let conn = "M0 ->";
-        let nodes = "";
-        let rank = "{rank = same; M0; "
-        let temp = null;
-        try { temp = this.head.right } catch (error) { temp = null; console.log("GRAPH"); }
-        while(temp != null){
-            nodes += "Y" + temp.value + `[label="Y(${temp.value})" width = 1.5 shape ="square" style="filled" fillcolor="skyblue3" group = ${temp.value} ];\n`
-            rank += "Y" + temp.value + ";";
-            if(temp.right != null){
-                conn += "Y" + temp.value + "->";
-            }else{
-                conn += "Y" + temp.value + `[dir="both"];\n`;
+    Mostrararchivos(){
+        let tx = null;
+        try { tx = this.cabeza.abajo } catch (error) { tx = null; console.log("errorX1"); }
+        let ty = null;
+        let cadenaimprarchivos="";
+        while(tx != null){
+            try { ty = tx.derecha } catch (error) { ty = null; console.log("errorX2"); }
+            let str = ""
+            while(ty != null){
+                str += ty.valor ;
+                ty = ty.derecha;
             }
-            temp = temp.right;
+            //console.log(tx.valor,": ", str)
+            console.log("msdf ",tx.tipo);
+              if (tx.tipo=="pdf"){
+                cadenaimprarchivos+= ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
+                <img src="../Img/archivopng.png" width="100"/>
+                <p class="h6 text-center">${tx.valor}</p>
+                </div>`
+            }
+             if (tx.tipo=="txt"){
+                cadenaimprarchivos += ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
+                <img src="../Img/archivo2.png" width="100"/>
+                <p class="h6 text-center">${tx.valor}</p>
+                </div>`
+            }
+             if (tx.tipo!="txt" && tx.tipo!="pdf" && tx.tipo!="raiz"){
+                cadenaimprarchivos += ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
+                <img src="../Img/imag3.png" width="100"/>
+                <p class="h6 text-center">${tx.valor}</p>
+                </div>`
+             }
+            tx = tx.abajo;
+        }
+        return cadenaimprarchivos;
+    }
+
+
+    buscarPorX(x) {
+        let aux = this.cabeza;
+        let encontrado = false;
+        while (aux.abajo != null && !encontrado) {
+            
+            aux = aux.abajo;
+            if (aux.valor == x) {
+                encontrado = true;
+            }
+        }
+        if (encontrado) {
+            let result = [];
+            let n_actual = aux.derecha;
+            console.log(aux.derecha);
+            while (n_actual != null) {
+                result.push(n_actual);
+                n_actual = n_actual.derecha;
+            }
+            return result;
+        } else {
+            return null;
+        }
+    }
+/*
+    modificarNodoPorX(x, nuevoy,nuevovalor) {
+        let aux = this.cabeza;
+        let encontrado = false;
+        while (aux.abajo != null && !encontrado) {
+            aux = aux.abajo;
+            if (aux.valor == x) {
+                encontrado = true;
+            }
+        }
+        if (encontrado) {
+            let n_actual = aux.derecha;
+            while (n_actual != null ) {
+                n_actual.valor = nuevovalor;
+                n_actual.y=nuevoy;
+                n_actual.arriba.valor =nuevoy;
+                n_actual = n_actual.derecha;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+   
+    */
+    copiarmatriz(matriz,valorx, nuevoy,nuevovalor) {
+        // Copiar el valor de la cabeza
+        this.cabeza.valor = matriz.cabeza.valor;
+        this.cabeza.format_b64 = matriz.cabeza.format_b64;
+        this.cabeza.tipo = matriz.cabeza.tipo;
+        this.cantidad=0;
+        // Recorrer los nodos de la matriz original
+        let n_actualentRow = matriz.cabeza.abajo;
+        while (n_actualentRow != null) {
+            let n_actualentColumn = n_actualentRow.derecha;
+            while (n_actualentColumn != null) {
+                // Insertar un nuevo nodo con los mismos valores
+                if(nuevoy!=null){
+                    if (n_actualentColumn.x==valorx){
+                        this.insertard(n_actualentColumn.x,nuevoy,nuevovalor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
+                    }else{
+                        this.insertard(n_actualentColumn.x,n_actualentColumn.y,n_actualentColumn.valor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
+                    }
+                }else{
+                    this.insertard(n_actualentColumn.x,n_actualentColumn.y,n_actualentColumn.valor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
+                }
+                
+                n_actualentColumn = n_actualentColumn.derecha;
+            }
+            n_actualentRow = n_actualentRow.abajo;
+        }
+    }
+
+    
+    
+    dgraph(){
+
+        if(this.cantidad>0){
+            let code = "graph [nodesep=\"0.8\", ranksep=\"0.6\"]; \n";
+            code +="M0[ label = \"Inicio\" width = 1.5 shape = \"square\" style = \"filled\" fillcolor =\"midnightblue\" fontcolor=\"white\" group=\"0\"]; \n";
+            code += this.#cabezaersGraph()
+            code += this.#NodosGraph()
+            return(code)
+        }
+        else{
+            console.log("no se puede crear la matriz por falta de archivos");
+            return null;
+        }
+        
+    }
+    #cabezaersGraph(){
+        let conn = "";
+        let Nodos = "";
+        let rank = "{rank = same; M0; "
+        let aux = null;
+        let aux1 = null;
+        try { aux1 = this.cabeza.derecha } catch (error) { aux1 = null; console.log("GRAPH"); }
+        if (aux1.valor!="NC"){
+            conn += 'M0 ->';
+        }
+        while(aux1 != null){
+            if(aux1.valor!="NC"){
+                Nodos += "Y" + aux1.valor + `[label="${aux1.valor}" width = 1.5 shape ="square" style="filled" fillcolor="skyblue3" group = ${aux1.valor} ];\n`
+                rank += "Y" + aux1.valor + ";";
+            }
+                if(aux1.derecha != null && aux1.derecha.valor!="NC"){
+                    conn += "Y" + aux1.valor + "->";
+                }else{
+                    if (aux1.valor!="NC"){
+                    conn += "Y" + aux1.valor + `[dir="both"];\n`;
+                    }
+                }
+            
+               
+           
+            aux1 = aux1.derecha;
         }
         
         conn += 'M0 ->';
-        try { temp = this.head.down } catch (error) { temp = null; console.log("GRAPH"); }
-        while(temp != null){
-            nodes += "X" + temp.value + `[label="X(${temp.value})" width = 1.5 shape ="square" style="filled" fillcolor="skyblue3" group="0"];\n`
-            if(temp.down != null){
-                conn += "X" + temp.value + "->";
+        try { aux = this.cabeza.abajo } catch (error) { aux = null; console.log("GRAPH"); }
+        while(aux != null){
+            Nodos += "X" + aux.valor.split(".")[0] + `[label="${aux.valor}" width = 1.5 shape ="square" style="filled" fillcolor="skyblue3" group="0"];\n`
+            if(aux.abajo != null){
+                conn += "X" + aux.valor.split(".")[0] + "->";
             }else{
-                conn += "X" + temp.value + `[dir="both"];\n`;
+                conn += "X" + aux.valor.split(".")[0] + `[dir="both"];\n`;
             }
-            temp = temp.down;
+            aux = aux.abajo;
         }
         
         rank += "}";
-        return nodes +"\n"+ conn +"\n"+ rank +"\n";
+        return Nodos +"\n"+ conn +"\n"+ rank +"\n";
     }
 
-    #nodesGraph(){
+    #NodosGraph(){
         let conn = "";
-        let nodes = "";
+        let Nodos = "";
         let rank = ""
         let tx = null;
-        try { tx = this.head.down } catch (error) { tx = null; console.log("errorX1"); }
+        try { tx = this.cabeza.abajo } catch (error) { tx = null; console.log("errorX1"); }
         let ty = null;
         while(tx != null){
-            try { ty = tx.right } catch (error) { ty = null; console.log("errorX2"); } 
-            conn += `X${ty.x} -> `
-            while(ty != null){
-                nodes += `S${ty.x}_${ty.y}[label="${ty.value}" width=1.5 shape="square" style="filled" fillcolor="slategray1" group="${ty.y}"];\n`
-                rank += `{rank=same; X${ty.x}; S${ty.x}_${ty.y};}\n`;
-                if(ty.right != null){
-                    conn += `S${ty.x}_${ty.y} ->`;
-                }else{
-                    conn += `S${ty.x}_${ty.y} [dir="both"]; \n`;
-                }
-                ty = ty.right;
+            try { ty = tx.derecha } catch (error) { ty = null; console.log("errorX2"); } 
+            if(ty.y!="NC"){
+                conn += `X${ty.x.split(".")[0]} -> `
             }
-            tx = tx.down;
+            
+            while(ty != null){
+                if (ty.y!="NC"){
+                    Nodos += `S${ty.x.split(".")[0]}_${ty.y}[label="${ty.valor}" width=1.5 shape="square" style="filled" fillcolor="slategray1" group="${ty.y}"];\n`
+                    rank += `{rank=same; X${ty.x.split(".")[0]}; S${ty.x.split(".")[0]}_${ty.y};}\n`;
+                }
+                
+                if(ty.derecha != null && ty.derecha.y !="NC"){
+                    conn += `S${ty.x.split(".")[0]}_${ty.y} ->`;
+                }else{
+                    if (ty.y!="NC"){
+                    conn += `S${ty.x.split(".")[0]}_${ty.y} [dir="both"]; \n`;
+                    }
+                }
+                ty = ty.derecha;
+            }
+            tx = tx.abajo;
         }
         
-        try { ty = this.head.right } catch (error) { ty = null; console.log("errorY1"); }
+        try { ty = this.cabeza.derecha } catch (error) { ty = null; console.log("errorY1"); }
         tx = null;
         while(ty != null){
-            try { tx = ty.down } catch (error) { tx = null; console.log("errorX2"); } 
-            conn += `Y${tx.y} -> `
-            while(tx != null){
-                if(tx.down != null){
-                    conn += `S${tx.x}_${tx.y} ->`;
-                }else{
-                    conn += `S${tx.x}_${tx.y} [dir="both"]; \n`;
+            try { tx = ty.abajo } catch (error) { tx = null; console.log("errorX2"); } 
+            if (tx.y!="NC"){
+                conn += `Y${tx.y} -> `
+                while(tx != null){
+                    if(tx.abajo != null && tx.abajo.derecha.y !="NC"){
+                        conn += `S${tx.x.split(".")[0]}_${tx.y} ->`;
+                    }else{
+                        if (ty.y!="NC"){
+                        conn += `S${tx.x.split(".")[0]}_${tx.y} [dir="both"]; \n`;
+                        }
+                    }
+                    tx = tx.abajo;
                 }
-                tx = tx.down;
             }
-            ty = ty.right;
+            
+            ty = ty.derecha;
         }
 
-        return nodes + "\n" + rank + "\n" + conn;
+        return Nodos + "\n" + rank + "\n" + conn;
     }
 }

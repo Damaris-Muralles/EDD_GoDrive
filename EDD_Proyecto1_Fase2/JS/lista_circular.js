@@ -1,6 +1,8 @@
-class Node {
-    constructor(value) {
-      this.value = value;
+class NodoCir {
+    constructor(valor, fecha, hora) {
+      this.valor = valor;
+      this.fecha = fecha;
+      this.hora = hora;
       this.next = null;
     }
   }
@@ -11,65 +13,77 @@ class Node {
       this.tail = null;
     }
   
-    // INSERTAR AL FINAL
-    addEnd(value) {
-      let newNode = new Node(value);
-  
+    addEnd(valor) {
+      let fechaActual = new Date();
+      let mes="";
+      if(fechaActual.getMonth()+1>10){
+        mes="-0"+(fechaActual.getMonth() + 1);
+      }else{
+        mes="-"+(fechaActual.getMonth() + 1);
+      }
+      let fecha=fechaActual.getDate()+mes+"-"+fechaActual.getFullYear();
+      let hora=fechaActual.getHours()+":"+fechaActual.getMinutes()+":"+fechaActual.getSeconds();
+      let newNodo = new NodoCir(valor,fecha,hora);
+      console.log(newNodo)
       if (this.head === null) {
-        this.head = newNode;
-        this.tail = newNode;
-        // Asignar puntero a la cabeza haciendo la lista circular
-        newNode.next = this.head.next;
+        console.log("head null",this.head);
+        this.head = newNodo;
+        this.tail = newNodo;
+        newNodo.next = this.head;
+        console.log("todos",this.head,this.tail, this.head.next);
       } else {
-        this.tail.next = newNode;
-        this.tail = newNode;
+        console.log("tail.inicisal",this.tail);
+        this.tail.next = newNodo;
+        console.log("tail.next",this.tail.next);
+        this.tail = newNodo;
         this.tail.next = this.head;
+        console.log("tail, taiil,next",this.tail,this.tail.next);
+
       }
     }
   
-    // INSERTAR AL INICIO
-    addFront(value) {
-      let newNode = new Node(value);
+    addFront(valor) {
+      let newNodo = new NodoCir(valor);
   
       if (this.head === null) {
-        this.head = newNode;
-        this.tail = newNode;
-        // Asignar puntero a la cabeza haciendo la lista circular
-        newNode.next = this.head.next;
+        this.head = newNodo;
+        this.tail = newNodo;
+        newNodo.next = this.head.next;
       } else {
-        newNode.next = this.head;
-        this.head = newNode;
-        this.tail.next = newNode;
+        newNodo.next = this.head;
+        this.head = newNodo;
+        this.tail.next = newNodo;
       }
     }
   
-    // MÉTODO PARA IMPRIMIR LA LISTA
     print() {
-      let temp = this.head;
+      let aux = this.head;
   
-      while (temp.next !== this.head) {
-        console.log(`${temp.value}, `);
-        temp = temp.next;
+      while (aux.next !== this.head) {
+        console.log(`${aux.valor}, `);
+        aux = aux.next;
       }
-      console.log(`${temp.value}`);
+      console.log(`${aux.valor}`);
     }
   
-    // MÉTODO PARA GENERAR CÓDIGO GRPHVIZ
-    graph() {
-      let temp = this.head;
+    graphcircular() {
+      let aux = this.head;
       let conn = "";
-      let nodes = "";
+      let rank="{rank=same;";
+      let Nodos = "node [shape=rectangle];\nsplines=ortho;\n";
       let counter = 0;
-  
-      while (temp.next !== this.head) {
-        nodes += `N${counter}[label="Valor:${temp.value}"];\n`;
+      while (aux.next !== this.head) {
+        Nodos += `N${counter}[label="Accion: ${aux.valor}\\nFecha: ${aux.fecha}\\nHora: ${aux.hora}" style="filled" fillcolor="skyblue3"];\n`;
         conn += `N${counter}->`;
-        temp = temp.next;
+        rank+=`N${counter};`;
+        aux = aux.next;
         counter++;
       }
-      nodes += `N${counter}[label="Valor:${temp.value}"];\n`;
+      Nodos += `N${counter}[label="Valor:${aux.valor}\\nFecha: ${aux.fecha}\\nHora: ${aux.hora}" style="filled" fillcolor="skyblue3"];\n`;
       conn += `N${counter}-> N0`;
-      console.log(nodes);
-      console.log(conn);
+      rank+=`N${counter}}`;
+      console.log(Nodos + "\n" +rank+ "\n" +conn);
+      return   Nodos + "\n" +rank+ "\n" +conn;
     }
+   
   }
