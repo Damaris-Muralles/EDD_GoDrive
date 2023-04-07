@@ -281,31 +281,7 @@ class SparseMatrix{
             return null;
         }
     }
-/*
-    modificarNodoPorX(x, nuevoy,nuevovalor) {
-        let aux = this.cabeza;
-        let encontrado = false;
-        while (aux.abajo != null && !encontrado) {
-            aux = aux.abajo;
-            if (aux.valor == x) {
-                encontrado = true;
-            }
-        }
-        if (encontrado) {
-            let n_actual = aux.derecha;
-            while (n_actual != null ) {
-                n_actual.valor = nuevovalor;
-                n_actual.y=nuevoy;
-                n_actual.arriba.valor =nuevoy;
-                n_actual = n_actual.derecha;
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-   
-    */
+
     copiarmatriz(matriz,valorx, nuevoy,nuevovalor) {
         // Copiar el valor de la cabeza
         this.cabeza.valor = matriz.cabeza.valor;

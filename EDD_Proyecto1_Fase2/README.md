@@ -2,107 +2,223 @@
 |----------------|----------------------|---------------|
 |  202100953 | Damaris Muralles | Leonardo Martínez |
 
-# FASE 2 
 
-Esta es una aplicación Web estática alojada en ***Github Pages***, desarrollada en el lenguaje ***JavaScript*** y ***HTML/CSS***,  también se utiliza ***Graphviz*** para generar las graficas en los reportes requeridos.
+# FASE 2
 
-## Descripción General del Proyecto 
+  
 
-La aplicacion busca tener un funcionamiento similar a **Google Drive** en donde se pueda permitir el manejo de archivos para la facultad.Este sistema debe de ser capaz de ser utilizado en cualquier sistema operativo por lo que se plantea la posibilidad de que la aplicación sea un sitio web mediante el uso de Github Pages. La aplicacion final, denominada como **EDD GoDrive**, proporcionara a cada uno de los cursos de la carrera un espacio de almacenamiento en donde se puede cargar, crear y eliminar carpetas y archivos, para ello, debe de permitir llevar un control de usuarios en donde estos también tendrán la opción de modificar los nombres de carpetas y archivos existentes. 
+Esta es una aplicación Web estática alojada en ***Github Pages***, desarrollada en el lenguaje ***JavaScript*** y ***HTML/CSS***, también se utiliza ***Graphviz*** para generar las graficas en los reportes requeridos.
+
+  
+
+## Descripción General del Proyecto
+
+  
+
+La aplicacion busca tener un funcionamiento similar a **Google Drive** en donde se pueda permitir el manejo de archivos para la facultad.Este sistema debe de ser capaz de ser utilizado en cualquier sistema operativo por lo que se plantea la posibilidad de que la aplicación sea un sitio web mediante el uso de Github Pages. La aplicacion final, denominada como **EDD GoDrive**, proporcionara a cada uno de los cursos de la carrera un espacio de almacenamiento en donde se puede cargar, crear y eliminar carpetas y archivos, para ello, debe de permitir llevar un control de usuarios en donde estos también tendrán la opción de modificar los nombres de carpetas y archivos existentes.
+
+  
+  
+
+# MANUAL DE USUARIO
+
+##  Introducción
+Este manual busca explicar en detalle el entorno del programa, así como todas las opciones y funcionalidades que este posee a manera de familiarizar a la persona interesada con todo lo que el programa le puede ofrecer, haciendo que sea más cómodo al ser utilizado.
+##  Descripcion General 
+
+Esta aplicación web tiene una funcionalidad similar a GoogleDrive, pero con funciones personalizadas para la facultad.
+
+La applicacion web posee dos tipos de usuario, el usuario para administrador y el usuario de estudiantes. El administrador tendra las funciones necesarias para poder cargar al sistema los alumnos que esten registrados  por medio de un archivo Json  y podra visualizar en su tablero el listado de todos ellos, de igual manera podra visualizar este listado en distinto orden y generar una grafica de reporte de los mismos.
+
+El usuario para los estudiantes por el contrario podra crear, modificar y eliminar carpetas, asi mismo podra subir cualquier tipo de imagenes, pdf y txt a su espacio de almacenamiento. Ademas de esto podra visualizar el contenido de cada capeta al dar click sobre su icono o por medio de la barra de busqueda, en casa contrario los archivos solo podran ser accedidos mediante un click y se abrira una ventana de visualizacion en donde podra tener la opcion de descargar el archivo si asi lo quisiera. Tambien se cuenta con una opcion par dar permisos a los archivos a otros usuarios y se cuenta con un area de reportes en donde se podran visualizar distintos graficos en representacion de lo contenido dentro de su espacio o las acciones realizadas.
 
 
-# MANUAL DE USUARIO 
+##  Funcionalidades de la Aplicación
+### Principal
+En la pagina inicial se cuentan con tres opciones en la parte superior derecha:
 
-# Introducción 
-# Descripcion General de la Fase
-# Detalles del Desarrollo
-# Funcionalidades de la Aplicación
+ - Principal: es la vista principal del logo de la aplicacion web.
+ - Conocenos: es un apartado en la pagina con informacion de la aplicacion y algunos links a las paginas de la universidad.
+ -  Inicio de sesion: esta opcion redireccionara a la pagina de login.
+### Inicio de sesion:
+La pagina para Login o iniciar sesion solo tendra una opcion en la parte superior derecha que  lo llevara de regreso a la pagina principal.
 
+Tambien cuenta con un apartado en donde se debe agregar el carnet y contraseña para inciar sesion. En caso que la contraseña o usuario no sea correcto se  visualizara una alerta infomando al respecto.
+
+Para poder iniciar sesion como administrador se debe de ingresar "admin" tanto en el apartado de carnet como en la contraseña.
+### Tablero administrador:
+  En esta página se contaran con un apartado grande en el centro de la pagina en donde se podran visualizar la lista de estudiantes que han sido agregados y arriba de esto se contara con una lista de opciones en la que se puede escoger el orden de visualizacion de dicha lista, la cual una vez seleccionado se debe de presionar el boton  de mostrar.
+  
+En la parte superior se cuentan con dos iconos, uno el logo de la app y el otro un icono de usurio el cual al ser presionado mostrara un menu de opciones desplegable con el resto de funcionalidades de la aplicacion entre las cuales estan:
+
+ - Cargar alumnos: permite seleccionar un archivo Json del equipo, el cual contiene la informacion de los estudiantes que estan registrados para poder ser cargados al sistema.
+ - Reporte: al presionar esta opcion se visualiza la grafica del arbol avl que modela la informacion de la lista de alumnos.
+ - Cerrar sesion: esto cerrara la sesion y lo redireccionara a la pagina de login.
+
+### Tablero estudiante:
+
+ En esta página se contaran con un apartado grande en el centro de la pagina en donde se podran visualizar las carpetas creadas por el estudiante y los archivos subidos. Tambien se cuenta con una barra de busqueda en donde se puede colocar la direccion de la carpeta para entrar en ella, en caso de no existir se mostrara un mensaje informando al respecto.
+ 
+ Para entrar en una carpeta y ver su contenido  tambien se puede dar click sobre el icono de esta, si se trata de un archivo por el contrario se abrira una ventana de previsualizacion en donde se encuentra tambien un opcion para descargar los archivos.
+
+En la parte superior se cuentan con dos iconos, uno el logo de la app y el otro un icono de usurio el cual al ser presionado mostrara un menu de opciones desplegable con el resto de funcionalidades de la aplicacion entre las cuales estan:
+
+ - Opciones de archivos: despliega un segundo sub-menu en el cual se puede escoger la opcion de crear, modificar, eliminar carpetas y subir archivos. Al presionar cada una de estas opciones se abrira una ventana en donde se requiere el ingreso de la informacion correspondiente o la seleccion de archivos a subir y luego de presionar el boton de confirmacion que se encuentra en azul, se realizara la accion requerida.
+ -   Permisos: al presionar esta opcion se visualiza una ventana en donde se requiere la informacion necesaria para poder dar el permiso de un archivo.
+ - Reportes: despliega un segundo sub-menu en el cual se puede escoger la opcion de ver el reporte del arbol avl, nario, matriz disperza o lista circular.
+ - Cerrar sesion: esto cerrara la sesion y lo redireccionara a la pagina de login.
 
 # MANUAL TÉCNICO
 
-# Introducción 
-# Descripcion General de la Fase
-# Detalles del Desarrollo
-# Lógica de la Aplicación 
+##  Introducción
+Este manual, describe todos los aspectos técnicos del programa, a manera de familiarizar a la persona interesada con la lógica implementada en el desarrollo de este.
+##  Descripcion General 
+La aplicacion busca tener un funcionamiento similar a Google Drive en donde se pueda permitir el manejo de archivos para la facultad.Este sistema debe de ser capaz de ser utilizado en cualquier sistema operativo por lo que se hizo uso de Github Pages para alojarla. 
 
- ##  Contenido de cada paquete/carpeta
+La aplicacion **EDD GoDrive**, proporcionara dos tipos de accesos, uno especifico para el administrador y otro para estudiantes, el administrador tiene funciones especiales para poder subir archivos Json  con datos de los estudiantes que hayan sido registrados y se encargara de insertarlos a un arbol avl al cual se podra visualizar en distintos ordenes, es decir, enorden, preorden y postorden, tambien contara con un metodo para graficarlo por medio de graphviz.
 
-La carpeta principal ***EDD_Proyecto1_Fase1*** contiene un total de 4 paquetes más a manera de organizar de la mejor manera posible el código fuente de la aplicación y asi mismo otros recursos, como los reportes y las estructuras creadas.
+Los estudiantes en cambio contaran con un espacio de almacenamiento en donde se puede cargar, crear y eliminar carpetas y archivos, para ello, el almacenamiento de las carpetas se realizara oir medio de un árbol N-ario y cada usuario dentro del sistema tendrá su propio árbol, mientras que para el almacenamiento de los archivos de cada carpeta será implemento matriz dispersa ligada a cada nodo del arbol N-ario.
 
-En esta carpeta principal también se encuentra el archivo *main* de nuestra aplicación, un *modulo* el cual nos permite el uso sobre los paquetes  en los que tenemos dependencias en nuestro proyecto y ell ***.exe*** (ejecutable) de la aplicación desarrollada.
 
- - ***Paquete admin_funcion***: En ésta carpeta se cuentan con todos los archivos .go que corresponden a cada función que el usuario administrador tiene permitido realizar en la aplicación, así como el tablero/menú principal propio del administrador.
- - ***Paquete crear_archivos:*** Ésta carpeta contiene dos archivos .go en el cuál se contiene el código requerido para la creación de archivos/ficheros en Golang y también el código que permite convertir los archivos creados en graphviz (.dot) a un formatos PNG.
- - ***Paquete estructuras:*** En ésta se encuentran todos los códigos correspondientes a cada una de las estructuras de datos utilizadas, así cómo las funciones para su correcto funcionamiento *(insertar datos, borrar datos, imprimir lod datos y graficar*).
- - ***Reportes:*** Ésta carpeta contiene múltiples subcarpetas que almacenan los distintos reportes y gráficas realizadas durante la ejecución de la aplicación. Existe una carpeta que almacena el archivo Json, otra carpeta en donde se almacena la cola de estudiantes en espera de aceptación, reportes de la pila con las acciones del administrador, reporte de la lista doble en dónde se visualizan los estudiantes registrados y su respectiva bitacora. *Todos los reportes realizados en Graphviz cuentan con su código (archivo .dot) y su versión en imagen (formato .PNG).*
+##  Detalles del Desarrollo
 
- ## Estructuras de datos utilizadas
+Este programa se desarrolló utilizando lenguajes de desarrillo web, a continuación, se listan lo utilizado en el desarrollo:
+
+ - IDE: Visual Studio Code
+ - Lenguajes: HTML, CSS, Javascript
+ - Grafica: Graphviz
+ - Para estilo de interfaz: Bootstrap 
+ - Alojamiento en: GitHub Pages
+
+Lo detallado anteriormente, puede asegurar el correcto funcionamiento del programa.
+##  Lógica de la Aplicación
+
  
+###  Contenido de cada paquete/carpeta
+
+  
+
+La carpeta principal ***EDD_Proyecto1_Fase2*** contiene un total de 6 paquetes más a manera de organizar de la mejor manera posible el código fuente de la aplicación y asi mismo otros recursos, como  las estructuras creadas, los estilos y las paginas utilizadas.
+
+En esta carpeta principal también se encuentra el archivo *index.html* de nuestra aplicación, la cual modela la vista principal de la app para una mejor comodidad para interactuar con esta app web.
+
+  
+
+-  ***Paquete CSS***: En ésta carpeta se cuentan con todos los archivos CSS de la app, es decir todos los estilos que se aplican a las paginas html que se utilizan en la aplicación.
+
+-  ***Paquete Img:*** Ésta carpeta contiene todas las imagenes que se utilizaron en las paginas html, para dar mejor aspecto a la interfaz y que se viera más vistosa.
+
+-  ***Paquete JS:*** En ésta se encuentran todos los códigos correspondientes a Javascript, los cuales generan las funciones que realizan las paginas y en el cual se modelan las estructuras utilizadas en la aplicacion web.
+
+-  ***Paquete Pag_inicio,Pag_user y  Pag_admin:*** Éstas carpetas contienen los archivos html que modelan la pagina correspondiente a cada uno de ellos, para la de inicio el login, para la de user la pagina diseñada para los estudiantes y en admin la pagina diseñada para el administrador.
+
+###  Estructuras de datos utilizadas
+
+  
 
 > Una **estructura de datos**[1](https://es.wikipedia.org/wiki/Estructura_de_datos#cite_note-1)​ es una forma particular de organizar información en un computador para que pueda ser utilizada de manera eficiente.
 
- **1. Cola:**
- Una **cola** (denominada en inglés ***Queue***) es un [tipo de dato abstracto](https://es.wikipedia.org/wiki/Tipo_de_dato_abstracto "Tipo de dato abstracto"), que tiene un comportamiento [FIFO](https://es.wikipedia.org/wiki/FIFO), es decir, que el primer elemento agregado a la cola será  el primer elemento en salir.
- 
- En la aplicación  se hace uso de tres estructuras para modelar la cola:
- 
-
- - Una estructura denominada ***Student*** que contendra la información importante para cada estudiante, nombre, carnet y contraseña de su usuario.
- - Una  ***Nodo*** que que contendrá la estructura de datos del estudiante y un puntero ***Siguiente*** del mismo tipo, es decir, otro ***Nodo.***
- - Una estructura ***Cola*** que contendrá la informacion relevante de toda la cola creada. Tiene dos atributos, ***Principio y Final,*** que son de tipo Nodo, estos tendran la información correspondiente al primer y último elemento en la cola para facilitar el manejo de información, También se cuenta con  un atributo ***Size*** de tipo Int para conocer el tamaño de la cola.
- 
- Las funciones creadas para poder manejar la estructura son las siguientes:
- 
- - **Encolar**: Ésta función se encarga de insertar los nuevos elementos al final. Recibe tres parámetros, uno de tipo estring, int y string, correspondientes al nombre, carnet y contraseña del estudiante, las cuales se agregan a un nuevo nodo. Por medio de una condicional if se verifica si la cola no tiene ningun elemento para añadir el nuevo nodo en la primera posición, en caso contrario se pasara a la siguiente posición para agregarlo, mientras que el nodo anterior apuntara a este nuevo nodo.
- - **Desencolar**: Ésta función quitara  el primer nodo de la cola, para ello por medio de una condicional se verifica si el nodo es unico o si existen más, en caso de ser unico se hara que el puntero de principio y final apunten a nulo, mientras que si hay más de un elemento el puntero  denominado como Principio pasara al siguiente nodo.
- - **Get_first_element**: Es una función de retorno que devolvera la información contenida en el primer nodo de la cola.
- - **Esta_vacia**: Es una función que retorna un valor booleano, retornando True si  el tamaño de la cola es  0 y False en caso contrario.
- - **Print_Queue**: Ésta función imprimira en consola todos los datos almacenados en la cola, por lo que utiliza un ciclo para recorrer cada nodo en la cola obteniendo su información. 
- - **Graph**: La función requiere como parámetro la dirección en la que se encuentra el archivo main como referencia para la creación de los reportes. Para crear las gráficas se utilizan variables de tipo string que concatenan la información en la cola y van creando las relaciones entre cada nodo. La cadena creada se envia a la función de crear archivo y generar png.
-
- **2. Pila:**
-  Una **Pila** (denominada en inglés como ***Stack***) es un tipo de dato abstracto, que tiene un comportamiento  [LIFO](https://es.wikipedia.org/wiki/LIFO "LIFO") para acceder a sus datos, es decir, que el último elemento agregado en la pila será  el primer elemento en salir.
- 
- En la aplicación  se hace uso de tres estructuras para modelar la pila:
- 
- - Una estructura denominada ***Actions_admin*** que contendra la información la información respecto a las acciones realizadas por el administrador y la fecha y hora en la que se realizó la misma.
- - Una  ***Nodo*** que que contendrá la estructura con los datos necesarios y un puntero ***Siguiente*** del mismo tipo, es decir, otro ***Nodo.***
- - Una estructura ***Pila*** que contendrá la informacion relevante de toda la pila creada. Tiene un ***Cabeza*** que es de tipo Nodo, estos tendran la información correspondiente al primer elemento (cima) en la pila y un atributo ***Size*** de tipo Int para conocer el tamaño de la Pila.
- 
- Las funciones creadas para poder manejar la estructura son las siguientes:
- 
- - **Apilar**: Ésta función se encarga de insertar los nuevos elementos al principio. Recibe dos parámetros de tipo string, correspondientes a la acción realizada y el timpo (fecha y hora) en que se hizo, las cuales se agregan a un nuevo nodo.
- - **Desapilar**: Ésta función quitara  el ultimo nodo de la pila.
- - **Get_last_element**: Es una función de retorno que devolvera la información contenida en el ultimo nodo de agregado a la pila.
- - **Esta_vacia**: Es una función que retorna un valor booleano, retornando True si  el tamaño de la pila es  0 y False en caso contrario.
- - **Print_Stack**: Ésta función imprimira en consola todos los datos almacenados en la Pila y posee la misma lógica que la función para la cola. 
- - **Graph**: Realiza lo mismo que el de la Cola.
- - **Position_item** y **Modify_last_element**: Estas funciones no son empleadas en el proyecto, pero son funciones propias que se pueden agregar ala pila. La primera busca un valor por medio de un atributo único devolviendo su posición en la pila, y el otro modificara la información que se contiene en el último nodo agregado.
-
- **3. Lista doblemente enlazada:**
- Una **Lista doblemente enlazada** (denominada en inglés como ***Doubly linked list***) es un tipo de dato abstracto, que tiene un comportamiento similar al de los vectores, pero a diferencia de estos es dinámica, es decir que no es necesario establecer el tamaño de esta desde el inicio, por lo que permite almacenar toda información requerida.
- 
- En la aplicación  se hace uso de dos estructuras para modelar la lista:
- 
-
- - Una estructura  ***Nodo*** que contendrá como uno de sus atributos a  la estructura con los datos necesarios, un  atributo ***Siguiente*** y uno ***Anterior***  de tipo ***Nodo***, estos últimos tendrán la referencia del nodo siguiente y del nodo anterior.
- - Una estructura ***Lista_doble*** que contendrá la informacion relevante de toda la lista creada. Tiene un atributo ***Cabeza***  y uno denominado ***Final*** que son de tipo Nodo, estos tendran la referencia correspondiente al primer y último elemento en la lista. tambien se cuenta con un atributo ***Size*** de tipo Int para conocer el tamaño de la lista.
- 
- Las funciones creadas para poder manejar la estructura son las siguientes:
- 
- - **Insert**: Ésta función se encarga de insertar los nuevos elementos . Recibe un parametro de tipo ***Student*** *(estructura mencionada en la cola)* con la información del estudiante y por medio de condicionales se busca si el elemento ya existe o si el atributo carnet es menor o mayor que los datos ya existentes, esto se realiza con el fin de conocer la posición en donde se debe de agregar el nodo y tener los datos ordenados.
- - **Get_element**: Esta función requiere un parámetro de tipo int que correponde al **indice** *(posición)* del elemento al que se desea acceder y este dato es utilizado para recorrer la lista doble hasta la posición del elemento y retornar asi la información contenida en el nodo.
- - ***Search_item***:Requiere como parámetro un dato tipo int el cual corresponde al carnet del estudiante *(este es un valor único, no existen dos datos con el mimo valor por lo que se puede usar para la busqueda)*, y por medio de un ciclo se recorre la lista hasta que se encuentre uno que coincida para poder retornar dos valores un **result** de tipo booleano *(para saber si se encontro o no)* y un **indice** de tipo int *(correspondiente a la posición del nodo*).
- - **Esta_vacia**: Misma función  mencionada en las otras estructuras.
- - **Print_ListDouble**: Ésta función posee la misma lógica que la función para la cola y Pila. 
- - **Graph**: Realiza lo mismo que lo mencionado en la cola.
- - **Delete_item_index** , **Delete_value**  y **Modify_element_index**: Son funciones no empleadas en el proyecto, pero son operaciones que se pueden agregar a la lista doblemente enlazada. La primera elimina un dato de acuerdo a una posición indicada, el otro elimina un dato por su valor  y el ultimo  modificara la información que se contiene en el indicie proporcionado como parámetro.
- 
- **4. Lista de pilas:**
-  Tal cómo se indica se trata de una lista (puede ser lista simplemente enlazada o doblemente enlazada), que contiene otra estructura, en este caso Pila, en cada uno de sus nodos. Para esta aplicación se insertó esta estructura en la lista doblemente enlazada descrita anteriormente, de tal forma que la esturctura contiene la información del estuidante y una pila por cada uno de los estudiantes agregados para poder llevar el control de los inicios de sesión realizados.
   
-Para poder manejar la información en la pila se agrego una función más en la lista doble:
 
- - **Modify_pila**: Recibe tres parametros, uno de tipo int y dos de tipo string, que corresponden al carnet del estudiante, a la descripción de la acción y el tiempo *(fecha y hora)* en que se realizó la acción. El carnet es utilizado para poder realizar una busqueda entre los estudiantes registrados en la lista doble y asi encontrar el nodo que posee su información para poder agregar un nuevo elemento a la pila que le corresponde al estudiante.
+**1. Arbol AVL:**
+
+Un **arbol AVL** es un tipo especial de [árbol binario](https://es.wikipedia.org/wiki/%C3%81rbol_binario) ideado por los matemáticos soviéticos [**A**delson-**V**elskii](https://es.wikipedia.org/wiki/Georgii_Adelson-Velskii "Georgii Adelson-Velskii") y [**L**andis](https://es.wikipedia.org/wiki/Yevgeniy_Landis "Yevgeniy Landis"). Fue el primer [árbol de búsqueda binario auto-balanceable](https://es.wikipedia.org/wiki/%C3%81rbol_de_b%C3%BAsqueda_binario_auto-balanceable "Árbol de búsqueda binario auto-balanceable") que se ideó.
+
+En la aplicación se hace uso de dos clases  para modelar el arbol:
+
+  
+
+- Un clase denominada ***AvlNodo*** que contendra la información importante para cada estudiante, nombre, carnet y contraseña de su usuario, un arbol Nario y una lista circular, ademas de  los punteros necesarios de cada nodo para saber su posicion en la estuctura.
+
+
+- Una clase ***AvlTree*** que contendrá todas las funciones necesarias para el arbol.
+
+Las funciones creadas para poder manejar la estructura son las siguientes:
+
+-  **insertar e insertRecursive**: Ésta función se encarga de insertar los nuevos elementos. Recibe un parámetro de tipo json y llama a otras funciones para poder conocer el lugar en donde se debe insertar el nuevo nodo y asignar sus puntereros.
+
+-  **rotatederecha, rotateizquierda, doubleizquierda y doublederecha**: Éstas funciones son funciones auxiliares que comos u  nombre lo indica se encargan de rotar los nodos a manera de mantener el arbol en equilibrio.
+-  **treeGraph y treeGraphRecursive**: Estas funciones se encargan de recorrer el arbol y generar una cadena con codigo de grapviz para ser visualizado en la interfaz.
+-  **treeGraph y treeGraphRecursive**: Estas funciones se encargan de recorrer el arbol y generar una cadena con codigo de grapviz para ser visualizado en la interfaz.
+
+-  **busqueda y busquedarecursiva**: Se encargan de buscar un elemento en el arbol y retornan el nodo que coincida con lo buscado.
+
+-  **modificacion y modifirecursiva**: Éstas funciones se encargan de modificar los valores del arbol n-ario y lista circular de un elemento dado.
+
+-  **enOrder, preOrden, postOrden**: Se encargan de recorrer el arbol en distintos ordenes.
+
+  
+
+**2. Arbol N-ario:**
+
+Un **árbol n-ario**  es una estructura re cursiva, en la cual cada elemento tiene un número cualquiera de árboles n-arios asociados. Estos árboles corresponden a la generalización de un árbol binario. La diferencia radia en que esta estructura puede manejar múltiples sub árboles asociados a cada elemento, y no solamente 2, como en el caso de los árboles binarios.
+
+En la aplicación se hace uso dos clases para modelar el arbol, la funcion de cada clase es la misma que la del avl:
+
+- Una clase denominada ***Tnode***.
+
+- Una clase  ***Tree*** 
+
+
+Las funciones creadas para poder manejar la estructura son las siguientes:
+
+-  **insert**: Ésta función se encarga de insertar los nuevos elementos en el arbol.
+
+-  **modifiFolder**: Ésta función busca el hijo que coincida con el elemento buscado y le agrega un nuevo nombre.
+
+-  **modifiElementMatriz**: Esta funcion se encarga de agregar los cambios a la matriz disperza que se implemento en cada nodo.
+
+-  **eliminarfolder**: busca entre los hijos del nodo padre dado por el elemento que coincida con el elemento requerido y lo elimina.
+
+-  **buscararchivo**: Ésta funcion como su nombre lo indica buscara en los hijos de un nodo padre si coicide con el elemento que se busca.
+
+-  **copiartree y copiarNode**: Es una funcion de apoyo que se encarga de copiar cada elemento de otra estructura, en el proyecto se utiliza para copiar los datos despues de extraer la informacion del localstorage para evitar errores de que la informacion no sea una instancia  de esta estructura.
+
+-  **getFolder**: Se requiere de un parametro de path para poder acceder a la carpeta padre, esta funcion es una auxiliar que se utiliza en otros metodos.
+-  **ngraph**: Realiza la grafica correspondiente al N-ario.
+
+  -  **getHTML**: Se encarga de agregar codigo al html a manera de poder visualizar los iconos de las carpetas y poder crearles metodos especificos para entrar y visualizar lo que tiene dentro.
+
+
+**3. Matriz disperza:**
+
+Una **matriz disperza** es una matriz en la que muchos o la mayoría de los elementos tienen un valor de cero.
+
+
+En la aplicación se hace uso dos clases para modelar el arbol, la funcion de cada clase es la misma que la del avl:
+
+- Una clase denominada ***MNodo***.
+
+- Una clase  ***SparseMatrix*** 
+
+
+Las funciones creadas para poder manejar la estructura son las siguientes:
+
+-  **insertard**: Ésta función se encarga de insertar los nuevos elementos .
+
+-  **xcabezaers, cabezaers, addX y addY**: Son funciones auxiliares de la funcion insertard, y se encargan de agregar las cabeceras para el eje x y y, ademas de agregar los valores dentro de estas.
+
+-  **Mostrararchivos**:Se encarga de agregar codigo html a la seccion de tablero a manera de visualizar los iconos correspondientes para cada arvhico subido, para ello recorre todos los datos en la matriz.
+
+-  **buscarPorX**:  Se encarga de buscar si un elemento ya se encuentra en la lista, para ello busca en el eje de las x que contienen la informacion de cada archivo.
+
+-  **copiarmatriz**: Ésta funcion es similar a la del arbol N-ario.
+
+-  **dgraph, cabezaersGraph y NodosGraph**: Se encargan de crear la cadena que modela el codigo de graphviz para generar la grafica correspondiente.
+
+
+**4. Lista circular:**
+
+es una **lista lineal en la que el último nodo a punta al primero**. Las listas circulares evitan excepciones en las operaciones que se realicen sobre ellas.
+
+En la aplicación se hace uso dos clases para modelar el arbol, la funcion de cada clase es la misma que la del avl:
+
+- Una clase denominada ***NodoCir***.
+
+- Una clase  ***CircularList*** 
+
+Para poder manejar la información en esta lista se emplearon las siguientes funciones o metodos:
+
+-  **addEnd y addFront**: Se encargan de insertar la informacion en la lista al final o al principio de la misma y se asignan los punteros correspondientes .
+- **graphcircular**:  Recorre toda la lista y crea la cadena con codigo de graphviz correspondiente para visualizar la grafica.
 

@@ -98,32 +98,29 @@ class AvlTree{
           return node1;
         }
       }
-        #rotateizquierda(node2){
-            let node1 = node2.izquierda;
-            if (node1 && node1.derecha) { // comprobar si node1 tiene un hijo derecho
-                node2.izquierda = node1.derecha;
-                node1.derecha = node2;
-                node2.altura = this.getMaxaltura(this.getaltura(node2.izquierda), this.getaltura(node2.derecha)) + 1;
-                node1.altura = this.getMaxaltura(this.getaltura(node1.izquierda), node2.altura) + 1;
-                return node1;
-            } else {
-                // si node1 no tiene un hijo derecho, no se puede hacer la rotación
-                return node2;
-            }
+    #rotateizquierda(node2){
+        let node1 = node2.izquierda;
+        if (node1 && node1.derecha) { // comprobar si node1 tiene un hijo derecho
+            node2.izquierda = node1.derecha;
+            node1.derecha = node2;
+            node2.altura = this.getMaxaltura(this.getaltura(node2.izquierda), this.getaltura(node2.derecha)) + 1;
+            node1.altura = this.getMaxaltura(this.getaltura(node1.izquierda), node2.altura) + 1;
+            return node1;
+        } else {
+            // si node1 no tiene un hijo derecho, no se puede hacer la rotación
+            return node2;
         }
-        #doubleizquierda(node){
-            node.izquierda = this.#rotatederecha(node.izquierda);
-            return this.#rotateizquierda(node);
-        }
-        #doublederecha(node){
-            node.derecha = this.#rotateizquierda(node.derecha);
-            return this.#rotatederecha(node);
-        }
+    }
+    #doubleizquierda(node){
+        node.izquierda = this.#rotatederecha(node.izquierda);
+        return this.#rotateizquierda(node);
+    }
+    #doublederecha(node){
+        node.derecha = this.#rotateizquierda(node.derecha);
+        return this.#rotatederecha(node);
+    }
 
 
-    //--------------------------------------------------------------------------
-    //                  REPORTE DEL ARBOL
-    //--------------------------------------------------------------------------
     treeGraph(){       
         Nodos = "";
         enlaces = "";
@@ -176,9 +173,6 @@ class AvlTree{
         }
     }
 
-    //--------------------------------------------------------------------------
-    //                  RECORRIDO IN ORDER
-    //--------------------------------------------------------------------------
     enOrder(){
         let index = {valor: 0};
         let html = this.#enOrderRecursive(this.root, index);
@@ -203,9 +197,7 @@ class AvlTree{
         }
         return row;
     }
-    //--------------------------------------------------------------------------
-    //                  RECORRIDO PRE ORDER
-    //--------------------------------------------------------------------------
+
     preOrder(){
         let index = {valor: 0};
         let html = this.#preOrderRecursive(this.root, index);
@@ -231,9 +223,6 @@ class AvlTree{
         return row;
     }
 
-    //--------------------------------------------------------------------------
-    //                  RECORRIDO POST ORDER
-    //--------------------------------------------------------------------------
     postOrder(){
         let index = {valor: 0};
         let html = this.#postOrderRecursive(this.root, index);

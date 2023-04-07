@@ -1,4 +1,4 @@
-// CLASE NODO 
+
 class Tnode{
     constructor(folderName,matrizd){
         this.folderName = folderName;
@@ -205,7 +205,7 @@ class Tree{
                 });
             }
         }
-        return 'node[shape="record"];\n' + nodes +'\n'+ connections;
+        return 'graph[splines=ortho];\nnode[shape="box"; splines=ortho;];\n' + nodes +'\n'+ connections;
     }
 
     getHTML(path){
