@@ -242,7 +242,7 @@ function viewrecorridos(e){
         }
     }
 }
-//->4. grafica
+//->4. grafica avl
 function AvlGraph(){
     let url = 'https://quickchart.io/graphviz?graph=';
     let contenido= `digraph G { ${avlTree.treeGraph()} }`
@@ -741,6 +741,7 @@ function CirGraph(){
     console.log(circular.graphcircular());
     let url = 'https://quickchart.io/graphviz?graph=';
     let body = `digraph G { ${circular.graphcircular()} }`;
+    
     $("#graphcir").attr("src", url + body);
     console.log(body);
     // para descarga---- no funciona correctamente
