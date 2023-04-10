@@ -163,7 +163,8 @@ function cargarestudiantes(e) {
         info.onload = () => {
             
             students= JSON.parse(info.result).alumnos;
-            students.sort((a, b) => a - b);
+            students.sort((a, b) =>  a.carnet - b.carnet);
+            console.log(students)
             //insertando en avl
             for(let i = 0; i < students.length; i++){
                 console.log("INSERTANDO dato: ",i, avlTree);

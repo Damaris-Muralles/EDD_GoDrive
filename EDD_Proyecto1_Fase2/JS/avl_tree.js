@@ -52,7 +52,6 @@ class AvlTree{
     insertar(item){
         console.log("insertando a: ",item.nombre);
         this.raizavl = this.#insertRecursive(item, this.raizavl);
-        console.log("raiz.derecha:",this.raizavl.derecha);
        console.log("Salio con: ",this.raizavl);
     }
     #insertRecursive(item, node){
@@ -66,18 +65,16 @@ class AvlTree{
             return node12;
             
         }
-        console.log("nosalio de recursivo");
         if(item.carnet < node.item.carnet){
             console.log("node izquierda: ",node.izquierda);
             node.izquierda = this.#insertRecursive(item, node.izquierda);
             if(this.getaltura(node.derecha) - this.getaltura(node.izquierda)<  -1){
-                console.log("1");
+                
                 if(item.carnet < node.izquierda.item.carnet){
                     node = this.#rotateizquierda(node);
                 }else{
                     node = this.#doubleizquierda(node);
                 }
-                console.log("1");
             }
         }else if(item.carnet > node.item.carnet){
             console.log("node derecha: ",node.derecha);
@@ -89,13 +86,10 @@ class AvlTree{
                 }else{
                     node = this.#doublederecha(node);
                 }
-                console.log("1");
             }
         }else{
-            console.log("1");
-            console.log("node1: ",node);
+            console.log("repetido: ",node);
         }
-        console.log("1");
         node.altura = this.getMaxaltura(this.getaltura(node.izquierda), this.getaltura(node.derecha)) + 1;
         console.log("node final: ",node);
         return node;
