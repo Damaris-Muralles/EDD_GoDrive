@@ -51,8 +51,10 @@ class Tree{
            */
             newNode.id = this.size;
             fatherNode.children.push(newNode);
+            return folderName
         } else {
         console.log("Ruta no existe");
+        return null
         }
     }
 
@@ -65,6 +67,7 @@ class Tree{
                 let childNames = fatherNode.children.map(child => child.folderName);
                 let copyCount = 1;
                 let nameaux=newname;
+                console.log(childNames)
                 while(childNames.includes(nameaux)) {
                     console.log("YA EXISTE UNA CARPETA CON EL NOMBRE, SE CREO COPIA");
                     nameaux = newname+ "-Copia(" + copyCount + ")";
@@ -72,6 +75,8 @@ class Tree{
                 }
                 newname=nameaux;
                 child.folderName=newname;
+                let disper=new SparseMatrix(newname);
+                child.matrizd= JSON.stringify(JSON.decycle(disper));
             }else{
                 cont++;
             }});
@@ -80,7 +85,7 @@ class Tree{
         if (cont==fatherNode.children.length){
            return null
         }else{
-            return 1
+            return newname
             
         }
         

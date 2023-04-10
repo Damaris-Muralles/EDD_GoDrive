@@ -260,13 +260,22 @@ function crearCarpeta(e){
     let folderName =  $('#namecarpeta').val();
     let path =  $('#path').val();
     console.log("path donde se agregara: ",path);
-    treenari.insert(folderName, path);
-    circular.addEnd(("Se creo carpeta "+folderName));
-    Swal.fire(
-        'Todo Bien!',
-        `La carpeta "${folderName}" fue creada con exito! <br>Presione el boton Ok para cerrar mensaje.`,
-        'success'
-      )
+    let res1=treenari.insert(folderName, path);
+    if(res1!=null){
+        circular.addEnd(("Se creo carpeta "+res1));
+        Swal.fire(
+            'Todo Bien!',
+            `La carpeta "${folderName}" fue creada con exito! <br>Presione el boton Ok para cerrar mensaje.`,
+            'success'
+          )
+    }else{
+        Swal.fire(
+            'Sucedio un error!',
+            `La carpeta "${folderName}" no pudo ser creada <br>Presione el boton Ok para cerrar mensaje.`,
+            'error'
+          )
+    }
+    
     console.log("registro de bitacora: ",circular);
     
      // mostrando carpetas en el tablero
@@ -516,7 +525,7 @@ function ModificarCarpeta(){
     console.log(folderName, newName,path)
     let res=treenari.modifiFolder(folderName,newName,path);
     if (res!=null){
-        circular.addEnd(("Se modifico carpeta "+folderName));
+        circular.addEnd(("Se modifico carpeta "+folderName+" a "+res));
         Swal.fire(
             'Se realizaron los cambios correctamente',
             `Presione el boton Ok para cerrar mensaje.`,
@@ -627,7 +636,8 @@ function permisosarchivos(){
     let selectElement = document.getElementById("permisosdados");
     let selectedIndex = selectElement.selectedIndex;
     let selectedText = selectElement.options[selectedIndex].text;
-    console.log(selectedText);
+    
+    console.log(selectedText.split("(")[0]);
     let busxdata=matrizdisperza.buscarPorX(folderName);
     if(busxdata!=null){
         console.log("datos encontrados en permiso",busxdata, folderName);
@@ -659,7 +669,7 @@ function permisosarchivos(){
         matrizdisperza1.cabeza = JSON.retrocycle(JSON.parse(nodearchivo31.matrizd)).cabeza;
         matrizdisperza1.cantidad =JSON.retrocycle(JSON.parse(nodearchivo31.matrizd)).cantidad;
         matrizdisperza=new SparseMatrix("/");
-        matrizdisperza.copiarmatriz(matrizdisperza1,folderName,userpermiso,selectedText);
+        matrizdisperza.copiarmatriz(matrizdisperza1,folderName,userpermiso,selectedText.split("(")[0]);
         
         path =  $('#path').val();
         
