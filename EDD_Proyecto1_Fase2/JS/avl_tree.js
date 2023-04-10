@@ -153,7 +153,7 @@ class AvlTree{
             enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.izquierda.item.carnet};\n`;
         } else {
             // Agregar nodo invisible a la izquierda
-            Nodos += `S_${nodo_actual.item.carnet}_left[shape=point style=invis];\n`;
+            Nodos += `S_${nodo_actual.item.carnet}_left[shape=point width=0.3 style=invis];\n`;
             enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.item.carnet}_left[style=invis];\n`;
         }
         Nodos += `S_${nodo_actual.item.carnet}[shape=box label="${nodo_actual.item.carnet}\\n${nodo_actual.item.nombre}\\nAltura: ${nodo_actual.altura}" style="filled" fillcolor="skyblue3"];`
@@ -162,7 +162,7 @@ class AvlTree{
             enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.derecha.item.carnet};\n`;
         } else {
             // Agregar nodo invisible a la derecha
-            Nodos += `S_${nodo_actual.item.carnet}_right[shape=point style=invis];\n`;
+            Nodos += `S_${nodo_actual.item.carnet}_right[shape=point width=0.03 style=invis];\n`;
             enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.item.carnet}_right[style=invis];\n`;
         }
     }

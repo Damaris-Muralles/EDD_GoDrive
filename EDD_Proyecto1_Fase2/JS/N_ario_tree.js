@@ -3,6 +3,7 @@ class Tnode{
     constructor(folderName,matrizd){
         this.folderName = folderName;
         this.children = [];
+        this.nivel =1;
         this.matrizd =matrizd;
         this.id = null; 
     }
@@ -43,6 +44,7 @@ class Tree{
             let disper=new SparseMatrix(folderName);
             let cadjson= JSON.stringify(JSON.decycle(disper));
             let newNode = new Tnode(folderName,cadjson);
+            newNode.nivel=fatherNode.nivel+1;
             /*if (tipoarchivo=="carpeta"){
                 
             }else{
@@ -162,6 +164,7 @@ class Tree{
         let newNode = new Tnode(node.folderName, node.matrizd);
         console.log("datos copi: ",node.folderName,  node.matrizd);
         newNode.id = node.id;
+        newNode.nivel = node.nivel;
         newNode.children = node.children.map(child => this.#copiarNode(child));
         return newNode;
     }
@@ -203,22 +206,75 @@ class Tree{
     ngraph(){
         let nodes = "";
         let connections = "";
-
+        let auxconection="";
+        let rank="";
         let node = this.root;
         let queue = [];
         queue.push(node);
+        console.log("cola",queue)
         while(queue.length !== 0){
             let len = queue.length;
             for(let i = 0; i < len; i ++){
                 let node = queue.shift();
+                
                 nodes += `S_${node.id}[label="${node.folderName}" style="filled" fillcolor="skyblue3"];\n`;
-                node.children.forEach( item => {
-                    connections += `S_${node.id} -> S_${item.id};\n`
+                if (node.children.length>1){
+                    
+                    nodes +=  `Si_${node.id} [shape="point" width=0.02 style=invis]; \n`;
+                    connections += `S_${node.id} -> Si_${node.id} [arrowhead=none];\n`
+                    auxconection="Si";
+                    if (node.children.length>3){
+                        rank+="{rank=same;";
+                        rank+=` Si_${node.id};`;
+                    }
+                }else{
+                    auxconection="S";
+                }
+                let auxarist="a";
+                let auxtam=0;
+                node.children.forEach( (item, index)  => {
+                    if (node.children.length>3){
+                        
+                        if ((index == node.children.length - 1)&& (node.children.length % 2 != 0)) {
+                            connections += `${auxconection}_${node.id} -> S_${item.id};\n`;
+                            rank+=`};\n`;
+                            
+                        } else {
+                            auxtam=node.children.length;
+                            if ((node.children.length % 2 != 0)) {
+                                auxtam--;
+                            }
+                            nodes +=  `Si_${auxarist}${node.id} [shape="point" width=0.02 style=invis]; \n`;
+                            connections += `Si_${auxarist}${node.id} -> S_${item.id};\n`;
+                            if (index!=0){
+                                if (index<(auxtam /2) ){
+                                    connections += `Si_${String.fromCharCode(auxarist.charCodeAt(0) - 1)}${node.id} -> Si_${auxarist}${node.id}[arrowhead=none];\n`;
+                                }else{
+                                    if (index==(auxtam/2)){
+                                        connections += `Si_${String.fromCharCode(auxarist.charCodeAt(0) - 1)}${node.id} -> ${auxconection}_${node.id}[arrowhead=none];\n`;
+                                        connections += `${auxconection}_${node.id} -> Si_${auxarist}${node.id}[arrowhead=none];\n`;
+                                    }else{
+                                        connections += `Si_${String.fromCharCode(auxarist.charCodeAt(0) - 1)}${node.id} -> Si_${auxarist}${node.id}[arrowhead=none];\n`;
+                                    }
+                                }
+                            }
+                            rank+=`Si_${auxarist}${node.id};`;
+                            if ((index == node.children.length - 1)){
+                                rank+=` };\n`;
+                            }
+                            auxarist=String.fromCharCode(auxarist.charCodeAt(0) + 1);
+                        }
+                        
+                    }else{
+                        connections += `${auxconection}_${node.id} -> S_${item.id};\n`;
+                    }
+                    
                     queue.push(item);
                 });
+                
             }
         }
-        return 'node[shape="box"; splines=ortho;];\n' + nodes +'\n'+ connections;
+        return '\nrankdir=TB;\nsplines=ortho;\nnode[shape="box";];\n' +rank+ nodes +'\n'+ connections;
     }
 
     getHTML(path){

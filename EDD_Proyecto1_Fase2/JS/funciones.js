@@ -706,6 +706,7 @@ $("#nariobutton").on("click", function() {
 function NGraph(){
     let url = 'https://quickchart.io/graphviz?graph=';
     let body = `digraph G { ${treenari.ngraph()} }`;
+   
     $("#graphn").attr("src", url + body);
     // para descarga---- no funciona correctamente
     $("#downloadN").attr("href", url + body);
@@ -743,7 +744,7 @@ function CirGraph(){
     let body = `digraph G { ${circular.graphcircular()} }`;
     
     $("#graphcir").attr("src", url + body);
-    console.log(body);
+    
     // para descarga---- no funciona correctamente
     $("#downloadc").attr("href", url + body);
 }
