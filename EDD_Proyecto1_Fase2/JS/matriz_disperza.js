@@ -316,10 +316,17 @@ class SparseMatrix{
 
         if(this.cantidad>0){
             let code = "graph [nodesep=\"0.8\", ranksep=\"0.6\"]; \n";
-            code +="M0[ label = \"Inicio\" width = 1.5 shape = \"square\" style = \"filled\" fillcolor =\"midnightblue\" fontcolor=\"white\" group=\"0\"]; \n";
-            code += this.#cabezaersGraph()
-            code += this.#NodosGraph()
-            return(code)
+            code +=`M0[ label = \"${this.cabeza.valor}\" width = 1.5 shape = \"square\" style = \"filled\" fillcolor =\"midnightblue\" fontcolor=\"white\" group=\"0\"]; \n`;
+            let dat= this.#cabezaersGraph()
+            if (dat!=null){
+                code+=dat;
+                code += this.#NodosGraph()
+                return(code)
+            }else{
+                console.log("no se han dado permisos");
+                return null;
+            }
+           
         }
         else{
             console.log("no se puede crear la matriz por falta de archivos");
@@ -356,19 +363,30 @@ class SparseMatrix{
         }
         
         conn += 'M0 ->';
+        let contador=0;
         try { aux = this.cabeza.abajo } catch (error) { aux = null; console.log("GRAPH"); }
         while(aux != null){
-            Nodos += "X" + aux.valor.split(".")[0] + `[label="${aux.valor}" width = 1.5 shape ="square" style="filled" fillcolor="skyblue3" group="0"];\n`
-            if(aux.abajo != null){
-                conn += "X" + aux.valor.split(".")[0] + "->";
-            }else{
-                conn += "X" + aux.valor.split(".")[0] + `[dir="both"];\n`;
+            console.log(aux.derecha, aux.izquierda);
+            if (aux.derecha.y!="NC"){
+                contador++
+                Nodos += "X" + aux.valor.split(".")[0] + `[label="${aux.valor}" width = 1.5 shape ="square" style="filled" fillcolor="skyblue3" group="0"];\n`
+                if(aux.abajo != null){
+                    conn += "X" + aux.valor.split(".")[0] + "->";
+                }else{
+                    conn += "X" + aux.valor.split(".")[0] + `[dir="both"];\n`;
+                }
             }
+           
             aux = aux.abajo;
         }
-        
-        rank += "}";
-        return Nodos +"\n"+ conn +"\n"+ rank +"\n";
+        if (contador>0){
+            rank += "}";
+            return Nodos +"\n"+ conn +"\n"+ rank +"\n";
+        }else{
+            console.log("no se puede crear porque no hay archivos con permisos");
+            return null;
+        }
+       
     }
 
     #NodosGraph(){

@@ -3,12 +3,14 @@
 //--------------------------------------------------------------------------
 class AvlNodo{
     constructor(item, treenari,actividad){
+        
         this.item = item;
         this.izquierda = null;
         this.derecha = null;
         this.treenari = treenari;
         this.actividad =actividad;
         this.altura = 0;
+        console.log("datos en nodo", this.izquierda,this.derecha, this.treenari, this.altura);
     }
 }
 
@@ -23,13 +25,10 @@ let = enlaces = "";
 //--------------------------------------------------------------------------
 class AvlTree{
     constructor(){
-        this.root = null;
+        this.raizavl = null;
     }
 
-    insertar(item){
-        this.root = this.#insertRecursive(item, this.root);
-       
-    }
+   
 
     getaltura(Nodo){
         if (Nodo === null) {
@@ -50,72 +49,91 @@ class AvlTree{
     //--------------------------------------------------------------------------
     //                  METODO DE INSERCIÓN
     //--------------------------------------------------------------------------
-    
+    insertar(item){
+        console.log("insertando a: ",item.nombre);
+        this.raizavl = this.#insertRecursive(item, this.raizavl);
+        console.log("raiz.derecha:",this.raizavl.derecha);
+       console.log("Salio con: ",this.raizavl);
+    }
     #insertRecursive(item, node){
+        console.log("metodo recursivo_ ",node)
         if(node == null){
-            
+            console.log("node derecha: ",node);
             let arbolarchivo = new Tree(item.carpeta_raiz);
             let listaactividad =new CircularList();
-            node = new AvlNodo(item,arbolarchivo,JSON.stringify(JSON.decycle(listaactividad)));
-        }else if(item.carnet < node.item.carnet){
+            var node12 =  new AvlNodo(item,arbolarchivo,JSON.stringify(JSON.decycle(listaactividad)));
+            
+            return node12;
+            
+        }
+        console.log("nosalio de recursivo");
+        if(item.carnet < node.item.carnet){
+            console.log("node izquierda: ",node.izquierda);
             node.izquierda = this.#insertRecursive(item, node.izquierda);
-            if(this.getaltura(node.izquierda) - this.getaltura(node.derecha) == 2){
+            if(this.getaltura(node.derecha) - this.getaltura(node.izquierda)<  -1){
+                console.log("1");
                 if(item.carnet < node.izquierda.item.carnet){
                     node = this.#rotateizquierda(node);
                 }else{
                     node = this.#doubleizquierda(node);
                 }
+                console.log("1");
             }
         }else if(item.carnet > node.item.carnet){
+            console.log("node derecha: ",node.derecha);
             node.derecha = this.#insertRecursive(item, node.derecha);
-            if(this.getaltura(node.derecha) - this.getaltura(node.izquierda) == 2){
+            if(this.getaltura(node.derecha) - this.getaltura(node.izquierda) > 1){
+                console.log("1");
                 if(item.carnet > node.derecha.item.carnet){
                     node = this.#rotatederecha(node);
                 }else{
                     node = this.#doublederecha(node);
                 }
+                console.log("1");
             }
         }else{
-            alert("Elemento ya existe en el árbol");
+            console.log("1");
+            console.log("node1: ",node);
         }
+        console.log("1");
         node.altura = this.getMaxaltura(this.getaltura(node.izquierda), this.getaltura(node.derecha)) + 1;
+        console.log("node final: ",node);
         return node;
+       
     }
     #rotatederecha(node1) {
-        let node2 = node1.izquierda;
-        if (node2 && node2.derecha) {
+        let node2 = node1.derecha;
+        console.log("nodo aux2: ",node1);
           // Actualizar enlace derecho de node1
-          node1.izquierda = node2.derecha;
+          node1.derecha = node2.izquierda;
           // Actualizar enlace izquierdo de node2
-          node2.derecha = node1;
+          node2.izquierda = node1;
           // Actualizar altura de node1
-          node1.altura = this.getMaxaltura(this.getaltura(node1.izquierda), this.getaltura(node1.derecha)) + 1;
+          node1.altura = this.getMaxaltura(this.getaltura(node1.derecha), this.getaltura(node1.izquierda)) + 1;
           // Actualizar altura de node2
-          node2.altura = this.getMaxaltura(this.getaltura(node2.izquierda), node1.altura) + 1;
+          node2.altura = this.getMaxaltura(this.getaltura(node1.derecha), node1.altura) + 1;
           // Retornar el nuevo nodo raíz de la subárbol rotado
+          console.log("rotderecha: ",node2);
           return node2;
-        } else {
-          return node1;
-        }
       }
     #rotateizquierda(node2){
         let node1 = node2.izquierda;
-        if (node1 && node1.derecha) { // comprobar si node1 tiene un hijo derecho
+        console.log("nodo aux1: ",node1);
             node2.izquierda = node1.derecha;
-            node1.derecha = node2;
-            node2.altura = this.getMaxaltura(this.getaltura(node2.izquierda), this.getaltura(node2.derecha)) + 1;
-            node1.altura = this.getMaxaltura(this.getaltura(node1.izquierda), node2.altura) + 1;
+            node1.izquierda = node2;
+            node2.altura = this.getMaxaltura(this.getaltura(node2.derecha), this.getaltura(node2.izquierda)) + 1;
+            node1.altura = this.getMaxaltura(this.getaltura(node2.derecha), node2.altura) + 1;
+            console.log("rotizqu: ",node1);
             return node1;
-        } else {
-            // si node1 no tiene un hijo derecho, no se puede hacer la rotación
-            return node2;
-        }
+        
     }
     #doubleizquierda(node){
-        node.izquierda = this.#rotatederecha(node.izquierda);
-        return this.#rotateizquierda(node);
+        console.log("dobleizquierda: ", node);
+        node.izquierda = this.#rotateizquierda(node.izquierda);
+        return this.#rotatederecha(node);
     }
     #doublederecha(node){
+        console.log("dolederecha: ",node);
         node.derecha = this.#rotateizquierda(node.derecha);
         return this.#rotatederecha(node);
     }
@@ -124,25 +142,28 @@ class AvlTree{
     treeGraph(){       
         Nodos = "";
         enlaces = "";
-        this.#treeGraphRecursive(this.root);
+        console.log(this.raizavl);
+        this.#treeGraphRecursive(this.raizavl);
         // console.log(Nodos,enlaces);
         return Nodos + enlaces;
     }
     #treeGraphRecursive(nodo_actual){
-        if(nodo_actual.izquierda != null){
-            this.#treeGraphRecursive(nodo_actual.izquierda);
-            enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.izquierda.item.carnet};\n`;
-        }
-        Nodos += `S_${nodo_actual.item.carnet}[shape=box label="${nodo_actual.item.carnet}\\n${nodo_actual.item.nombre}\\nAltura: ${nodo_actual.altura}" style="filled" fillcolor="skyblue3"];`
-        if(nodo_actual.derecha != null){
-            this.#treeGraphRecursive(nodo_actual.derecha);
-            enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.derecha.item.carnet};\n`;
-        }
+            if(nodo_actual.izquierda != null){
+                this.#treeGraphRecursive(nodo_actual.izquierda);
+                enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.izquierda.item.carnet};\n`;
+            }
+            Nodos += `S_${nodo_actual.item.carnet}[shape=box label="${nodo_actual.item.carnet}\\n${nodo_actual.item.nombre}\\nAltura: ${nodo_actual.altura}" style="filled" fillcolor="skyblue3"];`
+            if(nodo_actual.derecha != null){
+                this.#treeGraphRecursive(nodo_actual.derecha);
+                enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.derecha.item.carnet};\n`;
+            }
+    
+       
     }
     
 
     busqueda(valor ) {
-        return this.#busquedarecursiva(valor, this.root);
+        return this.#busquedarecursiva(valor, this.raizavl);
     }
     #busquedarecursiva(valor, nodo){
         if (nodo==null){
@@ -158,7 +179,7 @@ class AvlTree{
     }
 
     modificacion(valor1,valor2,userc ) {
-        return this.#modifirecursiva(valor1,valor2,userc, this.root);
+        return this.#modifirecursiva(valor1,valor2,userc, this.raizavl);
     }
     #modifirecursiva(valor1,valor2,userc, nodo){
         if (nodo==null){
@@ -175,7 +196,8 @@ class AvlTree{
 
     enOrder(){
         let index = {valor: 0};
-        let html = this.#enOrderRecursive(this.root, index);
+        console.log("ordeer",this.raizavl);
+        let html = this.#enOrderRecursive(this.raizavl, index);
         return html;
     }
     #enOrderRecursive(nodo_actual, index){
@@ -200,7 +222,8 @@ class AvlTree{
 
     preOrder(){
         let index = {valor: 0};
-        let html = this.#preOrderRecursive(this.root, index);
+        console.log("oder",this.raizavl);
+        let html = this.#preOrderRecursive(this.raizavl, index);
         return html;
     }
     #preOrderRecursive(nodo_actual, index){
@@ -225,7 +248,7 @@ class AvlTree{
 
     postOrder(){
         let index = {valor: 0};
-        let html = this.#postOrderRecursive(this.root, index);
+        let html = this.#postOrderRecursive(this.raizavl, index);
         return html;
     }
     #postOrderRecursive(nodo_actual, index){

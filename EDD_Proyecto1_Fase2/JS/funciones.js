@@ -14,7 +14,7 @@ let arbol = localStorage.getItem("arbolavl");
 if (arbol === null) {
     console.log("No hay datos en el arbol")
 } else {
-    avlTree.root = JSON.parse(arbol).root;
+    avlTree.raizavl = JSON.parse(arbol).raizavl;
     
 }
 
@@ -68,8 +68,8 @@ if (carnetuser === null){
     $('#path').val(carpraiz);
     $("#offcanvasExampleLabel").text(user.item.nombre);
 }
-console.log("feures",treenari);
-
+console.log("Arbol inicializado",treenari);
+console.log("avl ",avlTree);
 
 // REDIRECCIONAMIENTOS
 function Rprincipal(){
@@ -147,26 +147,32 @@ function cerrarsesionstudent(){
 
 
 //FUNCIONES DEL ADMINISTRADOR
-//-> 1. carga de archivos
+//-> 1. carga de archivos  --- revisar
 function cargarestudiantes(e) {
+    console.log("CARGANDO DATOS DE ESTUDIANTES");
     e.preventDefault();
     //obteniendo datos de input
     const formData = new FormData(e.target);
     const form = Object.fromEntries(formData);
     let students = [];
     try{  
+
         //leendo json      
         let info = new FileReader();
         info.readAsText(form.inputFile);
         info.onload = () => {
             
             students= JSON.parse(info.result).alumnos;
+            students.sort((a, b) => a - b);
             //insertando en avl
             for(let i = 0; i < students.length; i++){
+                console.log("INSERTANDO dato: ",i, avlTree);
                 avlTree.insertar(students[i]);
+                console.log("TERMINO DE INSERTAR DATO ",avlTree.raizavl.derecha);
             }
             // mostrando la lista en tablero
             $('#registrostrudent tbody').html(
+                //avlTree.enOrder()
                 students.map((item, index) => {
                     return(`
                         <tr>
@@ -178,20 +184,27 @@ function cargarestudiantes(e) {
                     `);
                 }).join('')
             )
-            /* No se si de una ves in orden
-            $('#registrostrudent tbody').html(
-                avlTree.enOrder()
-            )*/
+            
             // Agregando a localstorage
             localStorage.setItem("arbolavl", JSON.stringify(avlTree))
-            alert('Alumnos cargados con éxito!')
+            Swal.fire(
+                'Los alumnos fueron agregados con exito!',
+                `Presione el boton Ok para cerrar mensaje.`,
+                'success'
+              )
+           
         }
     }catch(error){
-        console.log(error);
-        alert("Error en la inserción");
+        console.log("error al cargar archivo: ",error);
+        Swal.fire(
+            'Ha ocurrido un error al cargar a los estudiantes!',
+            `Presione el boton Ok para cerrar mensaje.`,
+            'error'
+          )
     }
     $('#formFile').val("");
 }
+
 //-> 2. buscar en localstorage y agregar a tabla
 function LocalStudents(){
     $('#registrostrudent tbody').html(
@@ -204,7 +217,7 @@ function viewrecorridos(e){
     // obteniendo datos del form
     const formData = new FormData(e.target);
     const form = Object.fromEntries(formData);
-    if(avlTree.root !== null){
+    if(avlTree.raizavl !== null){
         //recorridos
         switch(form.recorrido){
             case '1':
@@ -241,23 +254,29 @@ function AvlGraph(){
 //FUNCIONES DE LOS ESTUDIANTIES
 // 1. Crear carpetas    ya
 function crearCarpeta(e){
+    console.log("CREANDO CARPETAS");
     e.preventDefault();
     // obteniendo datos 
     let folderName =  $('#namecarpeta').val();
     let path =  $('#path').val();
-    console.log(path);
+    console.log("path donde se agregara: ",path);
     treenari.insert(folderName, path);
     circular.addEnd(("Se creo carpeta "+folderName));
-    alert("Todo bien!") // sweet alert
-     console.log(circular);
-    // mostrando carpetas en el tablero
+    Swal.fire(
+        'Todo Bien!',
+        `La carpeta "${folderName}" fue creada con exito! <br>Presione el boton Ok para cerrar mensaje.`,
+        'success'
+      )
+    console.log("registro de bitacora: ",circular);
+    
+     // mostrando carpetas en el tablero
     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos())
     $('#namecarpeta').val("");
 
     //guardando los cambios en el localStorage
-    console.log(treenari);
+    console.log("registro de arbol: ",treenari);
     avlTree.modificacion(treenari,JSON.stringify(JSON.decycle(circular)),carnetuser);
-    console.log(avlTree);
+    console.log("registro de avl: ",avlTree);
 
     localStorage.setItem("arbolavl", JSON.stringify(avlTree));
 }
@@ -468,13 +487,22 @@ function carpetaanterior(){
                 path = $('#path').val();   
             $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos());
             ruta=path;
+
         
         } catch (error) {
             
-            alert("El directorio no es válido " );
+            Swal.fire(
+                'El al que intenta acceder no es valido!',
+                `Presione el boton Ok para cerrar mensaje.`,
+                'error'
+              )
         }
     }else{
-        alert("Para acceder a un archivo de click sobre el")
+        Swal.fire(
+            'Para acceder a un archivo de click sobre el',
+            `Presione el boton Ok para cerrar mensaje.`,
+            'info'
+          )
 
     }
     $('#path').val(ruta);
@@ -486,8 +514,22 @@ function ModificarCarpeta(){
     let newName =  $('#nuevoname').val();
     let path = $('#path').val();
     console.log(folderName, newName,path)
-    treenari.modifiFolder(folderName,newName,path);
-    circular.addEnd(("Se modifico carpeta "+folderName));
+    let res=treenari.modifiFolder(folderName,newName,path);
+    if (res!=null){
+        circular.addEnd(("Se modifico carpeta "+folderName));
+        Swal.fire(
+            'Se realizaron los cambios correctamente',
+            `Presione el boton Ok para cerrar mensaje.`,
+            'success'
+          )
+    }else{
+        Swal.fire(
+            'No se econtro la carpeta a modificar',
+            `Presione el boton Ok para cerrar mensaje.`,
+            'error'
+          )
+    }
+    
     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos())
     $('#mdnamecarpeta').val("");
     $('#nuevoname').val("");
@@ -502,8 +544,22 @@ function ModificarCarpeta(){
 function eliminarCarpeta(){
     let folderName =  $('#eliminarcarpeta').val();
     let path = $('#path').val();
-    treenari.eliminarfolder(folderName,path);
-    circular.addEnd(("Se elimino carpeta "+folderName));
+    let res=treenari.eliminarfolder(folderName,path);
+    
+    if (res!=null){
+        circular.addEnd(("Se elimino carpeta "+folderName));
+        Swal.fire(
+            'Se elimino la carpeta correctamente',
+            `Presione el boton Ok para cerrar mensaje.`,
+            'success'
+          )
+    }else{
+        Swal.fire(
+            'No se econtro la carpeta a eliminar',
+            `Presione el boton Ok para cerrar mensaje.`,
+            'error'
+          )
+    }
     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos());
     $('#eliminarcarpeta').val("");
     //guardando los cambios en el localStorage
@@ -544,7 +600,6 @@ function convertToBase64() {
                     // Actualizar contenido de #carpetas
                     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos());
                       //guardando los cambios en el localStorage
-                        console.log("sdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsd")
                         circular.addEnd(("Se subio archivo "+fileName));
                         treenari.modifiElementMatriz(guardarMatriz(),path);
                         console.log(treenari);
@@ -616,7 +671,11 @@ function permisosarchivos(){
         console.log(avlTree);
         localStorage.setItem("arbolavl", JSON.stringify(avlTree));
     }else{
-        console.log("no encontrado");
+        Swal.fire(
+            'No se encontro el archivo',
+            `Presione el boton Ok para cerrar mensaje.`,
+            'error'
+          )
     }
     $("#permisouser").val("");
     $("#namearchivo").val("");
@@ -654,7 +713,11 @@ function DisGraph(){
         // para descarga---- no funciona correctamente
         $("#downloadDis").attr("href", url + body);
     }else{
-        alert("no datos");
+        Swal.fire(
+            'No se puede generar grafica.',
+            `posiblemente no hay archivos o no se han concedido permiso<br>Presione el boton Ok para cerrar mensaje.`,
+            'info'
+          )
     }
   
 }

@@ -78,9 +78,10 @@ class Tree{
             
         }
         if (cont==fatherNode.children.length){
-            alert("Ruta no existe");
+           return null
         }else{
-            alert("Todo bien");
+            return 1
+            
         }
         
     }
@@ -93,7 +94,11 @@ class Tree{
             
             
         }else{
-            alert("No existe");
+            Swal.fire(
+                'No se encontro elemento',
+                `Presione el boton Ok para cerrar mensaje.`,
+                'error'
+              )
         }
         
     }
@@ -104,9 +109,9 @@ class Tree{
             let childNames = fatherNode.children.map(child => child.folderName);
             if(childNames.includes(nameforlder)) {
                 fatherNode.children = fatherNode.children.filter(child => child.folderName != nameforlder);
-
+                return 1
             }else{
-                alert("Ruta no es correcta")
+                return null
             }
             
         }
@@ -117,7 +122,6 @@ class Tree{
         console.log (fatherNode);
         if (fatherNode ) {
             let Nodoaux = fatherNode.children;
-            console.log("auisdf",Nodoaux)
            /*if(opcion==1){
                 Nodoaux = fatherNode.children.filter(child => child.tipo != "carpeta");
                 console.log("sdf")
@@ -131,7 +135,11 @@ class Tree{
             console.log(child)
             return child;
           } else {
-            alert("El archivo no existe");
+            Swal.fire(
+                'No se encontro la carpeta',
+                `Presione el boton Ok para cerrar mensaje.`,
+                'error'
+              )
             return null;
           }
         }
@@ -205,7 +213,7 @@ class Tree{
                 });
             }
         }
-        return 'graph[splines=ortho];\nnode[shape="box"; splines=ortho;];\n' + nodes +'\n'+ connections;
+        return 'node[shape="box"; splines=ortho;];\n' + nodes +'\n'+ connections;
     }
 
     getHTML(path){

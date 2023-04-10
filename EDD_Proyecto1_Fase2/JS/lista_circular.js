@@ -79,7 +79,7 @@ class NodoCir {
         aux = aux.next;
         counter++;
       }
-      Nodos += `N${counter}[label="Valor:${aux.valor}\\nFecha: ${aux.fecha}\\nHora: ${aux.hora}" style="filled" fillcolor="skyblue3"];\n`;
+      Nodos += `N${counter}[label="Accion:${aux.valor}\\nFecha: ${aux.fecha}\\nHora: ${aux.hora}" style="filled" fillcolor="skyblue3"];\n`;
       conn += `N${counter}-> N0`;
       rank+=`N${counter}}`;
       console.log(Nodos + "\n" +rank+ "\n" +conn);
