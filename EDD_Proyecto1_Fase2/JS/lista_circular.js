@@ -24,7 +24,7 @@ class NodoCir {
       let fecha=fechaActual.getDate()+mes+"-"+fechaActual.getFullYear();
       let hora=fechaActual.getHours()+":"+fechaActual.getMinutes()+":"+fechaActual.getSeconds();
       let newNodo = new NodoCir(valor,fecha,hora);
-      console.log(newNodo)
+      console.log("nuevo",newNodo)
       if (this.head === null) {
         console.log("head null",this.head);
         this.head = newNodo;

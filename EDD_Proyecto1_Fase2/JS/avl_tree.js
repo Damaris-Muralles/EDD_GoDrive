@@ -67,7 +67,7 @@ class AvlTree{
         }else if(item.carnet > node.item.carnet){
             node.derecha = this.#insertRecursive(item, node.derecha);
         }else{
-            throw new Error("El valor a insertar ya existe en el árbol");
+            console.log("El valor a insertar ya existe en el árbol");
         }
     
         switch ((this.getaltura(node.derecha) - this.getaltura(node.izquierda))) {
@@ -153,42 +153,23 @@ class AvlTree{
             enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.izquierda.item.carnet};\n`;
         } else {
             // Agregar nodo invisible a la izquierda
-            Nodos += `S_${nodo_actual.item.carnet}_left[shape=point width=0.3 style=invis];\n`;
-            enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.item.carnet}_left[style=invis];\n`;
+           // Nodos += `S_${nodo_actual.item.carnet}_left[shape=point width=0.3 color=white];\n`;
+           // enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.item.carnet}_left[color=white];\n`;
+           console.log("nada")
         }
         Nodos += `S_${nodo_actual.item.carnet}[shape=box label="${nodo_actual.item.carnet}\\n${nodo_actual.item.nombre}\\nAltura: ${nodo_actual.altura}" style="filled" fillcolor="skyblue3"];`
         if(nodo_actual.derecha != null){
             this.#treeGraphRecursive(nodo_actual.derecha);
             enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.derecha.item.carnet};\n`;
         } else {
+            console.log("nada")
             // Agregar nodo invisible a la derecha
-            Nodos += `S_${nodo_actual.item.carnet}_right[shape=point width=0.03 style=invis];\n`;
-            enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.item.carnet}_right[style=invis];\n`;
+           // Nodos += `S_${nodo_actual.item.carnet}_right[shape=point width=0.03 color=white];\n`;
+           // enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.item.carnet}_right[color=white];\n`;
         }
     }
 
-/*
-    treeGraph(){       
-        Nodos = "";
-        enlaces = "";
-        console.log(this.raizavl);
-        this.#treeGraphRecursive(this.raizavl);
-        // console.log(Nodos,enlaces);
-        return Nodos + enlaces;
-    }
-    #treeGraphRecursive(nodo_actual){
-            if(nodo_actual.izquierda != null){
-                this.#treeGraphRecursive(nodo_actual.izquierda);
-                enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.izquierda.item.carnet};\n`;
-            }
-            Nodos += `S_${nodo_actual.item.carnet}[shape=box label="${nodo_actual.item.carnet}\\n${nodo_actual.item.nombre}\\nAltura: ${nodo_actual.altura}" style="filled" fillcolor="skyblue3"];`
-            if(nodo_actual.derecha != null){
-                this.#treeGraphRecursive(nodo_actual.derecha);
-                enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.derecha.item.carnet};\n`;
-            }
-    
-       
-    }*/
+
     
 
     busqueda(valor ) {

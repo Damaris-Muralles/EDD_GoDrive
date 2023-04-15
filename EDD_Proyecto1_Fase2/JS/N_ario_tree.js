@@ -69,7 +69,7 @@ class Tree{
                 let childNames = fatherNode.children.map(child => child.folderName);
                 let copyCount = 1;
                 let nameaux=newname;
-                console.log(childNames)
+                console.log("hijos ",childNames)
                 while(childNames.includes(nameaux)) {
                     console.log("YA EXISTE UNA CARPETA CON EL NOMBRE, SE CREO COPIA");
                     nameaux = newname+ "-Copia(" + copyCount + ")";
@@ -97,7 +97,7 @@ class Tree{
         let fatherNode = this.getFolder(fatherPath);
         if(fatherNode ){
             fatherNode.matrizd=newmatriz;
-            console.log(fatherNode.matrizd);
+            console.log("nodopardrematriz:",fatherNode.matrizd);
             
             
         }else{
@@ -126,7 +126,7 @@ class Tree{
 
     buscararchivo(nameforlder, fatherPath) {
         let fatherNode = this.getFolder(fatherPath);
-        console.log (fatherNode);
+        console.log ("padre",fatherNode);
         if (fatherNode ) {
             let Nodoaux = fatherNode.children;
            /*if(opcion==1){
@@ -136,10 +136,10 @@ class Tree{
                 Nodoaux = fatherNode.children;
                 console.log("auisdf",Nodoaux)
            }*/
-          console.log(Nodoaux);
+          console.log("nodoaux",Nodoaux);
           let child = Nodoaux.find(child => child.folderName == nameforlder);
           if (child) {
-            console.log(child)
+            console.log("hijo",child)
             return child;
           } else {
             Swal.fire(

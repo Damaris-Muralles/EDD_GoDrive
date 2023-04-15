@@ -21,28 +21,36 @@ class SparseMatrix{
     }
     
     insertard(x,y,valor,contenido,tipoarchivo){
-
+        console.log("insertando: ",x,y,valor,contenido,tipoarchivo)
       
         let cont=0;
         let existente=true;
         let nameaux=x;
+
         while(existente) {
             let fileExtension="";
-           
+            console.log("resilsdf")
             let resultb=this.buscarPorX(nameaux);
+            console.log("result repeticion")
             if  (resultb==null){
                 existente=false;
             }else{
-                console.log("YA EXISTE UN ARCHIVO CON EL NOMBRE, SE CREO COPIA");
-                cont++;
-                console.log(x.split(".").pop())
-                fileExtension = "."+x.split(".").pop();
-                nameaux=x.split(".")[0];
-                nameaux = nameaux + "_Copia" + cont +fileExtension;
-                console.log("nombre: ",nameaux);
+                if(y=="NC"){
+                    console.log("YA EXISTE UN ARCHIVO CON EL NOMBRE, SE CREO COPIA");
+                    cont++;
+                    console.log(x.split(".").pop())
+                    fileExtension = "."+x.split(".").pop();
+                    nameaux=x.split(".")[0];
+                    nameaux = nameaux + "_Copia" + cont +fileExtension;
+                    console.log("nombre: ",nameaux);
+                }else{
+                    existente=false;
+                }
+               
             }
         }
         x=nameaux;
+        console.log("insertando1: ",x,y,valor,contenido,tipoarchivo)
         // CREAR CABECERAS DE LAS FILAS O EJE X
         this.#xcabezaers(x,tipoarchivo);
         // CREAR CABECERAS DE LAS COLUMNAS O EJE Y
@@ -225,6 +233,7 @@ class SparseMatrix{
         try { tx = this.cabeza.abajo } catch (error) { tx = null; console.log("errorX1"); }
         let ty = null;
         let cadenaimprarchivos="";
+        let arrayar=[];
         while(tx != null){
             try { ty = tx.derecha } catch (error) { ty = null; console.log("errorX2"); }
             let str = ""
@@ -232,28 +241,45 @@ class SparseMatrix{
                 str += ty.valor ;
                 ty = ty.derecha;
             }
-            //console.log(tx.valor,": ", str)
-            console.log("msdf ",tx.tipo);
-              if (tx.tipo=="pdf"){
-                cadenaimprarchivos+= ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
-                <img src="../Img/archivopng.png" width="100"/>
-                <p class="h6 text-center">${tx.valor}</p>
-                </div>`
-            }
-             if (tx.tipo=="txt"){
-                cadenaimprarchivos += ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
-                <img src="../Img/archivo2.png" width="100"/>
-                <p class="h6 text-center">${tx.valor}</p>
-                </div>`
-            }
-             if (tx.tipo!="txt" && tx.tipo!="pdf" && tx.tipo!="raiz"){
-                cadenaimprarchivos += ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
-                <img src="../Img/imag3.png" width="100"/>
-                <p class="h6 text-center">${tx.valor}</p>
-                </div>`
-             }
+            arrayar.push({tipo:tx.tipo, valor:tx.valor});
             tx = tx.abajo;
         }
+        console.log("array: ",arrayar)
+        let arregloSinDuplicados = arrayar.filter((item, index, arr) => {
+            return (
+              index ==
+              arr.findIndex(
+                (obj) => JSON.stringify(obj) == JSON.stringify(item)
+              )
+            );
+          });
+        console.log("sin dupli",arregloSinDuplicados)
+        arregloSinDuplicados.forEach((tx)=>{
+            //console.log(tx.valor,": ", str)
+            console.log("msdf ",tx.tipo);
+            if (tx.tipo=="pdf"){
+            cadenaimprarchivos+= ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
+            <img src="../Img/archivopng.png" width="100"/>
+            <p class="h6 text-center">${tx.valor}</p>
+            </div>`
+            }
+            if (tx.tipo=="txt"){
+            cadenaimprarchivos += ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
+            <img src="../Img/archivo2.png" width="100"/>
+            <p class="h6 text-center">${tx.valor}</p>
+            </div>`
+            }
+            if (tx.tipo!="txt" && tx.tipo!="pdf" && tx.tipo!="raiz"){
+            cadenaimprarchivos += ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
+            <img src="../Img/imag3.png" width="100"/>
+            <p class="h6 text-center">${tx.valor}</p>
+            </div>`
+            }
+
+
+        });
+        
+
         return cadenaimprarchivos;
     }
 
@@ -282,25 +308,40 @@ class SparseMatrix{
         }
     }
 
-    copiarmatriz(matriz,valorx, nuevoy,nuevovalor) {
+    copiarmatriz(matriz,valorx,nuevoy ,nuevovalor) {
         // Copiar el valor de la cabeza
         this.cabeza.valor = matriz.cabeza.valor;
         this.cabeza.format_b64 = matriz.cabeza.format_b64;
         this.cabeza.tipo = matriz.cabeza.tipo;
         this.cantidad=0;
         // Recorrer los nodos de la matriz original
+        let copiaext=null;
         let n_actualentRow = matriz.cabeza.abajo;
         while (n_actualentRow != null) {
+            console.log("row: ",n_actualentRow)
             let n_actualentColumn = n_actualentRow.derecha;
             while (n_actualentColumn != null) {
                 // Insertar un nuevo nodo con los mismos valores
+                console.log("colum: ",n_actualentColumn)
                 if(nuevoy!=null){
                     if (n_actualentColumn.x==valorx){
-                        this.insertard(n_actualentColumn.x,nuevoy,nuevovalor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
+                        
+                        console.log("cambio de dato",n_actualentColumn.x)
+                        if(n_actualentColumn.y=="NC"){
+                            
+                            this.insertard(n_actualentColumn.x,nuevoy,nuevovalor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
+                            
+                        }else{
+                            this.insertard(n_actualentColumn.x,n_actualentColumn.y,n_actualentColumn.valor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
+                            copiaext={form:n_actualentColumn.format_b64, ta:n_actualentColumn.tipo};
+                        }
+                       
                     }else{
+                        console.log("igual dato: ",n_actualentColumn.x)
                         this.insertard(n_actualentColumn.x,n_actualentColumn.y,n_actualentColumn.valor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
                     }
                 }else{
+                    console.log("no hay",n_actualentColumn.x)
                     this.insertard(n_actualentColumn.x,n_actualentColumn.y,n_actualentColumn.valor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
                 }
                 
@@ -308,6 +349,8 @@ class SparseMatrix{
             }
             n_actualentRow = n_actualentRow.abajo;
         }
+
+        return copiaext;
     }
 
     
@@ -342,7 +385,7 @@ class SparseMatrix{
         let aux1 = null;
         try { aux1 = this.cabeza.derecha } catch (error) { aux1 = null; console.log("GRAPH"); }
         if (aux1.valor!="NC"){
-            conn += 'M0 ->';
+            conn += 'M0 ';
         }
         while(aux1 != null){
             if(aux1.valor!="NC"){
@@ -350,10 +393,11 @@ class SparseMatrix{
                 rank += "Y" + aux1.valor + ";";
             }
                 if(aux1.derecha != null && aux1.derecha.valor!="NC"){
-                    conn += "Y" + aux1.valor + "->";
+                    conn += "-> Y" + aux1.valor + " ";
                 }else{
+                    
                     if (aux1.valor!="NC"){
-                    conn += "Y" + aux1.valor + `[dir="both"];\n`;
+                    conn += "-> Y" + aux1.valor;
                     }
                 }
             
@@ -361,8 +405,8 @@ class SparseMatrix{
            
             aux1 = aux1.derecha;
         }
-        
-        conn += 'M0 ->';
+        conn +=  `[dir="both"];\n`;
+        conn += 'M0 ';
         let contador=0;
         try { aux = this.cabeza.abajo } catch (error) { aux = null; console.log("GRAPH"); }
         while(aux != null){
@@ -371,14 +415,17 @@ class SparseMatrix{
                 contador++
                 Nodos += "X" + aux.valor.split(".")[0] + `[label="${aux.valor}" width = 1.5 shape ="square" style="filled" fillcolor="skyblue3" group="0"];\n`
                 if(aux.abajo != null){
-                    conn += "X" + aux.valor.split(".")[0] + "->";
+                    conn += "-> X" + aux.valor.split(".")[0] + " ";
+                    
                 }else{
-                    conn += "X" + aux.valor.split(".")[0] + `[dir="both"];\n`;
+                    conn += "-> X" + aux.valor.split(".")[0];
+                    
                 }
             }
            
             aux = aux.abajo;
         }
+        conn+=`[dir="both"];\n`;
         if (contador>0){
             rank += "}";
             return Nodos +"\n"+ conn +"\n"+ rank +"\n";
@@ -427,7 +474,7 @@ class SparseMatrix{
             if (tx.y!="NC"){
                 conn += `Y${tx.y} -> `
                 while(tx != null){
-                    if(tx.abajo != null && tx.abajo.derecha.y !="NC"){
+                    if(tx.abajo != null){
                         conn += `S${tx.x.split(".")[0]}_${tx.y} ->`;
                     }else{
                         if (ty.y!="NC"){

@@ -163,13 +163,14 @@ function cargarestudiantes(e) {
         info.onload = () => {
             
             students= JSON.parse(info.result).alumnos;
-            students.sort((a, b) =>  a.carnet - b.carnet);
-            console.log(students)
+            let nuevostudent = [...new Set(students)];
+            nuevostudent.sort((a, b) =>  a.carnet - b.carnet);
+            console.log(nuevostudent)
             //insertando en avl
-            for(let i = 0; i < students.length; i++){
+            for(let i = 0; i < nuevostudent.length; i++){
                 console.log("INSERTANDO dato: ",i, avlTree);
-                avlTree.insertar(students[i]);
-                console.log("TERMINO DE INSERTAR DATO ",avlTree.raizavl.derecha);
+                avlTree.insertar(nuevostudent[i]);
+                console.log("TERMINO DE INSERTAR DATO ");
             }
             // mostrando la lista en tablero
             $('#registrostrudent tbody').html(
@@ -247,6 +248,7 @@ function AvlGraph(){
     let url = 'https://quickchart.io/graphviz?graph=';
     let contenido= `digraph G { ${avlTree.treeGraph()} }`
     $("#graph").attr("src", url + contenido);
+    console.log( url + contenido)
     // para descarga---- no funciona correctamente
     $("#downloadAVL").attr("href", url + contenido);
 }
@@ -349,6 +351,7 @@ function verarchivos(completname){
     nodearchivo=matrizdisperza.buscarPorX(completname);
     console.log(nodearchivo,nodearchivo[0].tipo, nodearchivo[0].format_b64)
     // se visualiza  dependiendo si se trata de un pdf, txt o imagen
+    
     if (nodearchivo[0].tipo=="pdf"){
         Swal.fire({
             html:`<embed id="outputPDF" src="${nodearchivo[0].format_b64}" type="application/pdf" width="500" height="500">`,
@@ -612,9 +615,9 @@ function convertToBase64() {
                       //guardando los cambios en el localStorage
                         circular.addEnd(("Se subio archivo "+fileName));
                         treenari.modifiElementMatriz(guardarMatriz(),path);
-                        console.log(treenari);
+                        console.log("tree",treenari);
                         avlTree.modificacion(treenari,JSON.stringify(JSON.decycle(circular)),carnetuser);
-                        console.log(avlTree);
+                        console.log("arbol",avlTree);
 
                         localStorage.setItem("arbolavl", JSON.stringify(avlTree));
 
@@ -638,18 +641,19 @@ function permisosarchivos(){
     let selectedIndex = selectElement.selectedIndex;
     let selectedText = selectElement.options[selectedIndex].text;
     
-    console.log(selectedText.split("(")[0]);
+    console.log("selecc",selectedText.split("(")[0]);
     let busxdata=matrizdisperza.buscarPorX(folderName);
+    console.log("sdfsdfewe:",busxdata)
     if(busxdata!=null){
         console.log("datos encontrados en permiso",busxdata, folderName);
     
         let nodearchivo31=new Tnode(1,1);
             let archivoraiz="/";
             let pathlist=[];
-            console.log(path);
+            console.log("parht",path);
             if (path!=archivoraiz){
                 path="raiz"+path;
-                console.log(path);
+                console.log("pat",path);
                 pathlist=path.split("/");
                 console.log(pathlist);
                 archivoraiz= pathlist.pop();
@@ -666,20 +670,25 @@ function permisosarchivos(){
         //let matrizjson12= JSON.retrocycle(JSON.parse(nodearchivo3.matrizd));
         
         // Copiar los datos de matriz a la nueva instancia
+        let resultcopia;
         matrizdisperza1=new SparseMatrix("/");
         matrizdisperza1.cabeza = JSON.retrocycle(JSON.parse(nodearchivo31.matrizd)).cabeza;
         matrizdisperza1.cantidad =JSON.retrocycle(JSON.parse(nodearchivo31.matrizd)).cantidad;
         matrizdisperza=new SparseMatrix("/");
-        matrizdisperza.copiarmatriz(matrizdisperza1,folderName,userpermiso,selectedText.split("(")[0]);
-        
+        resultcopia=matrizdisperza.copiarmatriz(matrizdisperza1,folderName,userpermiso,selectedText.split("(")[0]);
+        if (resultcopia!=null){
+            console.log("insertar neu", resultcopia.ta)
+            matrizdisperza.insertard(folderName,userpermiso,selectedText.split("(")[0], resultcopia.form, resultcopia.ta);
+            console.log("salio")
+        }
         path =  $('#path').val();
         
         
-        console.log(matrizdisperza.buscarPorX(folderName));
+        console.log("nmnodo: ",matrizdisperza.buscarPorX(folderName));
         treenari.modifiElementMatriz(guardarMatriz(),path);
-        console.log(treenari);
+        console.log("trenari",treenari);
         avlTree.modificacion(treenari,JSON.stringify(JSON.decycle(circular)),carnetuser);
-        console.log(avlTree);
+        console.log("avl: ",avlTree);
         localStorage.setItem("arbolavl", JSON.stringify(avlTree));
     }else{
         Swal.fire(
@@ -724,6 +733,7 @@ function DisGraph(){
         $("#graphd").attr("src", url + body);
         // para descarga---- no funciona correctamente
         $("#downloadDis").attr("href", url + body);
+        console.log("cadena: ",body)
     }else{
         Swal.fire(
             'No se puede generar grafica.',
@@ -738,7 +748,7 @@ $("#circularbutton").on("click", function() {
     CirGraph();
   });
 function CirGraph(){
-    console.log(circular);
+    console.log("circular",circular);
     console.log(circular.graphcircular());
     let url = 'https://quickchart.io/graphviz?graph=';
     let body = `digraph G { ${circular.graphcircular()} }`;
