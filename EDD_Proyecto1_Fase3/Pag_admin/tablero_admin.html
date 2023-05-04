@@ -135,6 +135,46 @@
   
       </div>
 
+       <!-- tablero -->
+       <div class="tablero1">
+        <br>
+        <h2 class="tablero-title">Permisos</h2>
+        <br>
+         <!-- opciones de recorridos -->
+        <form class="form" onsubmit="viewrecorridos(event)">
+        <div class="input-group">
+          <select class="form-select"  id="recorrido" name="recorrido">
+            <option selected>Seleccionar...</option>
+            <option value="1">In Orden</option>
+            <option value="2">Pre Orden</option>
+            <option value="3">Post Orden</option>
+          </select>
+          <div class="input-group-append d-grid ">
+            <button class="btn  btn-primary " type="submit">   Mostrar    </button>
+          </div>
+        </div>
+        </form>
+        <br>
+         <!-- Tabla de estudiantes  -->
+        <div style="height: 300px; overflow: auto;">
+        <table class="table table-hover" id="registrostrudent">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">Propietario</th>
+              <th scope="col">Destino</th>
+              <th scope="col">Ubicacion</th>
+              <th scope="col">Archivo</th>
+              <th scope="col">Permiso</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+        </div>
+  
+      </div>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 

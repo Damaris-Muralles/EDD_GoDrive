@@ -109,3 +109,32 @@ body {
   .buttonDes:active {
     background-color: #065fe4;
   }
+
+  .tablero1 {
+   
+    background-color: rgba(255, 255, 255, 0.802);
+    text-align: center;
+    justify-content: center;
+    width: 95%;
+    height: 500px;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-radius: 30px;
+    box-shadow: 15px 15px 20px 10px rgb(0, 0, 0,0.1);
+}
+.tablero1 .busqueda{
+    width: 50%;
+}
+.tablero1 .tcarpeta{
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.tablero1 table {
+    margin: 0 auto;
+    width: 90%;
+}
+.tablero1 .input-group {
+    margin: 0 auto;
+    width: 50%;
+}
