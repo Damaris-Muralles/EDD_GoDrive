@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+  <head>
+   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Icono de la universidad -->
+    <link rel="icon" href="../Img/favicon.ico" >
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" href="../CSS/style_tablero.css">
+    <title>Tablero - EDD GoDrive</title>
+   
+    
+  </head>
+  <body>
+
+    <a class="logo_user"  data-bs-toggle="offcanvas" href="#offcanvasderecha" role="button" aria-controls="offcanvasderecha">
+      <img src="../Img/admin.png" width="60" class="d-inline-block align-text-top"> 
+    </a>
+     
+      <div class="logo">
+        <img src="../Img/logo.png" width="300" class="d-inline-block align-text-top"> 
+      </div>
+
+      <!-- Menu desplegable -->
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasderecha" aria-labelledby="offcanvasderechaLabel">
+        <div class="offcanvas-header">
+          <img src="../Img/admin.png" width="60" class="d-inline-block align-text-top"> 
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Administrador</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <!-- opciones del menu -->
+        <div class="offcanvas-body">
+          <br>
+          <br>
+          <!-- Button carga de alumnos -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop0">
+            Cargar alumnos
+          </button>
+          
+          <!-- Modal carga de archivos -->
+          <div class="modal fade" id="staticBackdrop0" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Cargar archivos</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form onsubmit="cargarestudiantes(event)">
+                    <div class="mb-3">
+                      <label for="formFile" class="form-label">Seleccione un archivo Json para cargar al sistema</label>
+                      <input class="form-control" type="file" id="formFile" name="inputFile" accept=".json">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      <button type="submit" class="btn btn-primary">Cargar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+            <!-- Button modal grafica -->
+          <button onclick="AvlGraph()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop8">
+            Reporte
+          </button>
+
+          <!-- Modal grafica -->
+          <div class="modal fade" id="staticBackdrop8" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content" style="width: 100%; height: 100%;">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Arbol AVL</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" >
+                  <img class="img-fluid" id="graph">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  <a id="downloadAVL" href="#" download="graphAVL_report.png" class="buttonDes">Descargar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <br>
+          <button type="button" class="btn btn-light" onclick="cerrarsesion()">Cerrar sesion</button>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+       <!-- tablero -->
+      <div class="tablero">
+        <br>
+        <h2 class="tablero-title">Estudiantes</h2>
+        <br>
+         <!-- opciones de recorridos -->
+        <form class="form" onsubmit="viewrecorridos(event)">
+        <div class="input-group">
+          <select class="form-select"  id="recorrido" name="recorrido">
+            <option selected>Seleccionar...</option>
+            <option value="1">In Orden</option>
+            <option value="2">Pre Orden</option>
+            <option value="3">Post Orden</option>
+          </select>
+          <div class="input-group-append d-grid ">
+            <button class="btn  btn-primary " type="submit">   Mostrar    </button>
+          </div>
+        </div>
+        </form>
+        <br>
+         <!-- Tabla de estudiantes  -->
+        <div style="height: 300px; overflow: auto;">
+        <table class="table table-hover" id="registrostrudent">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Carnet</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Contraseña</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+        </div>
+  
+      </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" 
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../JS/cycle.js"></script>
+    <script src="../JS/matriz_disperza.js"></script>
+    <script src="../JS/N_ario_tree.js"></script>
+    <script src="../JS/lista_circular.js"></script>
+    <script src="../JS/avl_tree.js"></script>
+    <script src="../JS/funciones.js"></script>
+  </body>
+</html>
+
