@@ -1,124 +1,68 @@
-/*PARA REESTABLECER LOCALSTORAGE
-let isInitialStateLoaded = false;
-const initialLocalStorageState = {};
-
-if (!isInitialStateLoaded) {
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    const value = localStorage.getItem(key);
-    initialLocalStorageState[key] = value;
-  }
-  isInitialStateLoaded = true;
-}
-
-window.addEventListener("unload", event => {
-  for (const key in initialLocalStorageState) {
-    const value = initialLocalStorageState[key];
-    localStorage.setItem(key, value);
-  }
-});*/
-
-
-
-//INICIALIZACIONES DE ESTRUCTURAS Y ELEMENTOS DE PAGINA
-let avlTree = new AvlTree();
-let carnetuser = localStorage.getItem("estudiante");
-let carpraiz = localStorage.getItem("raiz");
-let tablahash =new Hasht();
-let user; 
+//GLOBALES
+let user;
 let ruta;
-let treenari=new Tree("/");
-let matrizdisperza=new SparseMatrix("/");
-let compartidos =[];
-let estudents=["e"];
-let mensajeschat=[{emisor: "Cristian Suy", receptor:"Estudiante 1", mensaje: "holeeeeeweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, hieeleowqer, werwerwwerwerwerwerwerwer", hora:"3:21"}, {emisor:"Estudiante 1", receptor:"Cristian Suy", mensaje:"hola que tal, ewowemkniwer, werokwperjnpwoejr", hora:"12:00"}]
-
-
-// IMPLEMENTANDO INDEXBD
+let avlTree = new AvlTree();
+let carnetuser;
+let carpraiz;
+let treenari = new Tree("/");
+let matrizdisperza = new SparseMatrix("/");
+let circular = new CircularList();
+//CREACION DE BASE DE DATOS EN INDEXEDBD
+const dbName = "Registros";
+const dbVersion = 1;
+const objectStoreName = "myObjectStore";
 let db;
-let request = indexedDB.open("miBaseDeDatos", 1);
 
-request.onupgradeneeded = function(event) {
-    db = event.target.result;
-    let objectStore = db.createObjectStore("miAlmacen", { keyPath: "id" });
-    let transaction = event.target.transaction;
-    transaction.oncomplete = function(event) {
-        // Ahora puedes cargar el almacén de objetos
-        let transaction = db.transaction(["miAlmacen"], "readwrite");
-        let objectStore = transaction.objectStore("miAlmacen");
-        tablahash =new Hasht();      
-        let request = objectStore.add({ id: 1, tablaHash: tablahash});
+let request = indexedDB.open(dbName, dbVersion);
 
-        request.onsuccess = function(event) {
-            console.log("Objeto agregado correctamente");
-        };
-        request.onerror = function(event) {
-            console.log("Error al agregar el objeto:", event.target.error.name);
-
-        };
-        transaction = db.transaction(["miAlmacen"], "readwrite");
-                
-        objectStore = transaction.objectStore("miAlmacen");
-
-        request = objectStore.add({ id: 2, compartido:[] });
-
-        request.onsuccess = function(event) {
-            console.log("Objeto actualizado correctamente");
-        };
-        request.onerror = function(event) {
-            console.log("Error al agregar el objeto:", event.target.error.name);
-
-        };
-    };
-
+request.onupgradeneeded = event => {
+  db = event.target.result;
+  db.createObjectStore(objectStoreName);
 };
 
-request.onsuccess = function(event) {
-    db = event.target.result;
-    transaction = db.transaction(["miAlmacen"]);
-    objectStore = transaction.objectStore("miAlmacen");
-    request = objectStore.getAll();
+request.onsuccess = event => {
+  db = event.target.result;
+  const transaction1 = db.transaction(objectStoreName);
+  const objectStore1 = transaction1.objectStore(objectStoreName);
 
-    request.onsuccess = function(event) {
-        let objetos = event.target.result;
-        if(objetos.length>0){
-         
-            tablahash.tabla=objetos[0].tablaHash.tabla;
-            tablahash.capacidad=objetos[0].tablaHash.capacidad;
-            tablahash.espaciosUsados=objetos[0].tablaHash.espaciosUsados;
-            compartidos.push(...objetos[1].compartido);
-            verpermisos();
-            
-        }
-        console.log("sds",tablahash);
-     
-    };
-    request.onerror = function(event) {
-        console.log("Error al abrir la base de datos:", event.target.error.name);
-    };
+  // INICIALIZACIONES DE ESTRUCTURAS CON DATOS
+  
+
+  let request = objectStore1.get("estudiante");
+  request.onsuccess = event => {
+    carnetuser = event.target.result;
+  };
+
+  
+  request = objectStore1.get("raiz");
+  request.onsuccess = event => {
+    carpraiz = event.target.result;
+  };
+ 
+
+  // VALIDACIONES DE EXISTENCIA DE ARBOL DE ALUMNOS EN EL LOCALSTORAGE
+  request = objectStore1.get("arbolavl");
+  request.onsuccess = event => {
+    const arbol = event.target.result;
+    if (arbol === null||arbol==undefined) {
+      console.log("No hay datos en el arbol");
+    } else {
+        console.log("SDFWeFRWER",arbol)
+      avlTree.raizavl = JSON.parse(arbol).raizavl;
+    }
+  };
 };
-
-request.onerror = function(event) {
-    console.log("Error al abrir la base de datos:", event.target.errorCode);
-};
-
-//VALIDACIONES DE EXISENCIA DE ARBOL DE ALUMNOS EN EL LOCALSTORAGE
-let arbol = localStorage.getItem("arbolavl");
-if (arbol === null) {
-    console.log("No hay datos en el arbol")
-} else {
-    avlTree.raizavl = JSON.parse(arbol).raizavl;
-    
-}
-
 
 //VALIDACION DE PETICION DE ACCESO PARA USUARIOS
-if (carnetuser === null){
+if (carnetuser === null||carnetuser==undefined){
     console.log("No hay peticion de acceso o se genero un error")
 }else{
     // Obteniendo datos relacionados al usuario
     user=avlTree.busqueda(carnetuser);
-    
+    circular=new CircularList();
+    /*circular.head =JSON.retrocycle(JSON.parse(user.actividad)).head;
+    circular.tail =JSON.retrocycle(JSON.parse(user.actividad)).tail;
+    console.log(circular); */
     ruta=user.item.carpeta_raiz;
     // Copiar los datos de treenari a la nueva instancia
     treenari.copiartree(user.treenari);
@@ -127,7 +71,9 @@ if (carnetuser === null){
     if (treenari instanceof Tree) {
         console.log("Cargando carpetas almacenadas: ",treenari);
         nodearchivo=treenari.root;
-        console.log("json matriz:",nodearchivo);
+        // convirtiendo a objeto la matriz
+        console.log("json matriz:",nodearchivo.matrizd);
+        //let matrizjson= JSON.retrocycle(JSON.parse(nodearchivo.matrizd));
         // Copiar los datos de matriz a la nueva instancia
         matrizdisperza=new SparseMatrix("/");
         //matrizdisperza.copiarmatriz(matrizjson);
@@ -141,7 +87,7 @@ if (carnetuser === null){
             console.log("matriz no está definida correctamente");
         }
        
-        
+  
         // Mostrar las carpetas y archivos que se hayan creado antes
         $('#carpetas').html(treenari.getHTML(user.item.carpeta_raiz)+matrizdisperza.Mostrararchivos());
 
@@ -158,8 +104,7 @@ if (carnetuser === null){
 }
 console.log("Arbol inicializado",treenari);
 console.log("avl ",avlTree);
-console.log("list ",compartidos);
-console.log("hash inti",tablahash);
+
 // REDIRECCIONAMIENTOS
 function Rprincipal(){
     location.href='../index.html';
@@ -179,60 +124,66 @@ function Restudent(username1) {
 //FUNCIONES PARA INICIO DE SESION
 function iniciosesion(event) {
     event.preventDefault();
-
-    //obteniendo datos del form
+  
+    // Obteniendo datos del formulario
     var data = new FormData(event.target);
     var username = data.get('username');
     var password = data.get('passworduser');
-
-    //validando usuarios
-    if (username=="admin"){
-        if(password=="admin"){
-            Radmin();
-        }else{
-            Swal.fire(
-                'Contraseña incorrecta',
-                'Haga click en el boton para continuar...',
-                'error'
-              );
+  
+    // Validando usuarios
+    if (username == "admin") {
+      if (password == "admin") {
+        Radmin();
+      } else {
+        Swal.fire(
+          'Contraseña incorrecta',
+          'Haga click en el boton para continuar...',
+          'error'
+        );
+      }
+    } else {
+      // Busqueda en el arbol para corroborar existencia de estudiante
+      let dat = avlTree.busqueda(username);
+      if (dat != null) {
+        if (dat.item.password == password) {
+         
+          let transaction = db.transaction(objectStoreName, "readwrite");
+          let objectStore = transaction.objectStore(objectStoreName);
+          objectStore.put(username, "estudiante");
+          objectStore.put(dat.item.carpeta_raiz, "raiz");
+  
+          Restudent(username);
+        } else {
+          Swal.fire(
+            'La contraseña incorrecta',
+            'Haga click en el boton y vuelva a intentar',
+            'error'
+          );
         }
-    }else{
-        // busqueda en el arbol para corroborar existencia de estudiante
-        let dat=tablahash.buscarenhash(username);
-        if (dat!=null){
-            if (dat==CryptoJS.SHA256(password).toString()){
-                //mandando datos del estudiante al localstorage para su uso
-                localStorage.setItem("estudiante",username);
-                localStorage.setItem("raiz","/");
-                Restudent(username);
-            }else{
-                Swal.fire(
-                    'La contraseña incorrecta',
-                    'Haga click en el boton y vuelva a intentar',
-                    'error'
-                  );
-            }
-           
-        }else{
-            Swal.fire(
-                'El usuario no existe',
-                'Haga click en el boton y vuelva a intentar',
-                'error'
-              );
-        }
+      } else {
+        Swal.fire(
+          'El usuario no existe',
+          'Haga click en el boton y vuelva a intentar',
+          'error'
+        );
+      }
     }
-}
+  }
 
 
 //FUNCIONES PARA CERRAR SESION
 function cerrarsesion(){
     Rlogin();
 }
-function cerrarsesionstudent(){
-    localStorage.removeItem("estudiante");
-    localStorage.removeItem("raiz");
+function cerrarsesionstudent() {
+   
+    let transaction = db.transaction(objectStoreName, "readwrite");
+    let objectStore = transaction.objectStore(objectStoreName);
+    objectStore.delete("estudiante");
+    objectStore.delete("raiz");
+  
     Rlogin();
-}
+  }
 
 
 //FUNCIONES DEL ADMINISTRADOR
@@ -246,45 +197,56 @@ function cargarestudiantes(e) {
     let students = [];
     try{  
 
-        //leendo json      
         let info = new FileReader();
         info.readAsText(form.inputFile);
         info.onload = () => {
-            
-            students= JSON.parse(info.result).alumnos;
-            let nuevostudent = [...new Set(students)];
-            nuevostudent.sort((a, b) =>  a.carnet - b.carnet);
-            console.log(nuevostudent)
-            //insertando en avl
-            for(let i = 0; i < nuevostudent.length; i++){
-                console.log("INSERTANDO dato: ",i, avlTree);
-                avlTree.insertar(nuevostudent[i]);
-                console.log("TERMINO DE INSERTAR DATO ");
-            }
-            // mostrando la lista en tablero
-            $('#registrostrudent tbody').html(
-                //avlTree.enOrder()
-                students.map((item, index) => {
-                    return(`
-                        <tr>
-                            <th scope="row">${index+1}</th>
-                            <th>${item.carnet}</th>
-                            <td>${item.nombre}</td>
-                            <td>${item.password}</td>
-                        </tr>
-                    `);
-                }).join('')
-            )
-            
-            // Agregando a localstorage
-            localStorage.setItem("arbolavl", JSON.stringify(avlTree))
+          students = JSON.parse(info.result).alumnos;
+          let nuevostudent = [...new Set(students)];
+          nuevostudent.sort((a, b) => a.carnet - b.carnet);
+          console.log(nuevostudent);
+          // Insertando en avl
+          for (let i = 0; i < nuevostudent.length; i++) {
+            console.log("INSERTANDO dato: ", i, avlTree);
+            avlTree.insertar(nuevostudent[i]);
+            console.log("TERMINO DE INSERTAR DATO ");
+          }
+          // Mostrando la lista en tablero
+          $("#registrostrudent tbody").html(
+            students
+              .map((item, index) => {
+                return `
+                  <tr>
+                    <th scope="row">${index + 1}</th>
+                    <th>${item.carnet}</th>
+                    <td>${item.nombre}</td>
+                    <td>${item.password}</td>
+                  </tr>
+                `;
+              })
+              .join("")
+          );
+        
+          // Agregando a IndexedDB
+          let transaction = db.transaction(objectStoreName, "readwrite");
+          let objectStore = transaction.objectStore(objectStoreName);
+          console.log("JSON.stringify(avlTree)",JSON.stringify(avlTree))
+          let request = objectStore.add(JSON.stringify(avlTree), "arbolavl");
+          request.onsuccess = event => {
+            // Los datos se agregaron correctamente
             Swal.fire(
-                'Los alumnos fueron agregados con exito!',
+              "Los alumnos fueron agregados con exito!",
+              `Presione el boton Ok para cerrar mensaje.`,
+              "success"
+            );
+          };
+          transaction.onerror = event => {
+            Swal.fire(
+                'Ha ocurrido un error al cargar a los estudiantes!',
                 `Presione el boton Ok para cerrar mensaje.`,
-                'success'
-              )
-           
-        }
+                'error'
+              );
+          };
+        };
     }catch(error){
         console.log("error al cargar archivo: ",error);
         Swal.fire(
@@ -341,102 +303,6 @@ function AvlGraph(){
     // para descarga---- no funciona correctamente
     $("#downloadAVL").attr("href", url + contenido);
 }
-// ->5. Agregar a tabla hash
-function InserHash(){
-    let lisestudent =avlTree.ListarEstudiantes();
-    tablahash=new Hasht();
-    for (let i = 0; i < lisestudent.length; i++) {
-
-
-        tablahash.insertelement(lisestudent[i].carnet,lisestudent[i].nombre,CryptoJS.SHA256(lisestudent[i].pass).toString());
-
-    }
-    if(avlTree.raizavl !== null){
-        try{
-            let rowh="";
-            for (let i = 0; i < tablahash.capacidad; i++) {
-                if (tablahash.tabla[i] != null) {
-                    rowh +=`
-                    <tr>
-                        <th scope="row">${i}</th>
-                        <th>${tablahash.tabla[i].carnet}</th>
-                        <td>${tablahash.tabla[i].nombre}</td>
-                        <td>${tablahash.tabla[i].clave}</td>
-                    </tr>
-                `;
-                 //estudents.push(tablahash.tabla[i].carnet);
-                }
-            }
-            $('#strudenthash tbody').html(
-                rowh
-            )  ;
-     
-             transaction = db.transaction(["miAlmacen"], "readwrite");
-          
-            objectStore = transaction.objectStore("miAlmacen");
-           
-            request = objectStore.put({ id: 1, tablaHash: tablahash });
-          
-            request.onsuccess = function(event) {
-                console.log("Objeto agregado correctamente");
-            };
-          
-            request.onerror = function(event) {
-                console.log("Error al agregar el objeto:", event.target.error.name);
-            };
-            
-        }catch(e){
-            console.log("errr")
-        }
-     
-    }
-  
-}
-$('#registrospermisos tbody').on('click', '.archivo', function(e) {
-    e.preventDefault();
-    let file = $(this).data('file');
-    let filename = $(this).text();
-
-    let link = document.createElement('a');
-    link.href = file;
-    link.download = filename; // Agregar la extensión de archivo aquí
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-//->6. Opcion de verarchivos compartidos de forma general
-function verpermisos(){
-
-    if(compartidos.length>0){
-    
-        try{
-            let rowh="";
-            for (let i = 0; i < compartidos.length; i++) {
-                
-                rowh +=`
-                <tr>
-                    <th scope="row">${compartidos[i].propietario}</th>
-                    <th>${compartidos[i].destino}</th>
-                    <td>${compartidos[i].ubicacion}</td>
-                    <td><a href="#" class="archivo" data-file="${compartidos[i].b64}">${compartidos[i].archivo}</a></td>
-                    <td>${compartidos[i].permiso}</td>
-                </tr>
-            `;
-                    //estudents.push(tablahash.tabla[i].carnet);
-                
-            }
-            $('#registrospermisos tbody').html(
-                rowh
-            )  ;
-
-
-        }catch(e){
-            console.log("errr")
-        }
-
-    }
-}
-//->7. grafica de mensajeria
 
 
 //FUNCIONES DE LOS ESTUDIANTIES
@@ -450,6 +316,7 @@ function crearCarpeta(e){
     console.log("path donde se agregara: ",path);
     let res1=treenari.insert(folderName, path);
     if(res1!=null){
+        circular.addEnd(("Se creo carpeta "+res1));
         Swal.fire(
             'Todo Bien!',
             `La carpeta "${folderName}" fue creada con exito! <br>Presione el boton Ok para cerrar mensaje.`,
@@ -462,18 +329,29 @@ function crearCarpeta(e){
             'error'
           )
     }
-
+    
+    console.log("registro de bitacora: ",circular);
     
      // mostrando carpetas en el tablero
     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos())
     $('#namecarpeta').val("");
 
-    //guardando los cambios en el localStorage
-    console.log("registro de arbol: ",treenari);
-    avlTree.modificacion(treenari,carnetuser);
-    console.log("registro de avl: ",avlTree);
+    // Guardando los cambios en IndexedDB
+        console.log("registro de arbol: ", treenari);
+        avlTree.modificacion(treenari, JSON.stringify(JSON.decycle(circular)), carnetuser);
+        console.log("registro de avl: ", avlTree);
 
-    localStorage.setItem("arbolavl", JSON.stringify(avlTree));
+        let transaction = db.transaction(objectStoreName, "readwrite");
+        let objectStore = transaction.objectStore(objectStoreName);
+        let request = objectStore.put(JSON.stringify(avlTree), "arbolavl");
+        request.onsuccess = event => {
+        // Los datos se agregaron correctamente
+        console.log("CAMBIOS POR CREACION DE CARPETA COMPLETADO CON EXITO")
+        };
+        transaction.onerror = event => {
+        // Manejar errores aquí
+        console.log("ERROR AL GUARDAR CAMBIOS POR CREACION DE CARPETA ")
+        };
 }
 // 2. Entrar en carpetas al dar click    -ya
 function entrarCarpeta(folderName){
@@ -507,27 +385,27 @@ function entrarCarpeta(folderName){
         }
        
         console.log("matris: ",nodearchivo3);
-       
- // Copiar los datos de matriz a la nueva instancia
- matrizdisperza=new SparseMatrix("/");
- matrizdisperza.cabeza = JSON.retrocycle(JSON.parse(nodearchivo3.matrizd)).cabeza;
- matrizdisperza.cantidad =JSON.retrocycle(JSON.parse(nodearchivo3.matrizd)).cantidad;
- console.log("sdf ",matrizdisperza);
- //validar que sea una instancia de matriz
- if (matrizdisperza instanceof SparseMatrix) {
-     console.log("Cargando archivos almacenados: ",matrizdisperza);
-     
- } else {
-     console.log("matriz no está definida correctamente");
- }
+        //let matrizjson12= JSON.retrocycle(JSON.parse(nodearchivo3.matrizd));
+        
+        // Copiar los datos de matriz a la nueva instancia
+        matrizdisperza=new SparseMatrix("/");
+        matrizdisperza.cabeza = JSON.retrocycle(JSON.parse(nodearchivo3.matrizd)).cabeza;
+        matrizdisperza.cantidad =JSON.retrocycle(JSON.parse(nodearchivo3.matrizd)).cantidad;
+        console.log("sdf ",matrizdisperza);
+        //validar que sea una instancia de matriz
+        if (matrizdisperza instanceof SparseMatrix) {
+            console.log("Cargando archivos almacenados: ",matrizdisperza);
+            
+        } else {
+            console.log("matriz no está definida correctamente");
+        }
 
 
- $('#carpetas').html(treenari.getHTML(curretPath)+matrizdisperza.Mostrararchivos())
-}
+        $('#carpetas').html(treenari.getHTML(curretPath)+matrizdisperza.Mostrararchivos())
+    }
     
 }
 // 2.5 ver archivos arreglar ---ya
-
 function verarchivos(completname){
     // se busca el archivo en la matriz
     let nodearchivo = [];
@@ -674,13 +552,15 @@ function carpetaanterior(){
             }else{
                 nodearchivo1=treenari.root;
             }
-          // Copiar los datos de matriz a la nueva instancia
-          matrizdisperza=new SparseMatrix("/");
-          matrizdisperza.cabeza = JSON.retrocycle(JSON.parse(nodearchivo1.matrizd)).cabeza;
-          matrizdisperza.cantidad =JSON.retrocycle(JSON.parse(nodearchivo1.matrizd)).cantidad;
-          path = $('#path').val();   
-      $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos());
-      ruta=path;
+            console.log("matrizbar: ",nodearchivo1.matrizd);
+           // let matrizjson1= JSON.retrocycle(JSON.parse(nodearchivo1.matrizd));
+                // Copiar los datos de matriz a la nueva instancia
+                matrizdisperza=new SparseMatrix("/");
+                matrizdisperza.cabeza = JSON.retrocycle(JSON.parse(nodearchivo1.matrizd)).cabeza;
+                matrizdisperza.cantidad =JSON.retrocycle(JSON.parse(nodearchivo1.matrizd)).cantidad;
+                path = $('#path').val();   
+            $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos());
+            ruta=path;
 
         
         } catch (error) {
@@ -710,6 +590,7 @@ function ModificarCarpeta(){
     console.log(folderName, newName,path)
     let res=treenari.modifiFolder(folderName,newName,path);
     if (res!=null){
+        circular.addEnd(("Se modifico carpeta "+folderName+" a "+res));
         Swal.fire(
             'Se realizaron los cambios correctamente',
             `Presione el boton Ok para cerrar mensaje.`,
@@ -726,12 +607,22 @@ function ModificarCarpeta(){
     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos())
     $('#mdnamecarpeta').val("");
     $('#nuevoname').val("");
-    //guardando los cambios en el localStorage
-    console.log(treenari);
-    avlTree.modificacion(treenari,carnetuser);
-    console.log(avlTree);
+    // Guardando los cambios en IndexedDB
+    console.log("registro de arbol: ", treenari);
+    avlTree.modificacion(treenari, JSON.stringify(JSON.decycle(circular)), carnetuser);
+    console.log("registro de avl: ", avlTree);
 
-    localStorage.setItem("arbolavl", JSON.stringify(avlTree));
+    let transaction = db.transaction(objectStoreName, "readwrite");
+    let objectStore = transaction.objectStore(objectStoreName);
+    let request = objectStore.put(JSON.stringify(avlTree), "arbolavl");
+    request.onsuccess = event => {
+    // Los datos se agregaron correctamente
+    console.log("CAMBIOS POR MODIFICACION DE CARPETA COMPLETADO CON EXITO")
+    };
+    transaction.onerror = event => {
+    // Manejar errores aquí
+    console.log("ERROR AL GUARDAR CAMBIOS POR MODIFICACION DE CARPETA ")
+    };
 }
 // 5.Eliminar carpeta  --- ya
 function eliminarCarpeta(){
@@ -740,6 +631,7 @@ function eliminarCarpeta(){
     let res=treenari.eliminarfolder(folderName,path);
     
     if (res!=null){
+        circular.addEnd(("Se elimino carpeta "+folderName));
         Swal.fire(
             'Se elimino la carpeta correctamente',
             `Presione el boton Ok para cerrar mensaje.`,
@@ -752,16 +644,23 @@ function eliminarCarpeta(){
             'error'
           )
     }
-    $('#carpetas').html(treenari.getHTML(path));
-    $('#eliminarcarpeta').val("");
     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos());
     $('#eliminarcarpeta').val("");
-    //guardando los cambios en el localStorage
-    console.log(treenari);
-    avlTree.modificacion(treenari,carnetuser);
-    console.log(avlTree);
+    console.log("registro de arbol: ", treenari);
+    avlTree.modificacion(treenari, JSON.stringify(JSON.decycle(circular)), carnetuser);
+    console.log("registro de avl: ", avlTree);
 
-    localStorage.setItem("arbolavl", JSON.stringify(avlTree));
+    let transaction = db.transaction(objectStoreName, "readwrite");
+    let objectStore = transaction.objectStore(objectStoreName);
+    let request = objectStore.put(JSON.stringify(avlTree), "arbolavl");
+    request.onsuccess = event => {
+    // Los datos se agregaron correctamente
+    console.log("CAMBIOS POR ELIMINACION DE CARPETA COMPLETADO CON EXITO")
+    };
+    transaction.onerror = event => {
+    // Manejar errores aquí
+    console.log("ERROR AL GUARDAR CAMBIOS POR ELIMINACION DE CARPETA ")
+    };
 }
 
 // 6. subir archivo
@@ -794,14 +693,24 @@ function convertToBase64() {
                     // Actualizar contenido de #carpetas
                     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos());
                       //guardando los cambios en el localStorage
+                        circular.addEnd(("Se subio archivo "+fileName));
                         treenari.modifiElementMatriz(guardarMatriz(),path);
-                        console.log("tree",treenari);
-                        avlTree.modificacion(treenari,carnetuser);
-                        console.log("arbol",avlTree);
-
-                        localStorage.setItem("arbolavl", JSON.stringify(avlTree));
-
-               };
+                        console.log("registro de arbol: ", treenari);
+                        avlTree.modificacion(treenari, JSON.stringify(JSON.decycle(circular)), carnetuser);
+                        console.log("registro de avl: ", avlTree);
+                    
+                        let transaction = db.transaction(objectStoreName, "readwrite");
+                        let objectStore = transaction.objectStore(objectStoreName);
+                        let request = objectStore.put(JSON.stringify(avlTree), "arbolavl");
+                        request.onsuccess = event => {
+                        // Los datos se agregaron correctamente
+                        console.log("CAMBIOS POR SUBIR ARCHIVOS COMPLETADO CON EXITO")
+                        };
+                        transaction.onerror = event => {
+                        // Manejar errores aquí
+                        console.log("ERROR AL GUARDAR CAMBIOS POR SUBIR ARCHIVOS ")
+                        };
+                };
             })(fileName, fileExtension);
             // Convertir datos a base64
             fileReader.readAsDataURL(fileToLoad);
@@ -812,7 +721,7 @@ function convertToBase64() {
     $('#formFileMultiple').val("");
 }
 
-// 7. permisos modificar
+// 7. permisos
 function permisosarchivos(){
     let folderName =  $('#namearchivo').val();
     let path =  $('#path').val();
@@ -821,34 +730,66 @@ function permisosarchivos(){
     let selectedIndex = selectElement.selectedIndex;
     let selectedText = selectElement.options[selectedIndex].text;
     
-   
+    console.log("selecc",selectedText.split("(")[0]);
     let busxdata=matrizdisperza.buscarPorX(folderName);
+    console.log("sdfsdfewe:",busxdata)
     if(busxdata!=null){
-       
-        let result=tablahash.buscarenhash(userpermiso);
-        if(result!=null){
-            compartidos.push({propietario:user.item.carnet,destino:userpermiso,ubicacion:path,archivo:folderName,b64:busxdata[0].format_b64,permiso:selectedText.split("(")[0]})
-            transaction = db.transaction(["miAlmacen"], "readwrite");
-          
-            objectStore = transaction.objectStore("miAlmacen");
-            console.log("cs",compartidos)
-            request = objectStore.put({ id: 2, compartido:compartidos });
-          
-            request.onsuccess = function(event) {
-                console.log("Objeto actualizado correctamente");
-            };
-            request.onerror = function(event) {
-             console.log("Error al agregar el objeto:", event.target.error.name);
+        console.log("datos encontrados en permiso",busxdata, folderName);
+    
+        let nodearchivo31=new Tnode(1,1);
+            let archivoraiz="/";
+            let pathlist=[];
+            console.log("parht",path);
+            if (path!=archivoraiz){
+                path="raiz"+path;
+                console.log("pat",path);
+                pathlist=path.split("/");
+                console.log(pathlist);
+                archivoraiz= pathlist.pop();
+                let newPath = pathlist.join("/");
+                newPath=newPath.replace("raiz","");
+                console.log("buquedabar: ",archivoraiz, newPath);
+                nodearchivo31=treenari.buscararchivo(archivoraiz, newPath);
 
-         };
+            }else{
+                nodearchivo31=treenari.root;
+            }
        
-        }else{
-            Swal.fire(
-                'Usuario destino no encontrado',
-                `Presione el boton Ok para cerrar mensaje.`,
-                'error'
-              )
+        console.log("matris: ",nodearchivo31);
+        //let matrizjson12= JSON.retrocycle(JSON.parse(nodearchivo3.matrizd));
+        
+        // Copiar los datos de matriz a la nueva instancia
+        let resultcopia;
+        matrizdisperza1=new SparseMatrix("/");
+        matrizdisperza1.cabeza = JSON.retrocycle(JSON.parse(nodearchivo31.matrizd)).cabeza;
+        matrizdisperza1.cantidad =JSON.retrocycle(JSON.parse(nodearchivo31.matrizd)).cantidad;
+        matrizdisperza=new SparseMatrix("/");
+        resultcopia=matrizdisperza.copiarmatriz(matrizdisperza1,folderName,userpermiso,selectedText.split("(")[0]);
+        if (resultcopia!=null){
+            console.log("insertar neu", resultcopia.ta)
+            matrizdisperza.insertard(folderName,userpermiso,selectedText.split("(")[0], resultcopia.form, resultcopia.ta);
+            console.log("salio")
         }
+        path =  $('#path').val();
+        
+        
+        console.log("nmnodo: ",matrizdisperza.buscarPorX(folderName));
+        treenari.modifiElementMatriz(guardarMatriz(),path);
+        console.log("registro de arbol: ", treenari);
+        avlTree.modificacion(treenari, JSON.stringify(JSON.decycle(circular)), carnetuser);
+        console.log("registro de avl: ", avlTree);
+    
+        let transaction = db.transaction(objectStoreName, "readwrite");
+        let objectStore = transaction.objectStore(objectStoreName);
+        let request = objectStore.put(JSON.stringify(avlTree), "arbolavl");
+        request.onsuccess = event => {
+        // Los datos se agregaron correctamente
+        console.log("CAMBIOS POR PREMISOS DE ARVHIVOS COMPLETADO CON EXITO")
+        };
+        transaction.onerror = event => {
+        // Manejar errores aquí
+        console.log("ERROR AL GUARDAR CAMBIOS POR PERMISOS DE ARCHIVOS ")
+        };
     }else{
         Swal.fire(
             'No se encontro el archivo',
@@ -862,38 +803,23 @@ function permisosarchivos(){
     
 }
 
-// 8. mensajeria
-
-
-
 function guardarMatriz() {
     const matrizString = JSON.stringify(JSON.decycle(matrizdisperza));
     return matrizString;
 }
 
-
-
-
-
-
-
-/////REPORTES --------------------------------------------------------
-
-// reporte del arbol n-ario  -- estilos
+// 8. reporte del arbol n-ario  -- estilos
 $("#nariobutton").on("click", function() {
     NGraph();
   });
 function NGraph(){
-    console.log(treenari);
     let url = 'https://quickchart.io/graphviz?graph=';
     let body = `digraph G { ${treenari.ngraph()} }`;
-    console.log( url +  body)
+   
     $("#graphn").attr("src", url + body);
     // para descarga---- no funciona correctamente
     $("#downloadN").attr("href", url + body);
 }
-
-/*
 // 9. reporte de matriz dispersa
 $("#dispersabutton").on("click", function() {
     DisGraph();
@@ -932,7 +858,8 @@ function CirGraph(){
     // para descarga---- no funciona correctamente
     $("#downloadc").attr("href", url + body);
 }
-*/
+
+
 
 
 //FUNCIONES EXTRA PARA BORRAR DATOS DE INPUT 
@@ -944,7 +871,7 @@ input.addEventListener("blur", function() {
         input.value = user.item.carpeta_raiz;
         let nodearchivo17=new Tnode(1,1);
         nodearchivo17=treenari.root;
-       //let matrizjson17= JSON.retrocycle(JSON.parse(nodearchivo17.matrizd));
+        //let matrizjson17= JSON.retrocycle(JSON.parse(nodearchivo17.matrizd));
         // Copiar los datos de matriz a la nueva instancia
         matrizdisperza=new SparseMatrix("/");
         matrizdisperza.cabeza = JSON.retrocycle(JSON.parse(nodearchivo17.matrizd)).cabeza;
@@ -993,20 +920,82 @@ $("#staticBackdrop").on("hidden.bs.modal", function() {
     $("#downloadAVL").removeAttr("href");
   });
 
-  
 
-
-  
 $(document).ready(function() {
     try {
         LocalStudents();
-        
     } catch (error) {
         console.log("not exist")
     }
 });
 
+let request = objectStore.put({ id: 1, nombre: "Juan", edad: 25 });
+
+ 
+transaction = db.transaction(["miAlmacen"]);
+objectStore = transaction.objectStore("miAlmacen");
+request = objectStore.getAll();
+
+request.onsuccess = function(event) {
+    let objetos = event.target.result;
+    console.log(objetos);
+};
+
+let transaction = db.transaction(["miAlmacen"]);
+let objectStore = transaction.objectStore("miAlmacen");
+let request = objectStore.get(1);
+
+request.onsuccess = function(event) {
+    let objeto = event.target.result;
+    console.log(objeto);
+};
+
+let transaction = db.transaction(["miAlmacen"], "readwrite");
+    let objectStore = transaction.objectStore("miAlmacen");
+    let request = objectStore.add({ id: 1, nombre: "Juan", edad: 25 });
+
+    request.onsuccess = function(event) {
+        console.log("Objeto agregado correctamente");
+    };
+ 
+    console.log("sdfsdf")
+    request.onerror = function(event) {
+        console.log("Error al agregar el objeto:", event.target.error.name);
+    };
+     //let matrizjson12= JSON.retrocycle(JSON.parse(nodearchivo3.matrizd));
+     transaction = db.transaction(["miAlmacen"], "readwrite");
+          
+     objectStore = transaction.objectStore("miAlmacen");
+    
+     request = objectStore.add({ id: 2,  });
+   
+     request.onsuccess = function(event) {
+         console.log("Objeto agregado correctamente");
+     };
+     request.onerror = function(event) {
+      console.log("Error al agregar el objeto:", event.target.error.name);
+  };
+
+  let nodearchivo31=new Tnode(1,1);
+  let archivoraiz="/";
+  let pathlist=[];
+  console.log("parht",path);
+  if (path!=archivoraiz){
+      path="raiz"+path;
+      console.log("pat",path);
+      pathlist=path.split("/");
+      console.log(pathlist);
+      archivoraiz= pathlist.pop();
+      let newPath = pathlist.join("/");
+      newPath=newPath.replace("raiz","");
+      console.log("buquedabar: ",archivoraiz, newPath);
+      nodearchivo31=treenari.buscararchivo(archivoraiz, newPath);
+
+  }else{
+      nodearchivo31=treenari.root;
+  }
+
+console.log("matris: ",nodearchivo31);
 
 
-
-
+path =  $('#path').val();

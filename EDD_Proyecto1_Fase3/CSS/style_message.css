@@ -1,0 +1,135 @@
+.mensajeriablock {
+    display: block;
+  }
+
+
+  .chats {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .chats input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .chats ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .chats li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .chats li:hover {
+    background-color: #eee;
+  }
+  
+  .messages {
+    flex: 2;
+  }
+  
+  .messages h2 {
+    margin-top: 0;
+  }
+  
+  .messages-container {
+    height: 300px;
+    border: 1px solid #ccc;
+    overflow-y: scroll;
+    padding: 10px;
+  }
+  
+  .messages-container p {
+    margin: 0;
+  }
+  
+  form {
+    display: flex;
+  }
+  
+  form input {
+    flex: 1;
+    padding: 10px;
+  }
+  .content {
+    display: flex;
+    width: 90%;
+  margin: 0 auto;
+  }
+  
+  .chats {
+    flex: 1;
+    width: 40%;
+    height: 400px;
+    background-color:  rgba(200, 193, 193, 0.35);
+    border-radius: 10px;
+  }
+  
+  .messages {
+    flex: 2;
+    width: 60%;
+    height: 400px;
+    background-color:  rgba(182, 176, 176, 0.35);
+    border-radius: 10px;
+  }
+  .message {
+    margin-bottom: 10px;
+    padding: 10px;
+    min-width: 110px;
+    overflow-wrap: break-word;
+    position: relative;
+    text-align: left;
+    max-width: 80%;
+}
+
+/* Estilos para los mensajes del emisor */
+.message.sender {
+    background-color: rgba(10, 137, 195, 0.943);
+    border-radius: 10px;
+    color: white;
+    float: right;
+    clear: both;
+}
+
+/* Estilos para los mensajes del receptor */
+.message.receiver {
+    background-color: rgb(255, 255, 255);
+    color: black;
+    border-radius: 10px;
+    float: left;
+    clear: both;
+}
+
+.message > span:first-child {
+    position: absolute;
+    top: 0;
+    left: 10px;
+}
+
+.message > span:last-child {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+}
+
+/* Nuevos estilos */
+.sender span:first-child,
+.receiver span:first-child {
+    font-weight: bold;
+}
+
+.message span:last-child {
+    font-size: smaller;
+    font-style: italic;
+}
+
+.msuser {
+  width: 700px;
+  max-height: 100px;
+  overflow-y: auto;
+}

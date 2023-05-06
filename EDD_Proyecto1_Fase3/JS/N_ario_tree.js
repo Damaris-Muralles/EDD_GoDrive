@@ -1,11 +1,12 @@
 
 class Tnode{
-    constructor(folderName,matrizd){
+    constructor(folderName,peso,matrizd){
         this.folderName = folderName;
         this.children = [];
-        this.nivel =1;
+        this.nivel =1;    
         this.matrizd =matrizd;
         this.id = null; 
+        this.peso = peso;
     }
 }
 
@@ -14,7 +15,7 @@ class Tree{
     constructor(craiz){
         let disper=new SparseMatrix(craiz);
         let cadjson= JSON.stringify(JSON.decycle(disper));
-        this.root = new Tnode(craiz,cadjson);
+        this.root = new Tnode(craiz,1,cadjson);
         this.root.id = 0;
         this.size = 1; 
     }
@@ -23,12 +24,12 @@ class Tree{
         
         let fatherNode = this.getFolder(fatherPath);
         console.log("nodopadre: ",fatherNode);
-        if(fatherNode){
+        if(fatherNode.node){
            
             let copyCount = 1;
             let nameaux=folderName;
             //Solo valida que ningun nodo de cada arbol tenga el mismo nombre
-            let childNames = fatherNode.children.map(child => child.folderName);
+            let childNames = fatherNode.node.children.map(child => child.folderName);
             while(childNames.includes(nameaux)) {
                 console.log("YA EXISTE UN ARCHIVO CON EL NOMBRE, SE CREO COPIA");
                 /*let fileExtension="";
@@ -43,8 +44,8 @@ class Tree{
             this.size += 1;
             let disper=new SparseMatrix(folderName);
             let cadjson= JSON.stringify(JSON.decycle(disper));
-            let newNode = new Tnode(folderName,cadjson);
-            newNode.nivel=fatherNode.nivel+1;
+            let newNode = new Tnode(folderName,fatherNode.weight+1,cadjson);
+            newNode.nivel=fatherNode.node.nivel+1;
             /*if (tipoarchivo=="carpeta"){
                 
             }else{
@@ -52,7 +53,7 @@ class Tree{
             }
            */
             newNode.id = this.size;
-            fatherNode.children.push(newNode);
+            fatherNode.node.children.push(newNode);
             return folderName
         } else {
         console.log("Ruta no existe");
@@ -63,10 +64,10 @@ class Tree{
     modifiFolder(nameforlder,newname,fatherPath){
         let fatherNode = this.getFolder(fatherPath);
         let cont=0;
-        if(fatherNode ){
-            fatherNode.children.map(child => {
+        if(fatherNode.node ){
+            fatherNode.node.children.map(child => {
                 if(child.folderName==nameforlder) {
-                let childNames = fatherNode.children.map(child => child.folderName);
+                let childNames = fatherNode.node.children.map(child => child.folderName);
                 let copyCount = 1;
                 let nameaux=newname;
                 console.log("hijos ",childNames)
@@ -79,12 +80,13 @@ class Tree{
                 child.folderName=newname;
                 let disper=new SparseMatrix(newname);
                 child.matrizd= JSON.stringify(JSON.decycle(disper));
+          
             }else{
                 cont++;
             }});
             
         }
-        if (cont==fatherNode.children.length){
+        if (cont==fatherNode.node.children.length){
            return null
         }else{
             return newname
@@ -95,9 +97,9 @@ class Tree{
 
     modifiElementMatriz(newmatriz,fatherPath){
         let fatherNode = this.getFolder(fatherPath);
-        if(fatherNode ){
-            fatherNode.matrizd=newmatriz;
-            console.log("nodopardrematriz:",fatherNode.matrizd);
+        if(fatherNode.node ){
+            fatherNode.node.matrizd=newmatriz;
+            console.log("nodopardrematriz:",fatherNode.node.matrizd);
             
             
         }else{
@@ -111,11 +113,12 @@ class Tree{
     }
     eliminarfolder(nameforlder, fatherPath){
         let fatherNode = this.getFolder(fatherPath);
-        if(fatherNode){
+        if(fatherNode.node){
             //let Nodoaux =fatherNode.children.filter(child => child.tipo == "carpeta");
-            let childNames = fatherNode.children.map(child => child.folderName);
+            let childNames = fatherNode.node.children.map(child => child.folderName);
             if(childNames.includes(nameforlder)) {
-                fatherNode.children = fatherNode.children.filter(child => child.folderName != nameforlder);
+                fatherNode.node.children = fatherNode.node.children.filter(child => child.folderName != nameforlder);
+                
                 return 1
             }else{
                 return null
@@ -127,8 +130,8 @@ class Tree{
     buscararchivo(nameforlder, fatherPath) {
         let fatherNode = this.getFolder(fatherPath);
         console.log ("padre",fatherNode);
-        if (fatherNode ) {
-            let Nodoaux = fatherNode.children;
+        if (fatherNode.node ) {
+            let Nodoaux = fatherNode.node.children;
            /*if(opcion==1){
                 Nodoaux = fatherNode.children.filter(child => child.tipo != "carpeta");
                 console.log("sdf")
@@ -161,17 +164,19 @@ class Tree{
         if (node === null) {
             return null;
         }
-        let newNode = new Tnode(node.folderName, node.matrizd);
-        console.log("datos copi: ",node.folderName,  node.matrizd);
+        let newNode = new Tnode(node.folderName,node.peso,node.matrizd);
+        console.log("datos copi: ",node.folderName,node.matrizd);
         newNode.id = node.id;
         newNode.nivel = node.nivel;
+        newNode.peso= node.peso;
         newNode.children = node.children.map(child => this.#copiarNode(child));
+        
         return newNode;
     }
 
     getFolder(path){
         if(path == this.root.folderName){
-            return this.root;
+            return {node: this.root, weight: this.root.peso};
         }else{
             let temp = this.root;
             let folders = path.split('/');
@@ -185,7 +190,7 @@ class Tree{
                 }
                 temp = folder;
             }
-            return temp;
+            return {node: temp, weight: temp.peso}; 
         }
     }
 //no uso
@@ -202,85 +207,39 @@ class Tree{
           return null;
         }
     }
-
+  
     ngraph(){
         let nodes = "";
         let connections = "";
-        let auxconection="";
-        let rank="";
         let node = this.root;
         let queue = [];
         queue.push(node);
-        console.log("cola",queue)
+       
         while(queue.length !== 0){
             let len = queue.length;
             for(let i = 0; i < len; i ++){
                 let node = queue.shift();
-                
+                console.log("cola",queue)
                 nodes += `S_${node.id}[label="${node.folderName}" style="filled" fillcolor="skyblue3"];\n`;
-                if (node.children.length>1){
-                    
-                    nodes +=  `Si_${node.id} [shape="point" width=0.02 style=invis]; \n`;
-                    connections += `S_${node.id} -> Si_${node.id} [arrowhead=none];\n`
-                    auxconection="Si";
-                    if (node.children.length>3){
-                        rank+="{rank=same;";
-                        rank+=` Si_${node.id};`;
-                    }
-                }else{
-                    auxconection="S";
-                }
-                let auxarist="a";
-                let auxtam=0;
-                node.children.forEach( (item, index)  => {
-                    if (node.children.length>3){
-                        
-                        if ((index == node.children.length - 1)&& (node.children.length % 2 != 0)) {
-                            connections += `${auxconection}_${node.id} -> S_${item.id};\n`;
-                            rank+=`};\n`;
-                            
-                        } else {
-                            auxtam=node.children.length;
-                            if ((node.children.length % 2 != 0)) {
-                                auxtam--;
-                            }
-                            nodes +=  `Si_${auxarist}${node.id} [shape="point" width=0.02 style=invis]; \n`;
-                            connections += `Si_${auxarist}${node.id} -> S_${item.id};\n`;
-                            if (index!=0){
-                                if (index<(auxtam /2) ){
-                                    connections += `Si_${String.fromCharCode(auxarist.charCodeAt(0) - 1)}${node.id} -> Si_${auxarist}${node.id}[arrowhead=none];\n`;
-                                }else{
-                                    if (index==(auxtam/2)){
-                                        connections += `Si_${String.fromCharCode(auxarist.charCodeAt(0) - 1)}${node.id} -> ${auxconection}_${node.id}[arrowhead=none];\n`;
-                                        connections += `${auxconection}_${node.id} -> Si_${auxarist}${node.id}[arrowhead=none];\n`;
-                                    }else{
-                                        connections += `Si_${String.fromCharCode(auxarist.charCodeAt(0) - 1)}${node.id} -> Si_${auxarist}${node.id}[arrowhead=none];\n`;
-                                    }
-                                }
-                            }
-                            rank+=`Si_${auxarist}${node.id};`;
-                            if ((index == node.children.length - 1)){
-                                rank+=` };\n`;
-                            }
-                            auxarist=String.fromCharCode(auxarist.charCodeAt(0) + 1);
-                        }
-                        
-                    }else{
-                        connections += `${auxconection}_${node.id} -> S_${item.id};\n`;
-                    }
+                
+                node.children.forEach( item  => {
+                       
+                    connections += ` S_${node.id}-> S_${item.id} [headlabel="${node.peso}"];\n`;
+                   
                     
                     queue.push(item);
                 });
                 
             }
         }
-        return '\nrankdir=TB;\nsplines=ortho;\nnode[shape="box";];\n' +rank+ nodes +'\n'+ connections;
+        
+        return '\nlayout=neato; \nedge[dir=none]; node[shape="box";];\n' +nodes +'\n'+ connections;
     }
 
     getHTML(path){
         let node = this.getFolder(path);
         let code = "";
-        node.children.map(child => {
+        node.node.children.map(child => {
             code += ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${child.folderName}')">
             <img src="../Img/Carpeta4.png" width="150"/>
             <p class="h6 text-center">${child.folderName}</p>

@@ -297,7 +297,6 @@ class SparseMatrix{
         if (encontrado) {
             let result = [];
             let n_actual = aux.derecha;
-            console.log(aux.derecha);
             while (n_actual != null) {
                 result.push(n_actual);
                 n_actual = n_actual.derecha;

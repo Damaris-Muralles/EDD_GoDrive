@@ -1,14 +1,14 @@
 //--------------------------------------------------------------------------
 //                      CLASE NODO
 //--------------------------------------------------------------------------
+
 class AvlNodo{
-    constructor(item, treenari,actividad){
+    constructor(item, treenari){
         
         this.item = item;
         this.izquierda = null;
         this.derecha = null;
         this.treenari = treenari;
-        this.actividad =actividad;
         this.altura = 0;
         console.log("datos en nodo", this.izquierda,this.derecha, this.treenari, this.altura);
     }
@@ -56,9 +56,9 @@ class AvlTree{
     }
     #insertRecursive(item, node){
         if(node == null){
+            console.log(item)
             let arbolarchivo = new Tree(item.carpeta_raiz);
-            let listaactividad =new CircularList();
-            var node12 = new AvlNodo(item,arbolarchivo,JSON.stringify(JSON.decycle(listaactividad)));
+            var node12 = new AvlNodo(item,arbolarchivo);
             return node12;
         }
         
@@ -188,25 +188,23 @@ class AvlTree{
         }
     }
 
-    modificacion(valor1,valor2,userc ) {
-        return this.#modifirecursiva(valor1,valor2,userc, this.raizavl);
+    modificacion(valor1,userc ) {
+        return this.#modifirecursiva(valor1,userc, this.raizavl);
     }
-    #modifirecursiva(valor1,valor2,userc, nodo){
+    #modifirecursiva(valor1,userc, nodo){
         if (nodo==null){
             return null;
         }else if (userc == nodo.item.carnet){
             nodo.treenari=valor1;
-            nodo.actividad =valor2;
         }else if (userc < nodo.item.carnet){
-            return this.#modifirecursiva(valor1,valor2,userc,nodo.izquierda);
+            return this.#modifirecursiva(valor1,userc,nodo.izquierda);
         }else {
-            return this.#modifirecursiva(valor1,valor2,userc,nodo.derecha);
+            return this.#modifirecursiva(valor1,userc,nodo.derecha);
         }
     }
 
     enOrder(){
         let index = {valor: 0};
-        console.log("ordeer",this.raizavl);
         let html = this.#enOrderRecursive(this.raizavl, index);
         return html;
     }
@@ -281,5 +279,21 @@ class AvlTree{
         return row;
     }
 
-
+    ListarEstudiantes(){
+        let index = {valor: 0};
+        let lista = this.#ListarEstudiantesRecursive(this.raizavl, index);
+        return lista;
+    }
+    #ListarEstudiantesRecursive(nodo_actual, index){
+        let row = [];
+        if(nodo_actual.izquierda != null){
+            row.push(...this.#ListarEstudiantesRecursive(nodo_actual.izquierda, index));
+        }
+        row.push({nombre:nodo_actual.item.nombre ,carnet:nodo_actual.item.carnet ,pass:nodo_actual.item.password});
+        index.valor++;
+        if(nodo_actual.derecha != null){
+            row.push(...this.#ListarEstudiantesRecursive(nodo_actual.derecha, index));
+        }
+        return row;
+    }
 }
