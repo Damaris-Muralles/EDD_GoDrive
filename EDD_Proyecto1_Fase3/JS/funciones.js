@@ -25,13 +25,12 @@ let avlTree = new AvlTree();
 let carnetuser = localStorage.getItem("estudiante");
 let carpraiz = localStorage.getItem("raiz");
 let tablahash =new Hasht();
+let blockChain = new BlockChain();
 let user; 
 let ruta;
 let treenari=new Tree("/");
 let matrizdisperza=new SparseMatrix("/");
 let compartidos =[];
-let estudents=["e"];
-let mensajeschat=[{emisor: "Cristian Suy", receptor:"Estudiante 1", mensaje: "holeeeeeweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, hieeleowqer, werwerwwerwerwerwerwerwer", hora:"3:21"}, {emisor:"Estudiante 1", receptor:"Cristian Suy", mensaje:"hola que tal, ewowemkniwer, werokwperjnpwoejr", hora:"12:00"}]
 
 
 // IMPLEMENTANDO INDEXBD
@@ -39,6 +38,7 @@ let db;
 let request = indexedDB.open("miBaseDeDatos", 1);
 
 request.onupgradeneeded = function(event) {
+    console.log("ESTA CREANDO UN DATO")
     db = event.target.result;
     let objectStore = db.createObjectStore("miAlmacen", { keyPath: "id" });
     let transaction = event.target.transaction;
@@ -69,6 +69,19 @@ request.onupgradeneeded = function(event) {
             console.log("Error al agregar el objeto:", event.target.error.name);
 
         };
+        transaction = db.transaction(["miAlmacen"], "readwrite");
+                
+        objectStore = transaction.objectStore("miAlmacen");
+
+        request = objectStore.add({ id: 3, blockchain:new BlockChain()});
+
+        request.onsuccess = function(event) {
+            console.log("Objeto blockchain correctamente");
+        };
+        request.onerror = function(event) {
+            console.log("Error al agregar el objeto blockchain:", event.target.error.name);
+
+        };
     };
 
 };
@@ -87,7 +100,13 @@ request.onsuccess = function(event) {
             tablahash.capacidad=objetos[0].tablaHash.capacidad;
             tablahash.espaciosUsados=objetos[0].tablaHash.espaciosUsados;
             compartidos.push(...objetos[1].compartido);
+            console.log("sdfsdfewrwerwerwer",objetos[2].blockchain)
+            blockChain.cabeza = objetos[2].blockchain.cabeza;
+            blockChain.cola = objetos[2].blockchain.cola;
+            blockChain.tam = objetos[2].blockchain.tam;
             verpermisos();
+            compartidosuser();
+            listaparaMs();
             
         }
         console.log("sds",tablahash);
@@ -406,9 +425,9 @@ $('#registrospermisos tbody').on('click', '.archivo', function(e) {
 });
 //->6. Opcion de verarchivos compartidos de forma general
 function verpermisos(){
-
-    if(compartidos.length>0){
-    
+   
+    if(compartidos.length>0&&user==undefined){
+  
         try{
             let rowh="";
             for (let i = 0; i < compartidos.length; i++) {
@@ -437,6 +456,10 @@ function verpermisos(){
     }
 }
 //->7. grafica de mensajeria
+
+
+
+
 
 
 //FUNCIONES DE LOS ESTUDIANTIES
@@ -862,7 +885,486 @@ function permisosarchivos(){
     
 }
 
+// 8. Opcion compartidos conmigo: los permisos
+function compartidosuser() {
+    if(compartidos.length>0&&user!=undefined){
+
+        try{
+            
+            let archivoc="";
+            for (let i = 0; i < compartidos.length; i++) {
+                if(compartidos[i].destino==user.item.carnet){
+                    let exten = compartidos[i].archivo.split(".")[1];
+                    if (exten=="pdf"){
+                        archivoc+= ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrararchivo('${compartidos[i].archivo}', '${compartidos[i].b64}')">
+                    <img src="../Img/archivopng.png" width="100"/>
+                    <p class="h6 text-center">${compartidos[i].archivo}</p>
+                    </div>`
+                    }
+                    if (exten=="txt"){
+                        archivoc += ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrararchivo('${compartidos[i].archivo}', '${compartidos[i].b64}')">
+                    <img src="../Img/archivo2.png" width="100"/>
+                    <p class="h6 text-center">${compartidos[i].archivo}</p>
+                    </div>`
+                    }
+                    if (exten!="txt" && exten!="pdf" ){
+                        archivoc += ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrararchivo('${compartidos[i].archivo}', '${compartidos[i].b64}')">
+                    <img src="../Img/imag3.png" width="100"/>
+                    <p class="h6 text-center">${compartidos[i].archivo}</p>
+                    </div>`
+                    }
+                }
+                    
+            }
+            $('#archivocompartido').html(archivoc);
+
+
+        }catch(e){
+            console.log("errr")
+        }
+
+    }
+}
+
+function entrararchivo(archivo,datos){
+
+    let exten = archivo.split(".")[1];
+    if (exten=="pdf"){
+        Swal.fire({
+            html:`<embed id="outputPDF" src="${datos}" type="application/pdf" width="500" height="500">`,
+            width: 600,
+            height: 600,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+              },
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: `<a id="downloadLink" href="${datos}" download="${archivo}" style="text-decoration: none;color:white;">Descargar PDF</a>`,
+              cancelButtonText: 'Cerrar',
+              background: '#fff url(../Img/fondo_claro_p.png)',
+              backdrop: `
+              rgba(14, 14, 15, 0.816)
+              `
+            }).then((result) => {
+              if (result.isConfirmed) {
+  
+                Swal.fire(
+                  'Descargado!',
+                  'Tu archivo se descargo correctamente.',
+                  'success'
+                )
+              }
+            });
+    }
+    if ( exten!="txt" &&  exten!="pdf" ){
+        
+        Swal.fire({
+            html:`<img id="outputImage" src="${datos}" alt="Imagen convertida"  style="width:500px; height:500px;"></img>`,
+            width: 600,
+            height: 600,
+            
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+              },
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `<a id="downloadLink" href="${datos}" download="${archivo}" style="text-decoration: none;color:white;">Descargar imagen</a>`,
+            cancelButtonText: 'Cerrar',
+            background: '#fff url(../Img/fondo_claro_p.png)',
+            backdrop: `
+            rgba(14, 14, 15, 0.816)
+            `
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+              Swal.fire(
+                'Descargado!',
+                'Tu archivo se descargo correctamente.',
+                'success'
+              )
+            }
+          });
+    }
+
+    if (exten=="txt"){
+        // Decodificar la cadena de base64
+        let dataUrl = datos;
+        let encodedData = dataUrl.split(",")[1];
+        let decodedText = atob(encodedData);
+        // para no poder editar el texto disabled en el textarea
+        // Mostrar el texto decodificado
+        Swal.fire({
+
+            html:`<textarea id="outputText" cols="50" rows="10">${decodedText}</textarea>`,
+            width: 600,
+            height: 600,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+              },
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: `<a id="downloadLink" href="${datos}" download="${archivo}" style="text-decoration: none;color:white;">Descargar TXT</a>`,
+              cancelButtonText: 'Cerrar',
+              background: '#fff url(../Img/fondo_claro_p.png)',
+              backdrop: `
+              rgba(14, 14, 15, 0.816)
+              `
+            }).then((result) => {
+              if (result.isConfirmed) {
+  
+                Swal.fire(
+                  'Descargado!',
+                  'Tu archivo se descargo correctamente.',
+                  'success'
+                )
+              }
+            });
+    }
+ 
+}
+
+
+
+
+
+
 // 8. mensajeria
+let selectedUser=null;
+let ul;
+let formSelect;
+
+function listaparaMs(){
+
+    if(user!=undefined){
+        let select = document.getElementById("EstudiantesReg");
+
+        for (let i = 0; i < tablahash.capacidad; i++) {
+            if (tablahash.tabla[i] != null ) {
+                if(tablahash.tabla[i].carnet!=carnetuser){
+                    let option = document.createElement("option");
+                    option.text = tablahash.tabla[i].carnet;
+                    option.value = tablahash.tabla[i].carnet;
+                    select.add(option);
+                }
+               
+            }
+        }
+
+        if (blockChain.tam>0){
+            let mensajeschat =blockChain.listmenssage(carnetuser); 
+        
+            /// registra si ya ha habido mensajes 
+            if (mensajeschat.length>0){
+                for (let i = 0; i < mensajeschat.length; i++) {
+                    let texto = "";
+                    if (mensajeschat[i].emisor === carnetuser) {
+                        texto = mensajeschat[i].receptor;
+                    } else if (mensajeschat[i].receptor === carnetuser) {
+                        texto = mensajeschat[i].emisor;
+                    }
+                    
+                    // Verificar si el texto ya existe en la lista ul
+                    let exists = false;
+                    for (const li of ul.querySelectorAll('li')) {
+                        if (li.textContent === texto) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    
+                    // Si el texto no existe en la lista ul, agregarlo
+                    if (!exists) {
+                        let li = document.createElement("li");
+                        li.textContent = texto;
+                        ul.appendChild(li);
+                        
+                        // Agregar un controlador de eventos click al nuevo elemento li
+                        addClickEventListenerToLi(li);
+                        
+                    }
+                }
+            }
+        
+        }
+
+    }
+  
+}
+// Función para agregar un controlador de eventos click a un elemento li
+function addClickEventListenerToLi(li) {
+    li.addEventListener('click', function() {
+        // Restablecer el color de fondo de cualquier otro elemento li seleccionado
+        for (const otherLi of ul.querySelectorAll('li')) {
+            otherLi.style.backgroundColor = '';
+        }
+        
+        // Cambiar el color de fondo del elemento li haciendo clic
+        li.style.backgroundColor = 'lightblue';
+         // Actualizar el valor de la variable selectedUser
+        selectedUser = li.textContent;
+        
+        // Obtener una referencia a la sección de mensajes
+        const messages = document.querySelector('.messages');
+        
+        // Eliminar todo el contenido de la sección de mensajes
+        while (messages.firstChild) {
+            messages.removeChild(messages.firstChild);
+        }
+        
+        // Crear un nuevo elemento h2 con el texto del elemento li seleccionado
+        const h2 = document.createElement('h2');
+        h2.textContent = li.textContent;
+        
+        // Agregar el nuevo elemento h2 a la sección de mensajes
+        messages.appendChild(h2);
+        
+        // Crear un nuevo elemento div con la clase messages-container
+        const newMessagesContainer = document.createElement('div');
+        newMessagesContainer.classList.add('messages-container');
+        
+        // Agregar el nuevo contenedor de mensajes a la sección de mensajes
+        messages.appendChild(newMessagesContainer);
+        // Obtener una referencia al contenedor de mensajes
+        const messagesContainer = document.querySelector('.messages-container');
+        
+        let mensajeschat =blockChain.listmenssage(carnetuser); 
+        console.log("lista",mensajeschat)
+       // Iterar sobre la lista de mensajes
+        for (const chatMessage of mensajeschat) {
+    // Verificar si el mensaje es relevante para el chat actual
+    if (chatMessage.emisor === carnetuser && chatMessage.receptor === selectedUser ||
+        chatMessage.emisor === selectedUser && chatMessage.receptor === carnetuser) {
+        // Crear un nuevo elemento div para el mensaje
+
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.style.maxWidth = '80%';
+        let formades=null;
+        console.log("que carajo", carnetuser)
+        // Agregar la clase sender o receiver dependiendo de si el mensaje es del emisor o del receptor
+            if (chatMessage.emisor === carnetuser) {
+                messageElement.classList.add('sender');
+                console.log("entro aqui")
+                // Agregar un elemento span con el texto "Tú"
+                const senderElement = document.createElement('span');
+                senderElement.textContent = 'Tú';
+                senderElement.style.fontWeight = 'bold';
+                messageElement.appendChild(senderElement);
+            } else {
+                messageElement.classList.add('receiver');
+                
+                // Agregar un elemento span con el nombre del receptor
+                const receiverElement = document.createElement('span');
+                receiverElement.textContent = selectedUser;
+                receiverElement.style.fontWeight = 'bold';
+                messageElement.appendChild(receiverElement);
+            }
+
+            // Agregar un salto de línea
+            messageElement.appendChild(document.createElement('br'));
+            var strd = (parseInt(carnetuser)+parseInt(selectedUser)).toString();
+            var resultdes = "";
+            console.log("sumeww",parseInt(carnetuser)+parseInt(selectedUser))
+            for (var i = 0; i < strd.length; i++) {
+                var charCode = parseInt(strd[i]) + 97;
+                resultdes += String.fromCharCode(charCode);
+            }
+            console.log("syma.....", resultdes)
+    
+            var decryptedd = CryptoJS.AES.decrypt(chatMessage.mensaje,  resultdes.toString());
+            console.log("des",decryptedd.toString(CryptoJS.enc.Utf8));
+
+            
+
+            // Establecer el texto del elemento de mensaje
+            const textElement = document.createElement('span');
+            textElement.textContent = "   "+decryptedd.toString(CryptoJS.enc.Utf8)+ "   ";
+            messageElement.appendChild(textElement);
+
+            // Agregar un salto de línea
+            messageElement.appendChild(document.createElement('br'));
+            // Agregar un salto de línea
+            messageElement.appendChild(document.createElement('br'));
+            // Agregar un elemento span con la hora del mensaje
+            const timeElement = document.createElement('span');
+            timeElement.textContent = chatMessage.hora;
+            timeElement.style.fontSize = '10px';
+            timeElement.style.fontStyle = 'italic';
+            messageElement.appendChild(timeElement);
+            // Agregar el elemento de mensaje al contenedor de mensajes
+            messagesContainer.appendChild(messageElement);
+        }
+        }
+        // Crear un nuevo elemento form
+        const form = document.createElement('form');
+        
+        // Crear un nuevo elemento input con la clase msuser
+        const input = document.createElement('textarea');
+        input.classList.add('msuser');
+        input.placeholder = 'Escribe un mensaje';
+        
+        // Agregar el nuevo elemento input al nuevo elemento form
+        form.appendChild(input);
+        const button = document.createElement('button');
+        button.classList.add('btn', 'btn-primary');
+        button.type = 'button';
+        button.textContent = 'Enviar';
+        button.addEventListener('click', enviarmensaje);
+
+        // Agregar el nuevo elemento button al nuevo elemento form
+        form.appendChild(button);
+
+        // Agregar el nuevo elemento form a la sección de mensajes
+        messages.appendChild(form);
+    });
+}
+
+if(carnetuser!=undefined ||carnetuser!=null){
+    // Obtener una referencia a la lista ul
+    ul = document.querySelector('.chats ul');
+    // Obtener una referencia al elemento select
+    formSelect = document.querySelector('#EstudiantesReg');
+    // Agregar un controlador de eventos click a cada elemento li en la lista ul
+    for (const li of ul.querySelectorAll('li')) {
+        addClickEventListenerToLi(li);
+    }
+      // Agregar un controlador de eventos change al elemento select
+    formSelect.addEventListener('change', function() {
+        // Obtener el índice de la opción seleccionada
+        const selectedIndex = formSelect.selectedIndex;
+        
+        // Verificar si el índice de la opción seleccionada es 0
+        if (selectedIndex === 0) {
+            // No agregar el elemento a la lista
+            return;
+        }
+        
+        // Obtener la opción seleccionada
+        const selectedOption = formSelect.options[selectedIndex];
+        
+        // Obtener el texto de la opción seleccionada
+        const selectedText = selectedOption.text;
+        
+        // Verificar si el texto seleccionado ya existe en la lista ul
+        let exists = false;
+        for (const li of ul.querySelectorAll('li')) {
+            if (li.textContent === selectedText) {
+                exists = true;
+                break;
+            }
+        }
+        
+        // Si el texto seleccionado no existe en la lista ul, agregarlo
+        if (!exists) {
+            const li = document.createElement('li');
+            li.textContent = selectedText;
+            ul.appendChild(li);
+            
+            // Agregar un controlador de eventos click al nuevo elemento li
+            addClickEventListenerToLi(li);
+            
+            // Disparar el evento click en el nuevo elemento li para mostrar su contenedor de mensajes
+            li.click();
+        } else {
+            // Si el texto seleccionado ya existe en la lista ul, encontrar el elemento li correspondiente y disparar su evento click para mostrar su contenedor de mensajes
+            for (const li of ul.querySelectorAll('li')) {
+                if (li.textContent === selectedText) {
+                    li.click();
+                    break;
+                }
+            }
+        }
+    });
+}
+
+async  function enviarmensaje() { 
+// Obtener el valor del input del mensaje
+const message = document.querySelector('.msuser').value; 
+    // Agregar el nuevo mensaje a la lista mensajeschat 
+   
+    var str = (parseInt(selectedUser)+parseInt(carnetuser)).toString();
+    var resultC = "";
+
+    for (var i = 0; i < str.length; i++) {
+        var charCode = parseInt(str[i]) + 97;
+        resultC += String.fromCharCode(charCode);
+    }
+
+    
+    let encrip= CryptoJS.AES.encrypt(message, resultC.toString())
+
+    await blockChain.insert(carnetuser,selectedUser,  encrip.toString());
+
+
+ 
+    // Crear un nuevo elemento div para el mensaje 
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message', 'sender'); 
+    // Agregar un elemento span con el texto "Tú" 
+    const senderElement = document.createElement('span'); 
+    senderElement.textContent = 'Tú';
+    messageElement.appendChild(senderElement);
+    // Agregar un salto de línea 
+    messageElement.appendChild(document.createElement('br')); 
+    // Establecer el texto del elemento de mensaje
+    const textElement = document.createElement('span'); 
+    textElement.textContent = message;
+    messageElement.appendChild(textElement); 
+    // Agregar un salto de línea 
+    messageElement.appendChild(document.createElement('br'));
+    messageElement.appendChild(document.createElement('br')); 
+    // Agregar un elemento span con la hora del mensaje c
+    const timeElement = document.createElement('span');
+    timeElement.textContent = new Date().toLocaleTimeString();
+    const date = new Date();
+    
+    const options1 = { year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+    const dateString1 = date.toLocaleString('es-ES', options1);
+   
+    const formattedDate1 = dateString1.replace(/(\d+)\/(\d+)\/(\d+), (\d+):(\d+)/, '$1-$2-$3  4:$5');
+    timeElement.textContent = formattedDate1;
+    messageElement.appendChild(timeElement); 
+    // Agregar el elemento de mensaje al contenedor de mensajes
+    const messagesContainer = document.querySelector('.messages-container');
+    messagesContainer.appendChild(messageElement); 
+
+
+    // actualizando datos en indexdb
+    transaction = db.transaction(["miAlmacen"], "readwrite");
+          
+    objectStore = transaction.objectStore("miAlmacen");
+   console.log("pwwwwwwwwwwwwwwwwwwwwwucgosdf",blockChain.cabeza)
+    request = objectStore.put({ id: 3, blockchain: blockChain });
+  
+    request.onsuccess = function(event) {
+        console.log("Objeto blockchain agregado correctamente");
+    };
+  
+    request.onerror = function(event) {
+        console.log("Error al agregar el objeto blockchain :", event.target.error.name);
+    };
+    
+    document.querySelector('.msuser').value = '';
+}
+
+
+
+
+
+
+
 
 
 
@@ -870,11 +1372,6 @@ function guardarMatriz() {
     const matrizString = JSON.stringify(JSON.decycle(matrizdisperza));
     return matrizString;
 }
-
-
-
-
-
 
 
 /////REPORTES --------------------------------------------------------

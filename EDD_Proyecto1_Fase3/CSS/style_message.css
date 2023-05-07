@@ -124,7 +124,7 @@
 }
 
 .message span:last-child {
-    font-size: smaller;
+    font-size: 10px;
     font-style: italic;
 }
 

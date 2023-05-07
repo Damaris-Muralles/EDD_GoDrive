@@ -244,7 +244,6 @@ class SparseMatrix{
             arrayar.push({tipo:tx.tipo, valor:tx.valor});
             tx = tx.abajo;
         }
-        console.log("array: ",arrayar)
         let arregloSinDuplicados = arrayar.filter((item, index, arr) => {
             return (
               index ==
@@ -253,10 +252,10 @@ class SparseMatrix{
               )
             );
           });
-        console.log("sin dupli",arregloSinDuplicados)
         arregloSinDuplicados.forEach((tx)=>{
             //console.log(tx.valor,": ", str)
-            console.log("msdf ",tx.tipo);
+          
+
             if (tx.tipo=="pdf"){
             cadenaimprarchivos+= ` <div class="col-6 col-sm-6 col-md-4 col-lg-3 archivos" onclick="entrarCarpeta('${tx.valor}')">
             <img src="../Img/archivopng.png" width="100"/>
