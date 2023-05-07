@@ -38,7 +38,6 @@ let db;
 let request = indexedDB.open("miBaseDeDatos", 1);
 
 request.onupgradeneeded = function(event) {
-    console.log("ESTA CREANDO UN DATO")
     db = event.target.result;
     let objectStore = db.createObjectStore("miAlmacen", { keyPath: "id" });
     let transaction = event.target.transaction;
@@ -100,7 +99,6 @@ request.onsuccess = function(event) {
             tablahash.capacidad=objetos[0].tablaHash.capacidad;
             tablahash.espaciosUsados=objetos[0].tablaHash.espaciosUsados;
             compartidos.push(...objetos[1].compartido);
-            console.log("sdfsdfewrwerwerwer",objetos[2].blockchain)
             blockChain.cabeza = objetos[2].blockchain.cabeza;
             blockChain.cola = objetos[2].blockchain.cola;
             blockChain.tam = objetos[2].blockchain.tam;
@@ -109,7 +107,6 @@ request.onsuccess = function(event) {
             listaparaMs();
             
         }
-        console.log("sds",tablahash);
      
     };
     request.onerror = function(event) {
@@ -146,7 +143,6 @@ if (carnetuser === null){
     if (treenari instanceof Tree) {
         console.log("Cargando carpetas almacenadas: ",treenari);
         nodearchivo=treenari.root;
-        console.log("json matriz:",nodearchivo);
         // Copiar los datos de matriz a la nueva instancia
         matrizdisperza=new SparseMatrix("/");
         //matrizdisperza.copiarmatriz(matrizjson);
@@ -273,12 +269,9 @@ function cargarestudiantes(e) {
             students= JSON.parse(info.result).alumnos;
             let nuevostudent = [...new Set(students)];
             nuevostudent.sort((a, b) =>  a.carnet - b.carnet);
-            console.log(nuevostudent)
             //insertando en avl
             for(let i = 0; i < nuevostudent.length; i++){
-                console.log("INSERTANDO dato: ",i, avlTree);
                 avlTree.insertar(nuevostudent[i]);
-                console.log("TERMINO DE INSERTAR DATO ");
             }
             // mostrando la lista en tablero
             $('#registrostrudent tbody').html(
@@ -356,7 +349,7 @@ function AvlGraph(){
     let url = 'https://quickchart.io/graphviz?graph=';
     let contenido= `digraph G { ${avlTree.treeGraph()} }`
     $("#graph").attr("src", url + contenido);
-    console.log( url + contenido)
+    console.log( "tree: "+contenido)
     // para descarga---- no funciona correctamente
     $("#downloadAVL").attr("href", url + contenido);
 }
@@ -492,9 +485,7 @@ function crearCarpeta(e){
     $('#namecarpeta').val("");
 
     //guardando los cambios en el localStorage
-    console.log("registro de arbol: ",treenari);
     avlTree.modificacion(treenari,carnetuser);
-    console.log("registro de avl: ",avlTree);
 
     localStorage.setItem("arbolavl", JSON.stringify(avlTree));
 }
@@ -518,7 +509,6 @@ function entrarCarpeta(folderName){
         let curretPath = path == '/'? path + folderName : path + "/"+ folderName;
         $('#path').val(curretPath);
         ruta=curretPath;
-        console.log(ruta);
          
         let nodearchivo3 = new Tnode(1,1);
         if (curretPath!="/"){
@@ -529,13 +519,12 @@ function entrarCarpeta(folderName){
             nodearchivo3=treenari.root;
         }
        
-        console.log("matris: ",nodearchivo3);
        
  // Copiar los datos de matriz a la nueva instancia
  matrizdisperza=new SparseMatrix("/");
  matrizdisperza.cabeza = JSON.retrocycle(JSON.parse(nodearchivo3.matrizd)).cabeza;
  matrizdisperza.cantidad =JSON.retrocycle(JSON.parse(nodearchivo3.matrizd)).cantidad;
- console.log("sdf ",matrizdisperza);
+
  //validar que sea una instancia de matriz
  if (matrizdisperza instanceof SparseMatrix) {
      console.log("Cargando archivos almacenados: ",matrizdisperza);
@@ -555,7 +544,6 @@ function verarchivos(completname){
     // se busca el archivo en la matriz
     let nodearchivo = [];
     nodearchivo=matrizdisperza.buscarPorX(completname);
-    console.log(nodearchivo,nodearchivo[0].tipo, nodearchivo[0].format_b64)
     // se visualiza  dependiendo si se trata de un pdf, txt o imagen
     
     if (nodearchivo[0].tipo=="pdf"){
@@ -629,7 +617,6 @@ function verarchivos(completname){
         let dataUrl = nodearchivo[0].format_b64;
         let encodedData = dataUrl.split(",")[1];
         let decodedText = atob(encodedData);
-        console.log(nodearchivo[0].format_b64);
         // para no poder editar el texto disabled en el textarea
         // Mostrar el texto decodificado
         Swal.fire({
@@ -682,16 +669,12 @@ function carpetaanterior(){
             let nodearchivo1=new Tnode(1,1);
             let archivoraiz="/";
             let pathlist=[];
-            console.log(path);
             if (path!=archivoraiz){
                 path="raiz"+path;
-                console.log(path);
                 pathlist=path.split("/");
-                console.log(pathlist);
                 archivoraiz= pathlist.pop();
                 let newPath = pathlist.join("/");
                 newPath=newPath.replace("raiz","");
-                console.log("buquedabar: ",archivoraiz, newPath);
                 nodearchivo1=treenari.buscararchivo(archivoraiz, newPath);
 
             }else{
@@ -730,7 +713,6 @@ function ModificarCarpeta(){
     let folderName =  $('#mdnamecarpeta').val();
     let newName =  $('#nuevoname').val();
     let path = $('#path').val();
-    console.log(folderName, newName,path)
     let res=treenari.modifiFolder(folderName,newName,path);
     if (res!=null){
         Swal.fire(
@@ -750,9 +732,7 @@ function ModificarCarpeta(){
     $('#mdnamecarpeta').val("");
     $('#nuevoname').val("");
     //guardando los cambios en el localStorage
-    console.log(treenari);
     avlTree.modificacion(treenari,carnetuser);
-    console.log(avlTree);
 
     localStorage.setItem("arbolavl", JSON.stringify(avlTree));
 }
@@ -780,9 +760,7 @@ function eliminarCarpeta(){
     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos());
     $('#eliminarcarpeta').val("");
     //guardando los cambios en el localStorage
-    console.log(treenari);
     avlTree.modificacion(treenari,carnetuser);
-    console.log(avlTree);
 
     localStorage.setItem("arbolavl", JSON.stringify(avlTree));
 }
@@ -792,7 +770,6 @@ function convertToBase64() {
     let path =  $('#path').val();
     // Leer archivos
     var selectedFiles = document.getElementById("formFileMultiple").files;
-    console.log(selectedFiles.length)
     // Verificar que los archivos no estén vacíos
     if (selectedFiles.length > 0) {
         for (var i = 0; i < selectedFiles.length; i++) {
@@ -818,10 +795,7 @@ function convertToBase64() {
                     $('#carpetas').html(treenari.getHTML(path)+matrizdisperza.Mostrararchivos());
                       //guardando los cambios en el localStorage
                         treenari.modifiElementMatriz(guardarMatriz(),path);
-                        console.log("tree",treenari);
                         avlTree.modificacion(treenari,carnetuser);
-                        console.log("arbol",avlTree);
-
                         localStorage.setItem("arbolavl", JSON.stringify(avlTree));
 
                };
@@ -854,7 +828,7 @@ function permisosarchivos(){
             transaction = db.transaction(["miAlmacen"], "readwrite");
           
             objectStore = transaction.objectStore("miAlmacen");
-            console.log("cs",compartidos)
+            console.log("Compartido: ",compartidos)
             request = objectStore.put({ id: 2, compartido:compartidos });
           
             request.onsuccess = function(event) {
@@ -1140,7 +1114,7 @@ function addClickEventListenerToLi(li) {
         const messagesContainer = document.querySelector('.messages-container');
         
         let mensajeschat =blockChain.listmenssage(carnetuser); 
-        console.log("lista",mensajeschat)
+        console.log("lista mensajes: ",mensajeschat)
        // Iterar sobre la lista de mensajes
         for (const chatMessage of mensajeschat) {
     // Verificar si el mensaje es relevante para el chat actual
@@ -1152,11 +1126,9 @@ function addClickEventListenerToLi(li) {
         messageElement.classList.add('message');
         messageElement.style.maxWidth = '80%';
         let formades=null;
-        console.log("que carajo", carnetuser)
         // Agregar la clase sender o receiver dependiendo de si el mensaje es del emisor o del receptor
             if (chatMessage.emisor === carnetuser) {
                 messageElement.classList.add('sender');
-                console.log("entro aqui")
                 // Agregar un elemento span con el texto "Tú"
                 const senderElement = document.createElement('span');
                 senderElement.textContent = 'Tú';
@@ -1176,15 +1148,13 @@ function addClickEventListenerToLi(li) {
             messageElement.appendChild(document.createElement('br'));
             var strd = (parseInt(carnetuser)+parseInt(selectedUser)).toString();
             var resultdes = "";
-            console.log("sumeww",parseInt(carnetuser)+parseInt(selectedUser))
             for (var i = 0; i < strd.length; i++) {
                 var charCode = parseInt(strd[i]) + 97;
                 resultdes += String.fromCharCode(charCode);
             }
-            console.log("syma.....", resultdes)
     
             var decryptedd = CryptoJS.AES.decrypt(chatMessage.mensaje,  resultdes.toString());
-            console.log("des",decryptedd.toString(CryptoJS.enc.Utf8));
+        
 
             
 
@@ -1345,7 +1315,6 @@ const message = document.querySelector('.msuser').value;
     transaction = db.transaction(["miAlmacen"], "readwrite");
           
     objectStore = transaction.objectStore("miAlmacen");
-   console.log("pwwwwwwwwwwwwwwwwwwwwwucgosdf",blockChain.cabeza)
     request = objectStore.put({ id: 3, blockchain: blockChain });
   
     request.onsuccess = function(event) {
@@ -1375,20 +1344,32 @@ function guardarMatriz() {
 
 
 /////REPORTES --------------------------------------------------------
-
+function BlockGraph(op){
+    let url = 'https://quickchart.io/graphviz?graph=';
+    if (op==2){
+        let body = `digraph G {\n${blockChain.blockReport()}\n}`;
+        console.log( "grafica block    ",body)
+        $("#graphbb").attr("src", url + body);
+    }else{
+        document.getElementById("Blocktxt").value =  blockChain.print();
+    }
+    
+}
 // reporte del arbol n-ario  -- estilos
 $("#nariobutton").on("click", function() {
     NGraph();
   });
 function NGraph(){
-    console.log(treenari);
     let url = 'https://quickchart.io/graphviz?graph=';
     let body = `digraph G { ${treenari.ngraph()} }`;
-    console.log( url +  body)
+    console.log( "carpetas    ",body)
     $("#graphn").attr("src", url + body);
     // para descarga---- no funciona correctamente
     $("#downloadN").attr("href", url + body);
 }
+
+
+
 
 /*
 // 9. reporte de matriz dispersa

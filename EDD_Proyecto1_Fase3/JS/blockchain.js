@@ -25,7 +25,6 @@ class BlockChain{
 
 
     async insert(transmitter, receiver, message){
-        console.log("quie, con", transmitter,this.tam)
         let newNode = new Block(this.tam, transmitter, receiver, message, "","");
         if(this.cabeza == null){
             // HASH ANTERIOR DEL PRIMER BLOQUE
@@ -50,7 +49,6 @@ class BlockChain{
             // AUMENTAR TAMAÑO
             this.tam++;
         }
-        console.log("sdf",this.cabeza, this.cola)
     }
 
    
@@ -68,15 +66,27 @@ class BlockChain{
         return hash;
     }
 
-    // METODO PARA IMPRIMIR EN CONSOLA
+    // METODO PARA IMPRIMIR en textarea
     print(){        
+        let text="";
         if(this.cabeza !== null){
             let temp = this.cabeza;
+            
             while(temp !== null){
-                console.log(temp);
+                text+=`Index: ${temp.index}
+TimeStamp: ${this.getFormatDate(temp.timestamp)}
+Emisor: ${temp.transmitter}
+Receptor: ${temp.receiver}
+Mensaje: ${temp.message}
+PreviousHash: ${temp.previousHash}
+Hash: ${temp.hash}
+
+
+`;
                 temp = temp.siguiente;
             }
         }
+        return text;
     }
 
 
@@ -89,43 +99,10 @@ class BlockChain{
     }
 
 
-
-
-
-
-    // NÚMEROS DE CARNET DEL CHAT
-    getMessages(transmitter, receiver){
-        if(this.cabeza !== null){
-            let msgs = "";
-            let temp = this.cabeza;
-            while(temp !== null){
-                if(String(temp.receiver) === String(transmitter)){
-                    if(String(temp.transmitter) === String(receiver)){
-                        msgs += `<li class="list-group-item">${temp.message}</li>`;
-                    }
-                }else if(String(temp.transmitter) === String(transmitter)){
-                    if(String(temp.receiver) === String(receiver)){
-                        msgs += `<li class="list-group-item bg-primary text-light" style="text-align: right">${temp.message}</li>`;
-                    }
-                }
-                temp = temp.siguiente;
-            }
-            if(msgs){
-                return `
-                    <ul class="list-group">
-                        ${msgs}
-                    </ul>
-                `;
-            }
-        }
-        return "No hay mensajes";
-    }
-
     listmenssage(carnetuser){
         let messagechat=[];
         if(this.cabeza !== null &&this.cabeza!=undefined){
             let temp = this.cabeza;
-            console.log("por comprobacion",temp, this.cabeza)
             while(temp !== null && temp!=undefined){
                 if(String(temp.receiver) === String(carnetuser)){
                     messagechat.push({emisor:temp.transmitter , receptor:temp.receiver, mensaje: temp.message, hora:this.getFormatDate(temp.timestamp)});
@@ -139,53 +116,27 @@ class BlockChain{
         return messagechat; 
     }
 
-    blockReport(index = 0){
+    blockReport(){
+        let nodos="";
+        let conexion="";
         if(this.cabeza){
+            
             let temp = this.cabeza;
+            
             while(temp !== null){
-                if(temp.index === index){
-                    // EL NOMBRE DE LA TABLA TIENE EL INDEX DEL BLOQUE, PARA PODER OBTENER EL SIGUIENTE O EL ANTERIOR
-                    return `
-                        <table class="table table-bordered" id="block-table" name="${temp.index}">
-                            <tbody>
-                                <tr>
-                                    <th scope="row" class="col-3">Index</th>
-                                    <td class="col-9">${temp.index}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Timestamp</th>
-                                    <td>${temp.getFormatDate()}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Transmitter</th>
-                                    <td>${temp.transmitter}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Receiver</th>
-                                    <td>${temp.receiver}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Message</th>
-                                    <td>${temp.message}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Previus Hash</th>
-                                    <td>${temp.previousHash}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Hash del Bloque</th>
-                                    <td>${temp.hash}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    `;
-                }else{
+                nodos+=`   N${temp.index} [shape=box label="TimeStamp: ${this.getFormatDate(temp.timestamp)}\\nEmisor: ${temp.transmitter}\\nReceptor: ${temp.receiver}\\nPreviousHash: ${temp.previousHash}" style="filled" fillcolor="skyblue3"];\n`;
+            if (temp.index==0){
+                conexion+=`   N${temp.index} `;
+            }else{
+                conexion+=` -> N${temp.index} `;
+            }
+            
                     temp = temp.siguiente;
-                }
+                
 
             }
         }
-        return "";
+        return nodos+conexion;
     }
 
 

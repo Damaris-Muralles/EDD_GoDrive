@@ -21,7 +21,6 @@ class SparseMatrix{
     }
     
     insertard(x,y,valor,contenido,tipoarchivo){
-        console.log("insertando: ",x,y,valor,contenido,tipoarchivo)
       
         let cont=0;
         let existente=true;
@@ -29,20 +28,16 @@ class SparseMatrix{
 
         while(existente) {
             let fileExtension="";
-            console.log("resilsdf")
             let resultb=this.buscarPorX(nameaux);
-            console.log("result repeticion")
             if  (resultb==null){
                 existente=false;
             }else{
                 if(y=="NC"){
                     console.log("YA EXISTE UN ARCHIVO CON EL NOMBRE, SE CREO COPIA");
                     cont++;
-                    console.log(x.split(".").pop())
                     fileExtension = "."+x.split(".").pop();
                     nameaux=x.split(".")[0];
                     nameaux = nameaux + "_Copia" + cont +fileExtension;
-                    console.log("nombre: ",nameaux);
                 }else{
                     existente=false;
                 }
@@ -50,7 +45,6 @@ class SparseMatrix{
             }
         }
         x=nameaux;
-        console.log("insertando1: ",x,y,valor,contenido,tipoarchivo)
         // CREAR CABECERAS DE LAS FILAS O EJE X
         this.#xcabezaers(x,tipoarchivo);
         // CREAR CABECERAS DE LAS COLUMNAS O EJE Y
@@ -206,7 +200,6 @@ class SparseMatrix{
                 str += ty.valor + ",";
                 ty = ty.derecha;
             }
-            console.log(tx.valor,": ", str)
             tx = tx.abajo;
         }
     }
@@ -223,7 +216,6 @@ class SparseMatrix{
                 str += tx.valor + ",";
                 tx = tx.abajo;
             }
-            console.log(ty.valor,": ", str)
             ty = ty.derecha;
         }
     }
@@ -316,15 +308,12 @@ class SparseMatrix{
         let copiaext=null;
         let n_actualentRow = matriz.cabeza.abajo;
         while (n_actualentRow != null) {
-            console.log("row: ",n_actualentRow)
             let n_actualentColumn = n_actualentRow.derecha;
             while (n_actualentColumn != null) {
                 // Insertar un nuevo nodo con los mismos valores
-                console.log("colum: ",n_actualentColumn)
                 if(nuevoy!=null){
                     if (n_actualentColumn.x==valorx){
                         
-                        console.log("cambio de dato",n_actualentColumn.x)
                         if(n_actualentColumn.y=="NC"){
                             
                             this.insertard(n_actualentColumn.x,nuevoy,nuevovalor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
@@ -335,11 +324,9 @@ class SparseMatrix{
                         }
                        
                     }else{
-                        console.log("igual dato: ",n_actualentColumn.x)
                         this.insertard(n_actualentColumn.x,n_actualentColumn.y,n_actualentColumn.valor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
                     }
                 }else{
-                    console.log("no hay",n_actualentColumn.x)
                     this.insertard(n_actualentColumn.x,n_actualentColumn.y,n_actualentColumn.valor, n_actualentColumn.format_b64, n_actualentColumn.tipo);
                 }
                 
@@ -408,7 +395,6 @@ class SparseMatrix{
         let contador=0;
         try { aux = this.cabeza.abajo } catch (error) { aux = null; console.log("GRAPH"); }
         while(aux != null){
-            console.log(aux.derecha, aux.izquierda);
             if (aux.derecha.y!="NC"){
                 contador++
                 Nodos += "X" + aux.valor.split(".")[0] + `[label="${aux.valor}" width = 1.5 shape ="square" style="filled" fillcolor="skyblue3" group="0"];\n`

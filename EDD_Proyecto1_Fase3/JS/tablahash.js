@@ -148,7 +148,6 @@ class Hasht{
                         contador ++;
                         indice = this.recalcularIndice(carnet, contador);
                         // SE VERIFICA EL CARNET Y SE RETORNA
-                        console.log(this.tabla[indice])
                         if(this.tabla[indice].carnet==carnet){
                             return this.tabla[indice].clave;
                         }

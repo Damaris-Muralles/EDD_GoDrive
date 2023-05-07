@@ -23,7 +23,6 @@ class Tree{
     insert(folderName, fatherPath){ 
         
         let fatherNode = this.getFolder(fatherPath);
-        console.log("nodopadre: ",fatherNode);
         if(fatherNode.node){
            
             let copyCount = 1;
@@ -70,7 +69,6 @@ class Tree{
                 let childNames = fatherNode.node.children.map(child => child.folderName);
                 let copyCount = 1;
                 let nameaux=newname;
-                console.log("hijos ",childNames)
                 while(childNames.includes(nameaux)) {
                     console.log("YA EXISTE UNA CARPETA CON EL NOMBRE, SE CREO COPIA");
                     nameaux = newname+ "-Copia(" + copyCount + ")";
@@ -99,7 +97,6 @@ class Tree{
         let fatherNode = this.getFolder(fatherPath);
         if(fatherNode.node ){
             fatherNode.node.matrizd=newmatriz;
-            console.log("nodopardrematriz:",fatherNode.node.matrizd);
             
             
         }else{
@@ -129,7 +126,6 @@ class Tree{
 
     buscararchivo(nameforlder, fatherPath) {
         let fatherNode = this.getFolder(fatherPath);
-        console.log ("padre",fatherNode);
         if (fatherNode.node ) {
             let Nodoaux = fatherNode.node.children;
            /*if(opcion==1){
@@ -139,10 +135,8 @@ class Tree{
                 Nodoaux = fatherNode.children;
                 console.log("auisdf",Nodoaux)
            }*/
-          console.log("nodoaux",Nodoaux);
           let child = Nodoaux.find(child => child.folderName == nameforlder);
           if (child) {
-            console.log("hijo",child)
             return child;
           } else {
             Swal.fire(
@@ -165,7 +159,6 @@ class Tree{
             return null;
         }
         let newNode = new Tnode(node.folderName,node.peso,node.matrizd);
-        console.log("datos copi: ",node.folderName,node.matrizd);
         newNode.id = node.id;
         newNode.nivel = node.nivel;
         newNode.peso= node.peso;
@@ -219,7 +212,6 @@ class Tree{
             let len = queue.length;
             for(let i = 0; i < len; i ++){
                 let node = queue.shift();
-                console.log("cola",queue)
                 nodes += `S_${node.id}[label="${node.folderName}" style="filled" fillcolor="skyblue3"];\n`;
                 
                 node.children.forEach( item  => {

@@ -10,7 +10,7 @@ class AvlNodo{
         this.derecha = null;
         this.treenari = treenari;
         this.altura = 0;
-        console.log("datos en nodo", this.izquierda,this.derecha, this.treenari, this.altura);
+       
     }
 }
 
@@ -52,11 +52,9 @@ class AvlTree{
     insertar(item){
         console.log("insertando a: ",item.nombre);
         this.raizavl = this.#insertRecursive(item, this.raizavl);
-       console.log("Salio con: ",this.raizavl);
     }
     #insertRecursive(item, node){
         if(node == null){
-            console.log(item)
             let arbolarchivo = new Tree(item.carpeta_raiz);
             var node12 = new AvlNodo(item,arbolarchivo);
             return node12;
@@ -94,7 +92,6 @@ class AvlTree{
     #rotatederecha(node1) {
         if (node1 && node1.derecha != null) {
         let node2 = node1.derecha;
-        console.log("nodo aux2: ",node2.item);
           // Actualizar enlace derecho de node1
           node1.derecha = node2.izquierda;
           // Actualizar enlace izquierdo de node2
@@ -103,8 +100,7 @@ class AvlTree{
         node1.altura = this.getMaxaltura(this.getaltura(node1.izquierda), this.getaltura(node1.derecha)) + 1;
         // Actualizar altura de node2
         node2.altura = this.getMaxaltura(this.getaltura(node2.izquierda), this.getaltura(node2.derecha)) + 1;
-          // Retornar el nuevo nodo raíz de la subárbol rotado
-          console.log("rotderecha: ",node2);
+       
           return node2;
         }return node1
       }
@@ -112,37 +108,29 @@ class AvlTree{
         
         if (node2 && node2.izquierda != null) {
             let node1 = node2.izquierda;
-        console.log("nodo aux1: ",node1.item);
             node2.izquierda = node1.derecha;
             node1.derecha = node2;
             node2.altura = this.getMaxaltura(this.getaltura(node2.izquierda), this.getaltura(node2.derecha)) + 1;
            // Actualizar altura de node1
             node1.altura = this.getMaxaltura(this.getaltura(node1.izquierda), this.getaltura(node1.derecha)) + 1;
-            // Actualizar altura de node2
-
-            console.log("rotizqu: ",node1);
+           
             return node1;
         }
         return node2
         
     }
     #doubleizquierda(node){
-        console.log("dobleizquierda, antes de rsd: ", node.item, node.derecha,node.izquierda);
         node.derecha = this.#rotatederecha(node.derecha);
-        console.log("doleizq rsd fin: ", node.item, node.derecha,node.izquierda);
         return this.#rotateizquierda(node);
     }
     #doublederecha(node){
-        console.log("dolederecha antes de rsi: ", node.item, node.derecha,node.izquierda);
 
         node.izquierda = this.#rotateizquierda(node.izquierda);
-        console.log("dolederecha rsi f: ", node.item, node.derecha,node.izquierda);
         return this.#rotatederecha(node);
     }
     treeGraph(){       
         Nodos = "";
         enlaces = "";
-        console.log(this.raizavl);
         this.#treeGraphRecursive(this.raizavl);
         // console.log(Nodos,enlaces);
         return Nodos + enlaces;
@@ -151,22 +139,22 @@ class AvlTree{
         if(nodo_actual.izquierda != null){
             this.#treeGraphRecursive(nodo_actual.izquierda);
             enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.izquierda.item.carnet};\n`;
-        } else {
+        } //else {
             // Agregar nodo invisible a la izquierda
            // Nodos += `S_${nodo_actual.item.carnet}_left[shape=point width=0.3 color=white];\n`;
            // enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.item.carnet}_left[color=white];\n`;
-           console.log("nada")
-        }
+          
+        //}
         Nodos += `S_${nodo_actual.item.carnet}[shape=box label="${nodo_actual.item.carnet}\\n${nodo_actual.item.nombre}\\nAltura: ${nodo_actual.altura}" style="filled" fillcolor="skyblue3"];`
         if(nodo_actual.derecha != null){
             this.#treeGraphRecursive(nodo_actual.derecha);
             enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.derecha.item.carnet};\n`;
-        } else {
-            console.log("nada")
+        }// else {
+          
             // Agregar nodo invisible a la derecha
            // Nodos += `S_${nodo_actual.item.carnet}_right[shape=point width=0.03 color=white];\n`;
            // enlaces += `S_${nodo_actual.item.carnet} -> S_${nodo_actual.item.carnet}_right[color=white];\n`;
-        }
+        //}
     }
 
 
@@ -230,7 +218,6 @@ class AvlTree{
 
     preOrder(){
         let index = {valor: 0};
-        console.log("oder",this.raizavl);
         let html = this.#preOrderRecursive(this.raizavl, index);
         return html;
     }
