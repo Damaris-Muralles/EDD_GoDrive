@@ -1,0 +1,280 @@
+{
+    "alumnos": [
+        {
+            "nombre": "Hugo Rosal",
+            "carnet": 8318054,
+            "password": "Hugo30",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Luis Pirir",
+            "carnet": 9616453,
+            "password": "Luis32",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Williams Constanza",
+            "carnet": 199919737,
+            "password": "Williams42",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Jim Melendez",
+            "carnet": 200715321,
+            "password": "Jim67",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "William Ambrocio",
+            "carnet": 201403669,
+            "password": "William29",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Ebany Larios",
+            "carnet": 201403877,
+            "password": "qwerty12",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Helber Urias",
+            "carnet": 201404028,
+            "password": "Helber67",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Manolo Ramirez",
+            "carnet": 201503933,
+            "password": "Manolo93",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Jose Boguerin",
+            "carnet": 201544815,
+            "password": "Jose50",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Kevin Secaida",
+            "carnet": 201602404,
+            "password": "Kevin46",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Bryan Ignacio",
+            "carnet": 201602516,
+            "password": "Bryan75",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Oscar Morales",
+            "carnet": 201603028,
+            "password": "Oscar59",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Alejandro Yac",
+            "carnet": 201700315,
+            "password": "Alejandro34",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Dennis Escobar",
+            "carnet": 201700792,
+            "password": "Dennis28",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Alma Manchame",
+            "carnet": 201700907,
+            "password": "Alma28",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Cristian Suy",
+            "carnet": 201700918,
+            "password": "Cris123",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Kevin Sotoj",
+            "carnet": 201710130,
+            "password": "Kevin80",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Leonardo Martinez",
+            "carnet": 201780044,
+            "password": "leo123",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Wilmer Vasquez",
+            "carnet": 201800678,
+            "password": "Wilmer27",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Erick Chacon",
+            "carnet": 201807169,
+            "password": "Erick91",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Brian Garcia ",
+            "carnet": 201807351,
+            "password": "Brian12",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Gladys Ajuchan",
+            "carnet": 201807389,
+            "password": "Gladys17",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Erick Gonzalez",
+            "carnet": 201900621,
+            "password": "Erick81",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Kevin Castaneda",
+            "carnet": 201901801,
+            "password": "Kevin3",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Christopher Monterroso",
+            "carnet": 201902363,
+            "password": "Christopher66",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Javier Pablo",
+            "carnet": 201944766,
+            "password": "Javier99",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Robin Buezo",
+            "carnet": 201944994,
+            "password": "Robin27",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Moises Conde",
+            "carnet": 202000127,
+            "password": "Moises18",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Diana Berducido",
+            "carnet": 202000277,
+            "password": "Diana55",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Javier Matias",
+            "carnet": 202000896,
+            "password": "Javier47",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Kevin Hernandez",
+            "carnet": 202001053,
+            "password": "Kevin4",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Nataly Guzman",
+            "carnet": 202001570,
+            "password": "Nataly84",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Angela Pinelo",
+            "carnet": 202002536,
+            "password": "Angela92",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Jorge Zamora",
+            "carnet": 202002591,
+            "password": "Jorge33",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Gerber Ordonez",
+            "carnet": 202004060,
+            "password": "Gerber30",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Fredy Quijada",
+            "carnet": 202004812,
+            "password": "Fredy63",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Luis Moreira",
+            "carnet": 202010770,
+            "password": "Luis55",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Luis Garcia",
+            "carnet": 202010814,
+            "password": "Luis39",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Maria Tebalan",
+            "carnet": 202100265,
+            "password": "Maria41",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Damaris Muralles",
+            "carnet": 202100953,
+            "password": "Damaris89",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Denis Coronado",
+            "carnet": 202101499,
+            "password": "Denis78",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Steven Mejia",
+            "carnet": 202104160,
+            "password": "Steven18",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Wendi Vicente",
+            "carnet": 202106484,
+            "password": "Wendi52",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Pablo Barahona ",
+            "carnet": 202109715,
+            "password": "Pablo42",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Jose Galdamez",
+            "carnet": 202109732,
+            "password": "Jose21",
+            "carpeta_raiz": "/"
+        },
+        {
+            "nombre": "Aldo Vasquez",
+            "carnet": 202109754,
+            "password": "Aldo65",
+            "carpeta_raiz": "/"
+        }
+    ]
+}
